@@ -1,0 +1,50 @@
+# cvs-converter
+
+A Next.js 15 application with a separate Express server for uploading and processing .csv/.xlsx files and downloading them as JSON/XML/CSV.
+
+## Setup Instructions
+
+### Prerequisites
+- Node.js >= 18
+- npm >= 9
+
+### Client Setup
+1. Navigate to `client/`
+2. Install dependencies: `npm install`
+3. Run development server: `npm run dev`
+4. Open `http://localhost:3000`
+
+### Server Setup
+1. Navigate to `server/`
+2. Install dependencies: `npm install`
+3. Run development server: `npm run dev`
+4. API runs on `http://localhost:3001`
+
+### Available Scripts
+- Client:
+  - `npm run dev` - Start development server
+  - `npm run build` - Build for production
+  - `npm run start` - Start production server
+  - `npm run lint` - Run ESLint
+  - `npm run test` - Run Jest tests
+  - `npm run format` - Run Prettier
+- Server:
+  - `npm run dev` - Start development server
+  - `npm run build` - Build for production
+  - `npm start` - Start production server
+  - `npm run lint` - Run ESLint
+  - `npm run format` - Run Prettier
+
+### Features
+- Upload .csv or .xlsx files
+- Process files on the server
+- Download processed data as JSON, XML, or CSV
+- TypeScript with alias imports
+- Chakra UI for styling
+- ESLint and Prettier for code quality
+- Jest for testing
+
+### Notes
+- Ensure the server is running before using the frontend
+- CORS is enabled for `http://localhost:3000`
+- File uploads are processed in memory
