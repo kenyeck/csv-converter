@@ -1,3 +1,5 @@
+import { ApiResult } from "types/api";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
 
 export const API_ROUTES = {
@@ -6,7 +8,7 @@ export const API_ROUTES = {
     DOWNLOAD_FILE: `${API_BASE_URL}/file/download`,
     };
 
-export const fetchLogin = async (username: string, password: string) => {
+export const login = async (username: string, password: string) : Promise<ApiResult> => {
     console.log(`fetchLogin - ${API_ROUTES.LOGIN}, username: ${username}`);
     const response = await fetch(API_ROUTES.LOGIN, {
         method: 'POST',
@@ -16,10 +18,7 @@ export const fetchLogin = async (username: string, password: string) => {
         body: JSON.stringify({ username, password }),
     });
 
-    if (!response.ok) {
-        throw new Error('Login failed');
-    }
-
-    return response.json();
-}
+    var result: ApiResult = { status: response.status, statusText: response.statusText, data: await response.json() };
+    return result;
+};
 
