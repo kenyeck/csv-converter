@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { getDb } from '../services/mongodb';
+import { getDb } from '../lib/mongodb';
 import { generateKeyPairSync } from 'crypto';
+import { ObjectId } from 'mongodb';
 
 // Generate RSA keys
 const { publicKey, privateKey } = generateKeyPairSync('rsa', {
@@ -11,8 +12,11 @@ const { publicKey, privateKey } = generateKeyPairSync('rsa', {
 });
 
 type User = {
+  id: ObjectId;
   username: string;
+  name: string;
   email: string;
+  password?: string;
 };
 
 export const verifyToken = (email: string, token: string) => {
@@ -29,25 +33,83 @@ export const login = async (req: Request, res: Response) => {
       .json({ error: 'Username and password are required' });
   }
 
-  let doc = null;
-
   try {
     const db = await getDb();
-    doc = await db.collection('users').findOne({ username, password });
+    const user = await db.collection('users').findOne({ username, password });
+    if (user !== null) {
+      const newAccessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
+        expiresIn: '1h',
+      });
+      const newRefreshToken = jwt.sign(
+        { userId: user._id },
+        process.env.JWT_REFRESH_SECRET!,
+        { expiresIn: '7d' }
+      );
+      res.setHeader('Set-Cookie', [
+        `accessToken=${newAccessToken}; HttpOnly; Path=/; Max-Age=3600; SameSite=Strict`,
+        `refreshToken=${newRefreshToken}; HttpOnly; Path=/; Max-Age=604800; SameSite=Strict`,
+      ]);
+      return res.json({
+        message: 'Login successful',
+        user: { id: user._id, username: user.username, name: user.name, email: user.email },
+      });
+    }
   } catch (err) {
     return res.status(500).json({ error: `Database error: ${err}` });
   }
 
-  if (doc !== null) {
-    // Sign a JWT with the private key
-    const token = jwt.sign({ email: doc.email }, privateKey, {
-      algorithm: 'RS256',
-      expiresIn: '1h',
-    });
-    return res.json({ message: 'Login successful', token });
-  }
+  return res.status(401).json({ error: 'Invalid credentials' });
+};
 
-  return res
-    .status(401)
-    .json({ error: 'Invalid credentials or user not found' });
+export const refresh = async (req: Request, res: Response) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken)
+    return res.status(401).json({ message: 'No refresh token' });
+
+  try {
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET!
+    ) as { userId: ObjectId };
+    const newAccessToken = jwt.sign(
+      { userId: decoded.userId },
+      process.env.JWT_SECRET!,
+      { expiresIn: '1h' }
+    );
+    // Optionally issue a new refresh token
+    const newRefreshToken = jwt.sign(
+      { userId: decoded.userId },
+      process.env.JWT_REFRESH_SECRET!,
+      { expiresIn: '7d' }
+    );
+    res.setHeader('Set-Cookie', [
+      `accessToken=${newAccessToken}; HttpOnly; Path=/; Max-Age=3600; SameSite=Strict`,
+      `refreshToken=${newRefreshToken}; HttpOnly; Path=/; Max-Age=604800; SameSite=Strict`,
+    ]);
+    return res.json({ message: 'Token refreshed' });
+  } catch (error) {
+    return res.status(401).json({ message: 'Invalid refresh token' });
+  }
+};
+
+export const getUser = async (req: Request, res: Response) => {
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json({ message: 'No token provided' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+      userId: ObjectId;
+    };
+    return res.json({ user: { userId: decoded.userId } });
+  } catch (error) {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+};
+
+export const logout = (req: Request, res: Response) => {
+  res.setHeader('Set-Cookie', [
+    'accessToken=; HttpOnly; Path=/; Max-Age=0',
+    'refreshToken=; HttpOnly; Path=/; Max-Age=0',
+  ]);
+  return res.json({ message: 'Logged out' });
 };

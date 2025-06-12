@@ -4,15 +4,16 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { Box, Button, Field, Heading, Input, Stack } from '@chakra-ui/react';
 import { PasswordInput } from '@components/ui/password-input';
-import { login } from 'api/api';
+import { useAuth } from '@components/AuthContext';
 
 interface FormValues {
   username: string;
   password: string;
 }
 
-export default function LoginPage() {
+export default function SigninPage() {
   const router = useRouter();
+  const { user, login } = useAuth();
   const {
     register,
     handleSubmit,
@@ -21,13 +22,15 @@ export default function LoginPage() {
 
   const onSubmit = handleSubmit(async (data) => {
     const { username, password } = data;
-    var result = await login(username, password);
-    console.log(`login result: ${JSON.stringify(result)}`);
-    if (result.status === 200) {
-      router.push('/');
-    }
+    await login(username, password);
     // TODO: display error message if login fails
   });
+
+  if (user) {
+    // If user is already logged in, redirect to home page
+    router.push('/');
+    return null;
+  }
 
   return (
     <Box
@@ -62,7 +65,7 @@ export default function LoginPage() {
             w={'100%'}
           >
             <Button type="submit" color={'white'} background={'blue'}>
-              Login
+              Signin
             </Button>
             <Button onClick={() => router.push('/')}>Cancel</Button>
           </Box>
