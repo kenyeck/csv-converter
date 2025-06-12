@@ -1,15 +1,13 @@
 'use client';
 
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Stack } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { ColorModeButton } from './ui/color-mode';
+import { useAuth } from './AuthContext';
 
 export const Nav = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-
-  const onLogin = () => {
-    router.push('/login');
-  };
+  const { user, logout } = useAuth();
 
   return (
     <>
@@ -23,7 +21,18 @@ export const Nav = ({ children }: { children: React.ReactNode }) => {
           paddingRight: '10px',
         }}
       >
-        <Button onClick={onLogin} mr={'8px'}>Login</Button>
+        {user ? (
+          <Stack direction="row" alignItems="center" gap={5}>
+            <Box fontWeight={'bold'}>{user.name}</Box>
+            <Button onClick={logout} mr={'8px'}>
+              Signout
+            </Button>
+          </Stack>
+        ) : (
+          <Button onClick={() => router.push('/signin')} mr={'8px'}>
+            Signin
+          </Button>
+        )}
         <ColorModeButton />
       </nav>
       <Box mt={4}>{children}</Box>
