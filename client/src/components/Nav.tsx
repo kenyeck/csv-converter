@@ -2,7 +2,6 @@
 
 import { Box, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { use } from 'react';
 import { ColorModeButton } from './ui/color-mode';
 
 export const Nav = ({ children }: { children: React.ReactNode }) => {

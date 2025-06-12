@@ -35,23 +35,18 @@ export const login = async (req: Request, res: Response) => {
     const db = await getDb();
     doc = await db.collection('users').findOne({ username, password });
   } catch (err) {
-    console.error('Database error:', err);
-    return res.status(500).json({ error: 'Database error' });
+    return res.status(500).json({ error: `Database error: ${err}` });
   }
 
   if (doc !== null) {
-    console.log(`User found: ${doc.email}`);
-
     // Sign a JWT with the private key
     const token = jwt.sign({ email: doc.email }, privateKey, {
       algorithm: 'RS256',
       expiresIn: '1h',
     });
-
     return res.json({ message: 'Login successful', token });
   }
 
-  console.log('Invalid credentials or user not found');
   return res
     .status(401)
     .json({ error: 'Invalid credentials or user not found' });
