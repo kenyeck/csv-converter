@@ -1,9 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import { Box, Button, Field, Heading, Input, Stack } from '@chakra-ui/react';
 import { PasswordInput } from '@components/ui/password-input';
-import { fetchLogin } from 'api/api';
-import { useForm } from 'react-hook-form';
+import { login } from 'api/api';
 
 interface FormValues {
   username: string;
@@ -11,6 +12,7 @@ interface FormValues {
 }
 
 export default function LoginPage() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -19,8 +21,12 @@ export default function LoginPage() {
 
   const onSubmit = handleSubmit(async (data) => {
     const { username, password } = data;
-    var result = await fetchLogin(username, password);
+    var result = await login(username, password);
     console.log(`login result: ${JSON.stringify(result)}`);
+    if (result.status === 200) {
+      router.push('/');
+    }
+    // TODO: display error message if login fails
   });
 
   return (
@@ -58,7 +64,7 @@ export default function LoginPage() {
             <Button type="submit" color={'white'} background={'blue'}>
               Login
             </Button>
-            <Button>Cancel</Button>
+            <Button onClick={() => router.push('/')}>Cancel</Button>
           </Box>
         </Stack>
       </form>
