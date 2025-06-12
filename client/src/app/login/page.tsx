@@ -19,27 +19,8 @@ export default function LoginPage() {
 
   const onSubmit = handleSubmit(async (data) => {
     const { username, password } = data;
-
     var result = await fetchLogin(username, password);
-    console.log(result);
-
-    // fetch('/api/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ username, password }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     if (data.success) {
-    //       // Redirect to dashboard or home page
-    //       console.log('Login successful');
-    //     } else {
-    //       // Handle login failure
-    //       console.error('Login failed:', data.message);
-    //     }
-    //   });
+    console.log(`login result: ${JSON.stringify(result)}`);
   });
 
   return (
@@ -83,68 +64,4 @@ export default function LoginPage() {
       </form>
     </Box>
   );
-
-  // return (
-  //   <Box
-  //     p={8}
-  //     alignContent={'center'}
-  //     display="flex"
-  //     flexDirection="column"
-  //     alignItems="center"
-  //   >
-  //     <Heading mb={6}>Login</Heading>
-  //     <Box as="form" method="post">
-  //       <Field.Root required>
-  //         <Field.Label>
-  //           Username <Field.RequiredIndicator />
-  //         </Field.Label>
-  //         <Input placeholder="Enter your username" />
-  //         <Field.HelperText></Field.HelperText>
-  //         <Field.ErrorText>Username is required</Field.ErrorText>
-  //       </Field.Root>
-  //       <Box mb={4} display="flex" flexDirection={'column'}>
-  //         <Box as="label" htmlFor="username" pr={10}>
-  //           Username
-  //         </Box>
-  //         <Input
-  //           type="text"
-  //           id="username"
-  //           name="username"
-  //           required
-  //           w={'225px'}
-  //           variant={'outline'}
-  //           value={username}
-  //           placeholder="Enter your username"
-  //           onChange={(e) => setUsername(e.target.value)}
-  //         />
-  //         <Box as="label" htmlFor="password" pr={10}>
-  //           Password
-  //         </Box>
-  //         <Input
-  //           type="password"
-  //           id="password"
-  //           name="password"
-  //           required
-  //           w={'225px'}
-  //           variant={'outline'}
-  //           value={password}
-  //           onChange={(e) => setPassword(e.target.value)}
-  //         />
-  //       </Box>
-  //       <Box
-  //         p={5}
-  //         alignContent={'center'}
-  //         display="flex"
-  //         flexDirection="row"
-  //         alignItems="center"
-  //         justifyContent="space-between"
-  //       >
-  //         <Button type="submit" color={'white'} background={'blue'}>
-  //           Login
-  //         </Button>
-  //         <Button>Cancel</Button>
-  //       </Box>
-  //     </Box>
-  //   </Box>
-  //);
 }
