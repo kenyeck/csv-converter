@@ -23,7 +23,7 @@ export const Nav = ({ children }: { children: React.ReactNode }) => {
       >
         {user ? (
           <Stack direction="row" alignItems="center" gap={5}>
-            <Box fontWeight={'bold'}>{user.name}</Box>
+            <Box fontWeight={'bold'}>Hi {user.firstName}!</Box>
             <Button onClick={logout} mr={'8px'}>
               Signout
             </Button>

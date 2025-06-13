@@ -19,6 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { PasswordInput } from '@components/ui/password-input';
 import { useAuth } from '@components/AuthContext';
+import { messageTimeout } from '@lib/Utils';
 
 interface FormValues {
   username: string;
@@ -48,7 +49,7 @@ export default function SigninPage() {
     var result = await login(username, password);
     if (result.status !== 200) {
       setError(result.data.error);
-      setTimeout(() => setError(null), 5000);
+      setTimeout(() => setError(null), messageTimeout);
     }
   });
 
@@ -95,14 +96,7 @@ export default function SigninPage() {
               <Field.Root invalid={!!errors.password}>
                 <Field.Label>Password</Field.Label>
                 <PasswordInput
-                  {...register('password', {
-                    pattern: {
-                      value:
-                        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-                      message:
-                        'Password must be at least 8 characters long and include at least one letter, one number, and one special character.',
-                    },
-                  })}
+                  {...register('password')}
                   required
                 />
                 <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
