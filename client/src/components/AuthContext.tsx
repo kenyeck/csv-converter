@@ -5,6 +5,7 @@ import {
   ReactNode,
 } from 'react';
 import { login as loginUser, logout as logoutUser } from 'api/api';
+import { ApiResult } from 'types/api';
 
 interface User {
   id: number;
@@ -15,7 +16,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<ApiResult>;
   logout: () => void;
 }
 
@@ -24,9 +25,14 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
-  const login = async (username: string, password: string) => {
+  const login = async (username: string, password: string) : Promise<ApiResult> => {
     const result = await loginUser(username, password);
-    setUser(result.data.user);
+    if (result.status === 200) {
+      setUser(result.data.user);
+    }
+    // todo: update ApiResult to return correct type for data (user, error, etc.)
+    return result;
+
   };
 
   const logout = async () => {
