@@ -1,10 +1,20 @@
 import { useState } from 'react';
 //import axios from 'axios';
 //import { parseCSV } from '@lib/Utils';
-import { Button, VStack, FileUpload, FileUploadList, Icon, Box, HStack } from '@chakra-ui/react';
+import {
+   Button,
+   VStack,
+   FileUpload,
+   FileUploadList,
+   Icon,
+   Box,
+   HStack,
+   BoxProps
+} from '@chakra-ui/react';
 import { ProcessedData } from 'types/file';
 import { LuFileUp, LuUpload } from 'react-icons/lu';
 import { FileChangeDetails } from '@chakra-ui/react/dist/types/components/file-upload/namespace';
+import React from 'react';
 
 const maxFiles = 5;
 
@@ -12,7 +22,7 @@ interface FileDetails extends FileChangeDetails {
    acceptedFiles: File[];
 }
 
-const FileUploader = () => {
+export const FileUploader: React.FC<BoxProps> = (props) => {
    const [files, setFiles] = useState<File[]>([]);
    const [_processedData, _setProcessedData] = useState<ProcessedData | null>(null);
 
@@ -67,45 +77,46 @@ const FileUploader = () => {
    // };
 
    return (
-      <VStack gap={10} w="100%">
-         <FileUpload.Root
-            maxW="xl"
-            alignItems="stretch"
-            maxFiles={maxFiles}
-            //maxFilesSize={3 * 1024 * 1024} // 3 MB
-            accept={'.csv,.xlsx'}
-            onFileChange={handleFileChange}
-            allowDrop={files.length < maxFiles}
-         >
-            <FileUpload.HiddenInput cursor={'pointer'} />
-            <FileUpload.Dropzone>
-               <Icon size="md" color="fg.muted">
-                  <LuUpload />
-               </Icon>
-               <FileUpload.DropzoneContent>
-                  <Box>Drag and drop files to upload here</Box>
-                  <Box color="fg.muted">{`.csv, .xlsx up to ${maxFiles} files`}</Box>
-                  {files.length >= maxFiles && (
-                     <Box fontWeight={'bold'} fontStyle={'italic'} mt={5}>
-                        ** limit reached **
-                     </Box>
-                  )}
-               </FileUpload.DropzoneContent>
-            </FileUpload.Dropzone>
-            <HStack justifyContent={'center'} pt={5}>
-               <Button onClick={() => {}} colorScheme="blue" disabled={files.length === 0}>
-                  <LuFileUp />
-                  Upload and Process
-               </Button>
-            </HStack>
-            {files.length > 0 && (
-               <VStack alignItems="flex-start">
-                  <Box>Files selected:</Box>
-                  <FileUploadList showSize clearable />
-               </VStack>
-            )}
-         </FileUpload.Root>
-         {/* {processedData && (
+      <Box w="100%" {...props}>
+         <VStack gap={10}>
+            <FileUpload.Root
+               maxW="xl"
+               alignItems="stretch"
+               maxFiles={maxFiles}
+               //maxFilesSize={3 * 1024 * 1024} // 3 MB
+               accept={'.csv,.xlsx'}
+               onFileChange={handleFileChange}
+               allowDrop={files.length < maxFiles}
+            >
+               <FileUpload.HiddenInput />
+               <FileUpload.Dropzone>
+                  <Icon size="md" color="fg.muted">
+                     <LuUpload />
+                  </Icon>
+                  <FileUpload.DropzoneContent cursor={'pointer'}>
+                     <Box>Drag and drop files to upload here</Box>
+                     <Box color="fg.muted">{`.csv, .xlsx up to ${maxFiles} files`}</Box>
+                     {files.length >= maxFiles && (
+                        <Box fontWeight={'bold'} fontStyle={'italic'} mt={5}>
+                           ** limit reached **
+                        </Box>
+                     )}
+                  </FileUpload.DropzoneContent>
+               </FileUpload.Dropzone>
+               <HStack justifyContent={'center'} pt={5}>
+                  <Button onClick={() => {}} colorScheme="blue" disabled={files.length === 0}>
+                     <LuFileUp />
+                     Upload and Process
+                  </Button>
+               </HStack>
+               {files.length > 0 && (
+                  <VStack alignItems="flex-start">
+                     <Box>Files selected:</Box>
+                     <FileUploadList showSize clearable />
+                  </VStack>
+               )}
+            </FileUpload.Root>
+            {/* {processedData && (
         <>
           <Text>Download as:</Text>
           <Button onClick={() => handleDownload('json')} colorScheme="green">
@@ -119,8 +130,7 @@ const FileUploader = () => {
           </Button>
         </>
       )} */}
-      </VStack>
+         </VStack>
+      </Box>
    );
 };
-
-export default FileUploader;
