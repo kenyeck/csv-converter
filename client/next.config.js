@@ -1,10 +1,12 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-   reactStrictMode: true,
-   webpack: (config) => {
-      config.cache = { type: 'memory' };
-      return config;
-   }
-};
+const { PHASE_PRODUCTION_BUILD } = require('next/constants');
 
-module.exports = nextConfig;
+module.exports = (phase, { defaultConfig }) => {
+   const config = {
+      ...defaultConfig,
+      reactStrictMode: true,
+      experimental: {
+         optimizePackageImports: ['@chakra-ui/next-js', '@chakra-ui/react']
+      }
+   };
+   return config;
+};
