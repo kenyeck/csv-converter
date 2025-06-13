@@ -71,6 +71,27 @@ export const login = async (req: Request, res: Response) => {
   return res.status(401).json({ error: 'Invalid credentials' });
 };
 
+export const checkUsername = async (req: Request, res: Response) => {
+  const { username } = req.body;
+
+  if (!username) {
+    return res.status(400).json({ error: 'Username is required' });
+  }
+
+  try {
+    const db = await getDb();
+    const existingUser = await db
+      .collection('users')
+      .findOne({ username });
+    if (existingUser !== null) {
+      return res.status(401).json({ error: 'Username already exists' });
+    }
+    return res.json({ message: 'Username is available', username });
+  } catch (err) {
+    return res.status(500).json({ error: `Database error: ${err}` });
+  }
+};
+
 export const register = async (req: Request, res: Response) => {
   const { user } = req.body;
 

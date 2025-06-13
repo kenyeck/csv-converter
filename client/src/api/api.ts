@@ -7,6 +7,7 @@ const API_BASE_URL =
 export const API_ROUTES = {
   LOGIN: `${API_BASE_URL}/auth/login`,
   REGISTER: `${API_BASE_URL}/auth/register`,
+  CHECKUSERNAME: `${API_BASE_URL}/auth/checkusername`,
   LOGOUT: `${API_BASE_URL}/auth/logout`,
   UPLOAD_FILE: `${API_BASE_URL}/file/upload`,
   DOWNLOAD_FILE: `${API_BASE_URL}/file/download`,
@@ -22,6 +23,23 @@ export const login = async (
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ username, password }),
+  });
+
+  var result: ApiResult = {
+    status: response.status,
+    statusText: response.statusText,
+    data: await response.json(),
+  };
+  return result;
+};
+
+export const checkUsername = async (username: string): Promise<ApiResult> => {
+  const response = await fetch(API_ROUTES.CHECKUSERNAME, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username }),
   });
 
   var result: ApiResult = {
