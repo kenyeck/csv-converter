@@ -37,9 +37,13 @@ export const login = async (req: Request, res: Response) => {
     const db = await getDb();
     const user = await db.collection('users').findOne({ username, password });
     if (user !== null) {
-      const newAccessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
-        expiresIn: '1h',
-      });
+      const newAccessToken = jwt.sign(
+        { userId: user._id },
+        process.env.JWT_SECRET!,
+        {
+          expiresIn: '1h',
+        }
+      );
       const newRefreshToken = jwt.sign(
         { userId: user._id },
         process.env.JWT_REFRESH_SECRET!,
@@ -51,7 +55,13 @@ export const login = async (req: Request, res: Response) => {
       ]);
       return res.json({
         message: 'Login successful',
-        user: { id: user._id, username: user.username, name: user.name, email: user.email },
+        user: {
+          id: user._id,
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+        },
       });
     }
   } catch (err) {
@@ -59,6 +69,64 @@ export const login = async (req: Request, res: Response) => {
   }
 
   return res.status(401).json({ error: 'Invalid credentials' });
+};
+
+export const register = async (req: Request, res: Response) => {
+  const { user } = req.body;
+
+  if (!user.username || !user.password) {
+    return res
+      .status(400)
+      .json({ error: 'Username and password are required' });
+  }
+
+  try {
+    const db = await getDb();
+    const existingUser = await db
+      .collection('users')
+      .findOne({ username: user.username });
+    if (existingUser !== null) {
+      return res.status(401).json({ error: 'Username already exists' });
+    }
+
+    var result = await db.collection('users').insertOne({
+      username: user.username,
+      password: user.password,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    });
+    if (result.acknowledged) {
+      const newAccessToken = jwt.sign(
+        { userId: result.insertedId },
+        process.env.JWT_SECRET!,
+        {
+          expiresIn: '1h',
+        }
+      );
+      const newRefreshToken = jwt.sign(
+        { userId: result.insertedId },
+        process.env.JWT_REFRESH_SECRET!,
+        { expiresIn: '7d' }
+      );
+      res.setHeader('Set-Cookie', [
+        `accessToken=${newAccessToken}; HttpOnly; Path=/; Max-Age=3600; SameSite=Strict`,
+        `refreshToken=${newRefreshToken}; HttpOnly; Path=/; Max-Age=604800; SameSite=Strict`,
+      ]);
+      return res.json({
+        message: 'Registration successful',
+        user: {
+          id: result.insertedId,
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+        },
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({ error: `Database error: ${err}` });
+  }
 };
 
 export const refresh = async (req: Request, res: Response) => {

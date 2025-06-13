@@ -6,13 +6,7 @@ import {
 } from 'react';
 import { login as loginUser, logout as logoutUser } from 'api/api';
 import { ApiResult } from 'types/api';
-
-interface User {
-  id: number;
-  username: string;
-  name: string;
-  email: string;
-}
+import { User } from 'types/user';
 
 interface AuthContextType {
   user: User | null;

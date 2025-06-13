@@ -6,39 +6,42 @@ import {
   Box,
   Button,
   Card,
-  Checkbox,
   Field,
   HStack,
   Input,
   Stack,
   VStack,
   Link,
-  Text,
   Alert,
 } from '@chakra-ui/react';
 import { PasswordInput } from '@components/ui/password-input';
 import { useAuth } from '@components/AuthContext';
 import { useState } from 'react';
+import { register as registerUser } from 'api/api';
+import { messageTimeout } from '@lib/Utils';
+import { User } from 'types/user';
 
 interface FormValues {
   username: string;
   password: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
 }
 
 const defaultValues: FormValues = {
   username: '',
   password: '',
-  name: '',
+  firstName: '',
+  lastName: '',
   email: '',
 };
 
 export default function RegisterPage() {
   const { user } = useAuth();
   const router = useRouter();
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -46,22 +49,16 @@ export default function RegisterPage() {
   } = useForm<FormValues>({ defaultValues, mode: 'onBlur' });
 
   const onSubmit = handleSubmit(async (data) => {
-    const { username, password, name, email } = data;
-    // var result = await register(data);
-    // if (result.status !== 200) {
-    //   setError(result.data.error);
-    //   setTimeout(() => setError(null), 5000);
-    // } else {
-    //   setSuccess('Account created successfully. Please login.');
-    //   setTimeout(() => setSuccess(null), 5000);
-    // }
+    var user: User = data as unknown as User;
+    var result = await registerUser(user);
+    if (result.status !== 200) {
+      setError(result.data.error);
+      setTimeout(() => setError(null), messageTimeout);
+    } else {
+      setSuccess('Account created successfully. Please login.');
+      setTimeout(() => setSuccess(null), messageTimeout);
+    }
   });
-
-  //   useEffect(() => {
-  //     if (user) {
-  //       router.push('/');
-  //     }
-  //   }, [user]);
 
   return (
     <Box
@@ -100,10 +97,16 @@ export default function RegisterPage() {
                 <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
               </Field.Root>
 
-              <Field.Root invalid={!!errors.name}>
-                <Field.Label>Name</Field.Label>
-                <Input {...register('name')} required />
-                <Field.ErrorText>{errors.name?.message}</Field.ErrorText>
+              <Field.Root invalid={!!errors.firstName}>
+                <Field.Label>First name</Field.Label>
+                <Input {...register('firstName')} required />
+                <Field.ErrorText>{errors.firstName?.message}</Field.ErrorText>
+              </Field.Root>
+
+              <Field.Root invalid={!!errors.lastName}>
+                <Field.Label>Last name</Field.Label>
+                <Input {...register('lastName')} required />
+                <Field.ErrorText>{errors.lastName?.message}</Field.ErrorText>
               </Field.Root>
 
               <Field.Root invalid={!!errors.email}>
