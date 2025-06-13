@@ -18,9 +18,9 @@ export function ColorModeProvider(props: ColorModeProviderProps) {
 export type ColorMode = "light" | "dark"
 
 export interface UseColorModeReturn {
-  colorMode: ColorMode
-  setColorMode: (colorMode: ColorMode) => void
-  toggleColorMode: () => void
+  colorMode: ColorMode;
+  setColorMode: (colorMode: ColorMode) => void; // eslint-disable-line no-unused-vars
+  toggleColorMode: () => void;
 }
 
 export function useColorMode(): UseColorModeReturn {

@@ -22,7 +22,7 @@ import { LuEye, LuEyeOff } from "react-icons/lu"
 export interface PasswordVisibilityProps {
   defaultVisible?: boolean
   visible?: boolean
-  onVisibleChange?: (visible: boolean) => void
+  onVisibleChange?: (visible: boolean) => void // eslint-disable-line no-unused-vars
   visibilityIcon?: { on: React.ReactNode; off: React.ReactNode }
 }
 

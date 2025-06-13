@@ -5,7 +5,8 @@ import { generateKeyPairSync } from 'crypto';
 import { ObjectId } from 'mongodb';
 
 // Generate RSA keys
-const { publicKey, privateKey } = generateKeyPairSync('rsa', {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const { publicKey, privateKey } = generateKeyPairSync('rsa', { // eslint-disable-line no-unused-vars
   modulusLength: 2048,
   publicKeyEncoding: { type: 'spki', format: 'pem' },
   privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
@@ -110,7 +111,7 @@ export const register = async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Username already exists' });
     }
 
-    var result = await db.collection('users').insertOne({
+    const result = await db.collection('users').insertOne({
       username: user.username,
       password: user.password,
       firstName: user.firstName,

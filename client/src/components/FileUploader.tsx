@@ -22,7 +22,7 @@ interface FileDetails extends FileChangeDetails {
 
 const FileUploader = () => {
   const [files, setFiles] = useState<File[]>([]);
-  const [processedData, setProcessedData] = useState<ProcessedData | null>(
+  const [_processedData, _setProcessedData] = useState<ProcessedData | null>(
     null
   );
 

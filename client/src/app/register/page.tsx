@@ -40,7 +40,6 @@ const defaultValues: FormValues = {
 };
 
 const minUsernameLength = 6;
-const minPasswordLength = 8;
 
 export default function RegisterPage() {
   const { user } = useAuth();
@@ -58,8 +57,8 @@ export default function RegisterPage() {
   } = useForm<FormValues>({ defaultValues, mode: 'onBlur' });
 
   const onSubmit = handleSubmit(async (data) => {
-    var user: User = data as unknown as User;
-    var result = await registerUser(user);
+    const user: User = data as unknown as User;
+    const result = await registerUser(user);
     if (result.status !== 200) {
       setErrorMsg(result.data.error);
       setTimeout(() => setErrorMsg(null), messageTimeout);
@@ -72,30 +71,35 @@ export default function RegisterPage() {
   const [text, setText] = useState<string>('');
   const [debouncedText] = useDebounce(text, 500);
 
-  useEffect(() => {
-    if (debouncedText) {
-      isValidUsername(debouncedText);
-    } else {
-      setInvalidUsernameMsg(null);
-    }
-  }, [debouncedText]);
-
-  const isValidUsername = async (username: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const validateUsername = async (username: string) => { // eslint-disable-line no-unused-vars
     if (username.length < minUsernameLength) {
       setInvalidUsernameMsg(null);
       return;
     }
 
-    var regex = /^[a-zA-Z0-9_]+$/;
+    useEffect(() => {
+      if (debouncedText) {
+          validateUsername(debouncedText);
+      } else {
+        setInvalidUsernameMsg(null);
+      }
+    }, [debouncedText]);
+
+    const regex = /^[a-zA-Z0-9_]+$/;
     if (!regex.test(username)) {
       setInvalidUsernameMsg(null);
-      setError('username', { type: 'manual', message: 'Username must be at least 6 characters long and only contain letters, numbers, and underscores.' });
+      setError('username', {
+        type: 'manual',
+        message:
+          'Username must be at least 6 characters long and only contain letters, numbers, and underscores.',
+      });
       return;
     } else {
       setError('username', { type: 'manual', message: '' });
     }
 
-      var result = await checkUsername(username);
+    const result = await checkUsername(username);
     if (result.status !== 200) {
       setInvalidUsernameMsg('Username is taken');
     } else {

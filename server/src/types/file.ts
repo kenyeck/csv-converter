@@ -1,3 +1,3 @@
 export interface ProcessedData {
-  data: any[];
+  data: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
 }

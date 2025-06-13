@@ -10,7 +10,7 @@ import { User } from 'types/user';
 
 interface AuthContextType {
   user: User | null;
-  login: (username: string, password: string) => Promise<ApiResult>;
+  login: (username: string, password: string) => Promise<ApiResult>; // eslint-disable-line no-unused-vars
   logout: () => void;
 }
 
@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    await logoutUser(user?.username!);
+    await logoutUser(user?.username ?? '');
     setUser(null);
   };
 

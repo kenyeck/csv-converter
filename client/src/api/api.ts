@@ -25,7 +25,7 @@ export const login = async (
     body: JSON.stringify({ username, password }),
   });
 
-  var result: ApiResult = {
+  const result: ApiResult = {
     status: response.status,
     statusText: response.statusText,
     data: await response.json(),
@@ -42,7 +42,7 @@ export const checkUsername = async (username: string): Promise<ApiResult> => {
     body: JSON.stringify({ username }),
   });
 
-  var result: ApiResult = {
+  const result: ApiResult = {
     status: response.status,
     statusText: response.statusText,
     data: await response.json(),
@@ -59,7 +59,7 @@ export const register = async (user: User): Promise<ApiResult> => {
     body: JSON.stringify({ user }),
   });
 
-  var result: ApiResult = {
+  const result: ApiResult = {
     status: response.status,
     statusText: response.statusText,
     data: await response.json(),
@@ -76,7 +76,7 @@ export const logout = async (username: string): Promise<ApiResult> => {
     body: JSON.stringify({ username }),
   });
 
-  var result: ApiResult = {
+  const result: ApiResult = {
     status: response.status,
     statusText: response.statusText,
     data: await response.json(),

@@ -44,9 +44,9 @@ export default function SigninPage() {
   } = useForm<FormValues>({ defaultValues, mode: 'onBlur' });
 
   const onSubmit = handleSubmit(async (data) => {
-    const { username, password, rememberUserId } = data;
+    const { username, password } = data;
     console.log('Form submitted:', data);
-    var result = await login(username, password);
+    const result = await login(username, password);
     if (result.status !== 200) {
       setError(result.data.error);
       setTimeout(() => setError(null), messageTimeout);
@@ -57,7 +57,7 @@ export default function SigninPage() {
     if (user) {
       router.push('/');
     }
-  }, [user]);
+  }, [user, router]);
 
   return (
     <Box
