@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// todo: disble for now - need to figure out how to get types for Chakra components, eg. FileUpload.Dropzone
 'use client';
 
 import React from 'react';
@@ -9,11 +11,11 @@ import { Button, FileUpload as ChFileUpload, Icon, Box, BoxProps, Card } from '@
 import { ProcessedData } from 'types/file';
 
 interface FileAcceptDetails {
-    files: File[];
+   files: File[];
 }
 
 interface FileUploadProps extends BoxProps {
-   onUpload: (file: File) => void;
+   onUpload: (file: File) => void; // eslint-disable-line no-unused-vars
 }
 
 export const FileUpload: React.FC<FileUploadProps> = (props: FileUploadProps) => {
@@ -69,7 +71,7 @@ export const FileUpload: React.FC<FileUploadProps> = (props: FileUploadProps) =>
    // };
 
    return (
-      <Box height={'100vh'} w={'100%'} >
+      <Box height={'100vh'} w={'100%'}>
          <Card.Root maxW="xxl" variant={'elevated'}>
             <Card.Body>
                <Box fontSize={'1.25em'} fontWeight={'semibold'}>
@@ -86,7 +88,7 @@ export const FileUpload: React.FC<FileUploadProps> = (props: FileUploadProps) =>
                   onFileAccept={onFileAccept}
                >
                   <ChFileUpload.HiddenInput />
-                  <ChFileUpload.Dropzone {...({ borderRadius: '15px' } as any)}>
+                  <ChFileUpload.Dropzone {...({ borderRadius: '15px' } as any)}> 
                      <Box
                         padding={5}
                         margin={3}
