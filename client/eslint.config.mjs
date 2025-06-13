@@ -6,35 +6,32 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: {
-  },
+   baseDirectory: __dirname,
+   recommendedConfig: {}
 });
 
 const eslintConfig = [
-  ...compat.extends(
-    'next/core-web-vitals',
-    'next/typescript',
-    'prettier'
-  ),
-  ...compat.config({
-    rules: {
-      'no-unused-vars': [
-        'warn',
-        {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-        },
-      ],
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-        },
-      ],
-    },
-  }),
+   ...compat.extends('next/core-web-vitals', 'next/typescript', 'prettier'),
+   ...compat.config({
+      rules: {
+         semi: ['warn', 'always'],
+         'semi-style': ['error', 'last'],
+         'no-unused-vars': [
+            'warn',
+            {
+               argsIgnorePattern: '^_',
+               varsIgnorePattern: '^_'
+            }
+         ],
+         '@typescript-eslint/no-unused-vars': [
+            'warn',
+            {
+               argsIgnorePattern: '^_',
+               varsIgnorePattern: '^_'
+            }
+         ]
+      }
+   })
 ];
 
 export default eslintConfig;
