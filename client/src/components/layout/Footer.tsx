@@ -13,7 +13,7 @@ export const Footer = () => {
             <Box fontSize={'1.25em'} fontWeight={'bold'}>
                CSVConvert
             </Box>
-            <Box fontSize={'.85em'} color={'gray.500'} mt={5}>
+            <Box fontSize={'.85em'} color={'fg.muted'} mt={5}>
                © {new Date().getFullYear()} CSVConvert. All rights reserved.
             </Box>
          </footer>
