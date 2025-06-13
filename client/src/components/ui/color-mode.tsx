@@ -5,7 +5,7 @@ import { LuMoon, LuSun } from 'react-icons/lu';
 import { ThemeProvider, useTheme } from 'next-themes';
 import type { ThemeProviderProps } from 'next-themes';
 import type { IconButtonProps, SpanProps } from '@chakra-ui/react';
-import { ClientOnly, IconButton, Menu, Portal, Skeleton, Span } from '@chakra-ui/react';
+import { ClientOnly, Menu, Portal, Skeleton, Span } from '@chakra-ui/react';
 
 export interface ColorModeProviderProps extends ThemeProviderProps {} // eslint-disable-line @typescript-eslint/no-empty-object-type
 
@@ -47,7 +47,7 @@ export function ColorModeIcon() {
 interface ColorModeButtonProps extends Omit<IconButtonProps, 'aria-label'> {} // eslint-disable-line @typescript-eslint/no-empty-object-type
 
 interface SelectionDetails {
-    value: string;
+   value: string;
 }
 
 export const ColorModeButton = React.forwardRef<HTMLButtonElement, ColorModeButtonProps>(
@@ -60,23 +60,19 @@ export const ColorModeButton = React.forwardRef<HTMLButtonElement, ColorModeButt
 
       return (
          <ClientOnly fallback={<Skeleton boxSize="8" />}>
-            <Menu.Root onSelect={onMenu}>
-               <Menu.Trigger>
-                  <IconButton
-                     variant="outline"
-                     aria-label="Toggle color mode"
-                     size="sm"
-                     ref={ref}
-                     {...props}
-                     css={{
-                        _icon: {
-                           width: '5',
-                           height: '5'
-                        }
-                     }}
-                  >
-                     <ColorModeIcon />
-                  </IconButton>
+            <Menu.Root onSelect={onMenu} aria-label="Select color mode">
+               <Menu.Trigger
+                  focusVisibleRing="none"
+                  style={{
+                     fontSize: '1.25em',
+                     border: '1px solid lightGray',
+                     padding: '8px',
+                     borderRadius: '5px',
+                     cursor: 'pointer'
+                  }}
+                  _hover={{ border: '1px solid gray', background: 'gray.300' }}
+               >
+                  <ColorModeIcon />
                </Menu.Trigger>
                <Portal>
                   <Menu.Positioner>
