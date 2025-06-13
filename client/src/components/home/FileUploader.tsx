@@ -78,7 +78,7 @@ export const FileUploader: React.FC<BoxProps> = (props) => {
                onFileAccept={uploadFile}
             >
                <FileUpload.HiddenInput />
-               <FileUpload.Dropzone borderRadius={'15px'} >
+               <FileUpload.Dropzone {...({ borderRadius: '15px'} as any)} >
                   <Box padding={5} margin={3} mt={5} background={'bg.muted'} borderRadius={'50%'}>
                      <Icon fontSize={'2.5em'}>
                         <LuFileSpreadsheet />
