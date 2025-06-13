@@ -1,11 +1,11 @@
 'use client';
 
-import type { IconButtonProps, SpanProps } from '@chakra-ui/react';
-import { ClientOnly, IconButton, Skeleton, Span } from '@chakra-ui/react';
-import { ThemeProvider, useTheme } from 'next-themes';
-import type { ThemeProviderProps } from 'next-themes';
 import * as React from 'react';
 import { LuMoon, LuSun } from 'react-icons/lu';
+import { ThemeProvider, useTheme } from 'next-themes';
+import type { ThemeProviderProps } from 'next-themes';
+import type { IconButtonProps, SpanProps } from '@chakra-ui/react';
+import { ClientOnly, IconButton, Menu, Portal, Skeleton, Span } from '@chakra-ui/react';
 
 export interface ColorModeProviderProps extends ThemeProviderProps {} // eslint-disable-line @typescript-eslint/no-empty-object-type
 
@@ -13,7 +13,7 @@ export function ColorModeProvider(props: ColorModeProviderProps) {
    return <ThemeProvider attribute="class" disableTransitionOnChange {...props} />;
 }
 
-export type ColorMode = 'light' | 'dark';
+export type ColorMode = 'light' | 'dark' | 'system';
 
 export interface UseColorModeReturn {
    colorMode: ColorMode;
@@ -46,27 +46,48 @@ export function ColorModeIcon() {
 
 interface ColorModeButtonProps extends Omit<IconButtonProps, 'aria-label'> {} // eslint-disable-line @typescript-eslint/no-empty-object-type
 
+interface SelectionDetails {
+    value: string;
+}
+
 export const ColorModeButton = React.forwardRef<HTMLButtonElement, ColorModeButtonProps>(
    function ColorModeButton(props, ref) {
-      const { toggleColorMode } = useColorMode();
+      const { setColorMode } = useColorMode();
+
+      const onMenu = (details: SelectionDetails) => {
+         setColorMode(details.value as ColorMode);
+      };
+
       return (
          <ClientOnly fallback={<Skeleton boxSize="8" />}>
-            <IconButton
-               onClick={toggleColorMode}
-               variant="ghost"
-               aria-label="Toggle color mode"
-               size="sm"
-               ref={ref}
-               {...props}
-               css={{
-                  _icon: {
-                     width: '5',
-                     height: '5'
-                  }
-               }}
-            >
-               <ColorModeIcon />
-            </IconButton>
+            <Menu.Root onSelect={onMenu}>
+               <Menu.Trigger>
+                  <IconButton
+                     variant="outline"
+                     aria-label="Toggle color mode"
+                     size="sm"
+                     ref={ref}
+                     {...props}
+                     css={{
+                        _icon: {
+                           width: '5',
+                           height: '5'
+                        }
+                     }}
+                  >
+                     <ColorModeIcon />
+                  </IconButton>
+               </Menu.Trigger>
+               <Portal>
+                  <Menu.Positioner>
+                     <Menu.Content>
+                        <Menu.Item value="light">Light</Menu.Item>
+                        <Menu.Item value="dark">Dark</Menu.Item>
+                        <Menu.Item value="system">System</Menu.Item>
+                     </Menu.Content>
+                  </Menu.Positioner>
+               </Portal>
+            </Menu.Root>
          </ClientOnly>
       );
    }
