@@ -13,13 +13,15 @@ import {
   VStack,
   Link,
   Alert,
+  Text,
 } from '@chakra-ui/react';
 import { PasswordInput } from '@components/ui/password-input';
 import { useAuth } from '@components/AuthContext';
-import { useState } from 'react';
-import { register as registerUser } from 'api/api';
+import { useEffect, useState } from 'react';
+import { checkUsername, register as registerUser } from 'api/api';
 import { messageTimeout } from '@lib/Utils';
 import { User } from 'types/user';
+import { useDebounce } from 'use-debounce';
 
 interface FormValues {
   username: string;
@@ -37,14 +39,21 @@ const defaultValues: FormValues = {
   email: '',
 };
 
+const minUsernameLength = 6;
+const minPasswordLength = 8;
+
 export default function RegisterPage() {
   const { user } = useAuth();
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [invalidUsernameMsg, setInvalidUsernameMsg] = useState<string | null>(
+    null
+  );
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<FormValues>({ defaultValues, mode: 'onBlur' });
 
@@ -52,13 +61,47 @@ export default function RegisterPage() {
     var user: User = data as unknown as User;
     var result = await registerUser(user);
     if (result.status !== 200) {
-      setError(result.data.error);
-      setTimeout(() => setError(null), messageTimeout);
+      setErrorMsg(result.data.error);
+      setTimeout(() => setErrorMsg(null), messageTimeout);
     } else {
-      setSuccess('Account created successfully. Please login.');
-      setTimeout(() => setSuccess(null), messageTimeout);
+      setSuccessMsg('Account created successfully. Please login.');
+      setTimeout(() => setSuccessMsg(null), messageTimeout);
     }
   });
+
+  const [text, setText] = useState<string>('');
+  const [debouncedText] = useDebounce(text, 500);
+
+  useEffect(() => {
+    if (debouncedText) {
+      isValidUsername(debouncedText);
+    } else {
+      setInvalidUsernameMsg(null);
+    }
+  }, [debouncedText]);
+
+  const isValidUsername = async (username: string) => {
+    if (username.length < minUsernameLength) {
+      setInvalidUsernameMsg(null);
+      return;
+    }
+
+    var regex = /^[a-zA-Z0-9_]+$/;
+    if (!regex.test(username)) {
+      setInvalidUsernameMsg(null);
+      setError('username', { type: 'manual', message: 'Username must be at least 6 characters long and only contain letters, numbers, and underscores.' });
+      return;
+    } else {
+      setError('username', { type: 'manual', message: '' });
+    }
+
+      var result = await checkUsername(username);
+    if (result.status !== 200) {
+      setInvalidUsernameMsg('Username is taken');
+    } else {
+      setInvalidUsernameMsg('Username is available');
+    }
+  };
 
   return (
     <Box
@@ -77,7 +120,19 @@ export default function RegisterPage() {
             <Stack gap="4" w="full" direction={'column'}>
               <Field.Root invalid={!!errors.username}>
                 <Field.Label>User ID</Field.Label>
-                <Input {...register('username')} required />
+                <Input
+                  {...register('username', {
+                    minLength: minUsernameLength,
+                    onChange: (e) => setText(e.target.value),
+                  })}
+                  required
+                />
+                {invalidUsernameMsg &&
+                  errors.username?.message?.length === 0 && (
+                    <Text fontSize="xs" color="green.500">
+                      {invalidUsernameMsg}
+                    </Text>
+                  )}
                 <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
               </Field.Root>
 
@@ -139,16 +194,16 @@ export default function RegisterPage() {
                   Register
                 </Button>
               </HStack>
-              {error && (
+              {errorMsg && (
                 <Alert.Root status="error">
                   <Alert.Indicator />
-                  <Alert.Title>{error}</Alert.Title>
+                  <Alert.Title>{errorMsg}</Alert.Title>
                 </Alert.Root>
               )}
-              {success && (
+              {successMsg && (
                 <Alert.Root status="success">
                   <Alert.Indicator />
-                  <Alert.Title>{success}</Alert.Title>
+                  <Alert.Title>{successMsg}</Alert.Title>
                 </Alert.Root>
               )}
               <HStack
