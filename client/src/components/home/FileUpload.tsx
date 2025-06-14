@@ -79,7 +79,7 @@ export const FileUpload: React.FC<FileUploadProps> = (props: FileUploadProps) =>
                   Upload your file
                </Box>
                <Box fontSize={'1em'} color={'fg.muted'} mb={5}>
-                  Drag and droop or click to select a file to convert
+                  Drag and drop or click to select a file to convert
                </Box>
                <ChFileUpload.Root
                   maxW="xxl"
