@@ -14,7 +14,7 @@ export const FileDisplay: React.FC<FileDisplayProps> = (props) => {
          <Card.Root variant={'elevated'} w={'100%'}>
             <Card.Body>
                <Header fileData={fileData} />
-               <ViewConvert />
+               <ViewConvert fileData={fileData} />
             </Card.Body>
          </Card.Root>
       </Box>
