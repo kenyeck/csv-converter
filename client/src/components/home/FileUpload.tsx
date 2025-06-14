@@ -5,24 +5,25 @@
 import React from 'react';
 import { useState } from 'react';
 //import axios from 'axios';
-//import { parseCSV } from '@lib/Utils';
+import { parseCSV } from '@lib/Utils';
 import { LuUpload, LuFileSpreadsheet } from 'react-icons/lu';
 import { Button, FileUpload as ChFileUpload, Icon, Box, BoxProps, Card } from '@chakra-ui/react';
-import { ProcessedData } from 'types/file';
+import { FileData, ProcessedData } from 'types/file';
 
 interface FileAcceptDetails {
    files: File[];
 }
 
 interface FileUploadProps extends BoxProps {
-   onUpload: (file: File) => void; // eslint-disable-line no-unused-vars
+   onUpload: (fileData: FileData) => void; // eslint-disable-line no-unused-vars
 }
 
 export const FileUpload: React.FC<FileUploadProps> = (props: FileUploadProps) => {
    const [_processedData, _setProcessedData] = useState<ProcessedData | null>(null);
 
-   const onFileAccept = (details: FileAcceptDetails) => {
-      props.onUpload(details.files[0]);
+   const onFileAccept = async (details: FileAcceptDetails) => {
+      const data = await parseCSV(details.files[0]);
+      props.onUpload({ file: details.files[0], processedData: data });
    };
 
    // const handleUpload = async () => {

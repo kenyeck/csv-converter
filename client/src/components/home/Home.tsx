@@ -4,13 +4,13 @@ import { Stack, Box, Separator } from '@chakra-ui/react';
 import { FileUpload } from '@components/home/FileUpload';
 import { useState } from 'react';
 import { FileDisplay } from './FileDisplay';
+import { FileData } from 'types/file';
 
 export const Home = () => {
-   const [uploadFile, setUploadFile] = useState<File | null>(null);
+   const [fileData, setFileData] = useState<FileData | null>(null);
 
-   const onUpload = (file: File) => {
-      console.log('File to upload:', file.name);
-      setUploadFile(file);
+   const onUpload = (fileData: FileData) => {
+      setFileData(fileData);
    };
 
    return (
@@ -24,7 +24,7 @@ export const Home = () => {
                just fast, browser-based data conversion.
             </Box>
          </Stack>
-         {uploadFile ? <FileDisplay /> : <FileUpload onUpload={onUpload} />}
+         {fileData ? <FileDisplay fileData={fileData} /> : <FileUpload onUpload={onUpload} />}
          <Separator colorPalette={'black'} />
          <Box height={'300px'} w={'100%'} textAlign={'center'} pt={'75px'}>
             MARKETING SECTION

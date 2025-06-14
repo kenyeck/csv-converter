@@ -7,7 +7,7 @@ export const parseCSV = (file: File): Promise<ProcessedData> => {
    return new Promise((resolve, reject) => {
       Papa.parse(file, {
          complete: (result) => {
-            resolve({ data: result.data });
+            resolve(result as unknown as ProcessedData);
          },
          error: (error) => reject(error)
       });

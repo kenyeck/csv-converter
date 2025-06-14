@@ -19,6 +19,7 @@
       "@eslint/eslintrc": "^3.3.1",
       "@types/jsonwebtoken": "^9.0.9",
       "axios": "^1.7.7",
+      "filesize": "^10.1.6",
       "framer-motion": "^11.2.0",
       "jsonwebtoken": "^9.0.2",
       "next": "15.3.3",

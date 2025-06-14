@@ -51,7 +51,7 @@ interface SelectionDetails {
 }
 
 export const ColorModeButton = React.forwardRef<HTMLButtonElement, ColorModeButtonProps>(
-   function ColorModeButton(props, ref) {
+   function ColorModeButton(_props, _ref) {
       const { setColorMode } = useColorMode();
 
       const onMenu = (details: SelectionDetails) => {
