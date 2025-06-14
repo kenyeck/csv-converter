@@ -3,7 +3,7 @@
 import { Stack, Box, Separator } from '@chakra-ui/react';
 import { FileUpload } from '@components/home/FileUpload';
 import { useState } from 'react';
-import { FileDisplay } from './FileDisplay';
+import { FileDisplay } from './filedisplay/FileDisplay';
 import { FileData } from 'types/file';
 
 export const Home = () => {
