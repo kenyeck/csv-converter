@@ -45,7 +45,6 @@ export default function SigninPage() {
 
    const onSubmit = handleSubmit(async (data) => {
       const { username, password } = data;
-      console.log('Form submitted:', data);
       const result = await login(username, password);
       if (result.status !== 200) {
          setError(result.data.error);
