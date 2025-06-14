@@ -66,7 +66,7 @@ export const PreviewHeader = () => {
                <Input size={'sm'} placeholder="Search data..." w={'175px'} />
             </InputGroup>
             <Box>
-               <Select.Root collection={rows} size="sm" width="100px">
+               <Select.Root collection={rows} size="sm" width="100px" defaultValue={["10"]}>
                   <Select.HiddenSelect />
                   <Select.Control>
                      <Select.Trigger>
