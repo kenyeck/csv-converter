@@ -1,8 +1,7 @@
-import { Box, Tabs, Stack, Separator } from '@chakra-ui/react';
+import { Box, Tabs, Separator } from '@chakra-ui/react';
 import { LuFileJson, LuTable } from 'react-icons/lu';
-import { PreviewHeader } from './PreviewHeader';
-import { PreviewTable } from './PreviewTable';
 import { FileData } from 'types/file';
+import { Preview } from './Preview';
 
 interface ViewConvertProps {
    fileData: FileData;
@@ -30,10 +29,7 @@ export const ViewConvert = ({ fileData }: ViewConvertProps) => {
             </Tabs.List>
             <Separator />
             <Tabs.Content value="preview" background={'bg'}>
-               <Stack direction={'column'}>
-                  <PreviewHeader />
-                  <PreviewTable fileData={fileData} />
-               </Stack>
+               <Preview fileData={fileData} />
             </Tabs.Content>
             <Tabs.Content value="convert" background={'bg'}>
                <Box>***Convert***</Box>

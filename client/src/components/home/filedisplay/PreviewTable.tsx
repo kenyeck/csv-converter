@@ -5,15 +5,14 @@ import { FileData } from 'types/file';
 
 interface PreviewTableProps {
    fileData: FileData;
+   pageSize: number;
 }
 
-export const PreviewTable = ({ fileData }: PreviewTableProps) => {
+export const PreviewTable = ({ fileData, pageSize }: PreviewTableProps) => {
    const { processedData } = fileData;
    const { data: rows } = processedData;
    const [page, setPage] = useState(1);
-   const [pageSize, setPageSize] = useState(10);
    const [pageRows, setPageRows] = useState<string[][]>([[]]);
-   const [headerRow, setHeaderRow] = useState([]);
    const firstRowIsHeader = true;
 
    useEffect(() => {
@@ -22,7 +21,7 @@ export const PreviewTable = ({ fileData }: PreviewTableProps) => {
       const newRows = rows.slice(startRow, endRow);
       console.log(`updating page rows: ${startRow}-${endRow}`);
       setPageRows(newRows);
-   }, [page, pageSize]);
+   }, [page, pageSize, firstRowIsHeader, rows]);
 
    return (
       <Box>

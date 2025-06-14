@@ -1,7 +1,22 @@
-import { Stack, Box, Button, InputGroup, Input, Select, Portal, createListCollection } from "@chakra-ui/react";
-import { LuType, LuMoveDiagonal, LuSearch } from "react-icons/lu";
+import {
+   Stack,
+   Box,
+   Button,
+   InputGroup,
+   Input,
+   Select,
+   Portal,
+   createListCollection
+} from '@chakra-ui/react';
+import { useState } from 'react';
+import { LuType, LuMoveDiagonal, LuSearch } from 'react-icons/lu';
 
-export const PreviewHeader = () => {
+interface PreviewHeaderProps {
+   setPageSize: (pageSize: number) => void; // eslint-disable-line no-unused-vars
+}
+
+export const PreviewHeader = ({ setPageSize: setPageSizeExt }: PreviewHeaderProps) => {
+   const [pageSize, setPageSize] = useState(10);
    return (
       <Stack direction={'row'} justifyContent={'space-between'}>
          <Box fontSize={'1.25em'} fontWeight={'semibold'} mb={5}>
@@ -20,7 +35,16 @@ export const PreviewHeader = () => {
                <Input size={'sm'} placeholder="Search data..." w={'175px'} />
             </InputGroup>
             <Box>
-               <Select.Root collection={rows} size="sm" width="100px" defaultValue={["10"]}>
+               <Select.Root
+                  collection={rows}
+                  size="sm"
+                  width="100px"
+                  value={[`${pageSize}`]}
+                  onValueChange={(e) => {
+                     setPageSize(parseInt(e.value[0]));
+                     setPageSizeExt(parseInt(e.value[0]));
+                  }}
+               >
                   <Select.HiddenSelect />
                   <Select.Control>
                      <Select.Trigger>
@@ -52,7 +76,7 @@ export const PreviewHeader = () => {
 const rows = createListCollection({
    items: [
       { label: '10 Rows', value: '10' },
-      { label: '20 Rows', value: '20' },
+      { label: '25 Rows', value: '25' },
       { label: '50 Rows', value: '50' },
       { label: '100 Rows', value: '100' }
    ]
