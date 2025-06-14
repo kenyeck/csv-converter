@@ -24,7 +24,7 @@ export const Home = () => {
                just fast, browser-based data conversion.
             </Box>
          </Stack>
-         {fileData ? <FileDisplay fileData={fileData} /> : <FileUpload onUpload={onUpload} />}
+         {fileData ? <FileDisplay fileData={fileData} onClose={() => setFileData(null)} /> : <FileUpload onUpload={onUpload} />}
          <Separator colorPalette={'black'} />
          <Box height={'300px'} w={'100%'} textAlign={'center'} pt={'75px'}>
             MARKETING SECTION
