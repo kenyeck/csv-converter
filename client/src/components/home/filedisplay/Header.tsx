@@ -1,4 +1,4 @@
-import { Stack, Box } from '@chakra-ui/react';
+import { Stack, Box, Button } from '@chakra-ui/react';
 import { LuFileSpreadsheet, LuSettings, LuX } from 'react-icons/lu';
 import { MetaData } from './MetaData';
 import { FileData } from 'types/file';
@@ -35,8 +35,14 @@ export const Header = ({ fileData, onClose }: HeaderProps) => {
             </Stack>
          </Stack>
          <Stack direction={'row'} gap={4} justifyContent={'space-between'}>
-            <LuSettings size={'1.25em'} color={'fg.muted'} cursor={'pointer'} />
-            <LuX size={'1.25em'} color={'fg.muted'} cursor={'pointer'} onClick={() => onClose()} />
+            <Button size={'sm'} variant={'outline'} color={'fg.muted'}>
+               <LuSettings />
+            </Button>
+            <Button size={'sm'} variant={'outline'}>
+               <LuX
+                  onClick={() => onClose()}
+               />
+            </Button>
          </Stack>
       </Stack>
    );
