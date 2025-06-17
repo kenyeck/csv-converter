@@ -24,32 +24,42 @@ import { messageTimeout } from '@lib/Utils';
 interface FormValues {
    username: string;
    password: string;
-   rememberUserId?: boolean;
+   rememberUsername?: boolean;
 }
-
-const defaultValues: FormValues = {
-   username: '',
-   password: '',
-   rememberUserId: false
-};
 
 export default function SigninPage() {
    const router = useRouter();
    const { user, login } = useAuth();
    const [error, setError] = useState(null);
+   const [checked, setChecked] = useState(getRememberUsernameOrDefault());
+
    const {
       register,
       handleSubmit,
       formState: { errors }
-   } = useForm<FormValues>({ defaultValues, mode: 'onBlur' });
+   } = useForm<FormValues>({
+      defaultValues: {
+         username: getUsernameOrDefault(),
+         password: ''
+         //rememberUsername: false -- currently doesn't work with register (react-hook-form) and chakra
+      },
+      mode: 'onBlur'
+   });
 
    const onSubmit = handleSubmit(async (data) => {
-      const { username, password } = data;
+      const { username, password, rememberUsername } = data;
       const result = await login(username, password);
       if (result.status !== 200) {
          setError(result.data.error);
          setTimeout(() => setError(null), messageTimeout);
       }
+
+      if (rememberUsername) {
+         localStorage.setItem(usernameKey, username);
+      } else {
+         localStorage.removeItem(usernameKey);
+      }
+      localStorage.setItem(rememberUsernameKey, rememberUsername ? 'true' : 'false');
    });
 
    useEffect(() => {
@@ -78,7 +88,9 @@ export default function SigninPage() {
                            <Checkbox.Root
                               variant={'solid'}
                               colorPalette={'blue.500'}
-                              {...register('rememberUserId')}
+                              {...register('rememberUsername')}
+                              checked={checked}
+                              onCheckedChange={(e) => setChecked(!!e.checked)}
                            >
                               <Checkbox.HiddenInput />
                               <Checkbox.Control />
@@ -140,3 +152,22 @@ const SigninLink = ({ href, children }: SigninLinkProps) => {
       </Link>
    );
 };
+
+// local storage
+const usernameKey = 'username';
+const rememberUsernameKey = 'rememberUsername';
+
+const getUsernameOrDefault = () => {
+   if (typeof window !== 'undefined') {
+      return localStorage.getItem(usernameKey) ?? '';
+   }
+   return '';
+};
+
+const getRememberUsernameOrDefault = () => {
+   if (typeof window !== 'undefined') {
+      return localStorage.getItem(rememberUsernameKey) === 'true' ? true : false;
+   }
+   return false;
+};
+
