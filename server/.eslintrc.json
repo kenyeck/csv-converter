@@ -15,6 +15,13 @@
             "varsIgnorePattern": "^_"
          }
       ],
+      "@typescript-eslint/no-unused-vars": [
+         "warn",
+         {
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_"
+         }
+      ],
       "semi": ["warn", "always"],
       "semi-style": ["error", "last"]
    }
