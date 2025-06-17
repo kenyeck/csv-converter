@@ -1,17 +1,19 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { getDb } from '../lib/mongodb';
-import { generateKeyPairSync } from 'crypto';
+import { compareSync, hashSync } from 'bcryptjs';
 import { ObjectId } from 'mongodb';
 
-// Generate RSA keys
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { publicKey, privateKey } = generateKeyPairSync('rsa', {
-   // eslint-disable-line no-unused-vars
-   modulusLength: 2048,
-   publicKeyEncoding: { type: 'spki', format: 'pem' },
-   privateKeyEncoding: { type: 'pkcs8', format: 'pem' }
-});
+const hashPassword = (plainPassword: string) => {
+   return hashSync(plainPassword, 10);
+};
+
+const checkPassword = (plainPassword: string, hash: string) => {
+   return compareSync(plainPassword, hash);
+};
+
+const publicKey = process.env.PUBLIC_KEY ?? '';
+//const privateKey = process.env.PRIVATE_KEY ?? '';
 
 type User = {
    id: ObjectId;
@@ -32,15 +34,14 @@ export const login = async (req: Request, res: Response) => {
    if (!username || !password) {
       return res.status(400).json({ error: 'Username and password are required' });
    }
-
    try {
       const db = await getDb();
-      const user = await db.collection('users').findOne({ username, password });
-      if (user !== null) {
+      const user = await db.collection('users').findOne({ username });
+      if (user !== null && checkPassword(password, user.password)) {
          const newAccessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
             expiresIn: '1h'
          });
-         const newRefreshToken = jwt.sign({ userId: user._id }, process.env.JWT_REFRESH_SECRET!, {
+         const newRefreshToken = jwt.sign({ userId: user?._id }, process.env.JWT_REFRESH_SECRET!, {
             expiresIn: '7d'
          });
          res.setHeader('Set-Cookie', [
@@ -50,11 +51,11 @@ export const login = async (req: Request, res: Response) => {
          return res.json({
             message: 'Login successful',
             user: {
-               id: user._id,
-               username: user.username,
-               firstName: user.firstName,
-               lastName: user.lastName,
-               email: user.email
+               id: user?._id,
+               username: user?.username,
+               firstName: user?.firstName,
+               lastName: user?.lastName,
+               email: user?.email
             }
          });
       }
@@ -100,7 +101,7 @@ export const register = async (req: Request, res: Response) => {
 
       const result = await db.collection('users').insertOne({
          username: user.username,
-         password: user.password,
+         password: hashPassword(user.password),
          firstName: user.firstName,
          lastName: user.lastName,
          email: user.email
@@ -156,7 +157,7 @@ export const refresh = async (req: Request, res: Response) => {
          `refreshToken=${newRefreshToken}; HttpOnly; Path=/; Max-Age=604800; SameSite=Strict`
       ]);
       return res.json({ message: 'Token refreshed' });
-   } catch (error) {
+   } catch (_error) {
       return res.status(401).json({ message: 'Invalid refresh token' });
    }
 };
@@ -170,7 +171,7 @@ export const getUser = async (req: Request, res: Response) => {
          userId: ObjectId;
       };
       return res.json({ user: { userId: decoded.userId } });
-   } catch (error) {
+   } catch (_error) {
       return res.status(401).json({ message: 'Invalid token' });
    }
 };
