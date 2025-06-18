@@ -1,6 +1,6 @@
 import { Box, BoxProps, Card } from '@chakra-ui/react';
 import { FileData } from 'types/file';
-import { ViewConvert } from './ViewConvert';
+import { PreviewConvert } from './PreviewConvert';
 import { Header } from './Header';
 
 interface FileDisplayProps extends BoxProps {
@@ -15,7 +15,7 @@ export const FileDisplay: React.FC<FileDisplayProps> = (props) => {
          <Card.Root variant={'elevated'} w={'100%'}>
             <Card.Body>
                <Header fileData={fileData} onClose={onClose}/>
-               <ViewConvert fileData={fileData} />
+               <PreviewConvert fileData={fileData} />
             </Card.Body>
          </Card.Root>
       </Box>

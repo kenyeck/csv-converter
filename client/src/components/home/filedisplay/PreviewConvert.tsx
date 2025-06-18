@@ -2,12 +2,13 @@ import { Box, Tabs, Separator } from '@chakra-ui/react';
 import { LuFileJson, LuTable } from 'react-icons/lu';
 import { FileData } from 'types/file';
 import { Preview } from './Preview';
+import { Convert } from './Convert';
 
 interface ViewConvertProps {
    fileData: FileData;
 }
 
-export const ViewConvert = ({ fileData }: ViewConvertProps) => {
+export const PreviewConvert = ({ fileData }: ViewConvertProps) => {
    return (
       <Box w={'100%'}>
          <Tabs.Root
@@ -32,7 +33,7 @@ export const ViewConvert = ({ fileData }: ViewConvertProps) => {
                <Preview fileData={fileData} />
             </Tabs.Content>
             <Tabs.Content value="convert" background={'bg'}>
-               <Box>***Convert***</Box>
+               <Convert />
             </Tabs.Content>
          </Tabs.Root>
       </Box>
