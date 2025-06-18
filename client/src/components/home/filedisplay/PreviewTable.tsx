@@ -19,7 +19,6 @@ export const PreviewTable = ({ fileData, pageSize }: PreviewTableProps) => {
       const startRow = (page - 1) * pageSize + (firstRowIsHeader ? 1 : 0);
       const endRow = page * pageSize + (firstRowIsHeader ? 1 : 0);
       const newRows = rows.slice(startRow, endRow);
-      console.log(`updating page rows: ${startRow}-${endRow}`);
       setPageRows(newRows);
    }, [page, pageSize, firstRowIsHeader, rows]);
 
