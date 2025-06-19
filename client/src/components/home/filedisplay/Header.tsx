@@ -9,7 +9,8 @@ interface HeaderProps {
 }
 
 export const Header = ({ fileData, onClose }: HeaderProps) => {
-   const { file, processedData } = fileData;
+   const { name, size, type, delimiter, json } = fileData;
+
    return (
       <Stack direction={'row'} gap={4} justifyContent={'space-between'}>
          <Stack direction={'row'} alignItems={'center'} gap={4}>
@@ -24,13 +25,13 @@ export const Header = ({ fileData, onClose }: HeaderProps) => {
             </Box>
             <Stack direction={'column'} gap={1}>
                <Box fontSize={'1.25em'} fontWeight={'semibold'}>
-                  {file.name}
+                  {name}
                </Box>
                <MetaData
-                  size={file.size}
-                  rows={processedData.data.length}
-                  type={file.type}
-                  delimiter={processedData.meta.delimiter}
+                  size={size}
+                  rows={json?.length ?? 0}
+                  type={type}
+                  delimiter={delimiter}
                />
             </Stack>
          </Stack>

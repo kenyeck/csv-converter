@@ -5,13 +5,15 @@ import { FileUpload } from '@components/home/FileUpload';
 import { useState } from 'react';
 import { FileDisplay } from './filedisplay/FileDisplay';
 import { FileData } from 'types/file';
+import { processFile } from '@lib/Utils';
 
 export const Home = () => {
    const [fileData, setFileData] = useState<FileData | null>(null);
 
-   const onUpload = (fileData: FileData) => {
-      setFileData(fileData);
-   };
+   const onUpload = async (file: File) => {
+      // todo: display loading/processing state for large files (>200K?)
+      const fileData = await processFile(file);
+      setFileData(fileData);};
 
    return (
       <Stack p={8} direction={'column'} alignItems={'center'}>
@@ -36,3 +38,4 @@ export const Home = () => {
       </Stack>
    );
 };
+

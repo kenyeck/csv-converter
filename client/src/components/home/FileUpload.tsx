@@ -3,27 +3,21 @@
 'use client';
 
 import React from 'react';
-import { useState } from 'react';
-//import axios from 'axios';
-import { parseCSV } from '@lib/Utils';
 import { LuUpload, LuFileSpreadsheet } from 'react-icons/lu';
 import { Button, FileUpload as ChFileUpload, Icon, Box, BoxProps, Card } from '@chakra-ui/react';
-import { FileData, ProcessedData } from 'types/file';
 
 interface FileAcceptDetails {
    files: File[];
 }
 
 interface FileUploadProps extends BoxProps {
-   onUpload: (fileData: FileData) => void; // eslint-disable-line no-unused-vars
+   onUpload: (file: File) => void; // eslint-disable-line no-unused-vars
 }
 
-export const FileUpload: React.FC<FileUploadProps> = (props: FileUploadProps) => {
-   const [_processedData, _setProcessedData] = useState<ProcessedData | null>(null);
+export const FileUpload: React.FC<FileUploadProps> = ({ onUpload }: FileUploadProps) => {
 
    const onFileAccept = async (details: FileAcceptDetails) => {
-      const data = await parseCSV(details.files[0]);
-      props.onUpload({ file: details.files[0], processedData: data });
+      onUpload(details.files[0]);
    };
 
    // const handleUpload = async () => {
@@ -47,30 +41,6 @@ export const FileUpload: React.FC<FileUploadProps> = (props: FileUploadProps) =>
    //   }
    // };
 
-   // const handleDownload = async (format: 'json' | 'xml' | 'csv') => {
-   //   if (!processedData) return;
-
-   //   try {
-   //     const response = await axios.post(
-   //       'http://localhost:3001/api/download',
-   //       { data: processedData, format },
-   //       {
-   //         responseType: 'blob',
-   //       }
-   //     );
-
-   //     const url = window.URL.createObjectURL(new Blob([response.data]));
-   //     const link = document.createElement('a');
-   //     link.href = url;
-   //     link.setAttribute('download', `processed.${format}`);
-   //     document.body.appendChild(link);
-   //     link.click();
-   //     document.body.removeChild(link);
-   //   } catch (_error) {
-   //     //toaster.Create({ description: `Error downloading ${format.toUpperCase()}`, type: 'error' });
-   //   }
-   // };
-
    return (
       <Box height={'100vh'} w={'100%'}>
          <Card.Root maxW="xxl" variant={'elevated'}>
@@ -85,11 +55,11 @@ export const FileUpload: React.FC<FileUploadProps> = (props: FileUploadProps) =>
                   maxW="xxl"
                   alignItems="stretch"
                   maxFiles={1}
-                  accept={'.csv,.xlsx'}
+                  accept={'.csv,.tsv,.txt,.xls,.xlsx'}
                   onFileAccept={onFileAccept}
                >
                   <ChFileUpload.HiddenInput />
-                  <ChFileUpload.Dropzone {...({ borderRadius: '15px' } as any)}> 
+                  <ChFileUpload.Dropzone {...({ borderRadius: '15px' } as any)}>
                      <Box
                         padding={5}
                         margin={3}
