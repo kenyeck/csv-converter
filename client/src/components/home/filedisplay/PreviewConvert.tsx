@@ -33,7 +33,7 @@ export const PreviewConvert = ({ fileData }: ViewConvertProps) => {
                <Preview fileData={fileData} />
             </Tabs.Content>
             <Tabs.Content value="convert" background={'bg'}>
-               <Convert />
+               <Convert fileData={fileData} />
             </Tabs.Content>
          </Tabs.Root>
       </Box>
