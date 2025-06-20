@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, BoxProps, Card } from '@chakra-ui/react';
 import { PreviewConvert } from './PreviewConvert';
 import { Header } from './Header';

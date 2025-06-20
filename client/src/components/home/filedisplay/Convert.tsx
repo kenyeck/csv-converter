@@ -1,3 +1,5 @@
+'use client';
+
 import { Stack } from '@chakra-ui/react';
 import { ConvertBody } from './ConvertBody';
 import { ConvertHeader } from './ConvertHeader';

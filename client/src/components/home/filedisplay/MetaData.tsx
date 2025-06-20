@@ -1,3 +1,5 @@
+'use client';
+
 import { Stack } from '@chakra-ui/react';
 import { MetaBox } from './MetaBox';
 import { getFileDelimiterAsString, getFileSizeAsString, getFileTypeAsString } from '@lib/Utils';

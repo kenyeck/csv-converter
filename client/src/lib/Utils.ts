@@ -41,12 +41,12 @@ export const getFileDelimiterAsString = (delimiter: string) => {
 };
 
 export const processFile = async (file: File): Promise<FileData> => {
-   var fileData: FileData | null = null;
-   var workbook: WorkBook | null = null;
-   var sheetName: string | null = null;
-   var worksheet: WorkSheet | null = null;
+   let fileData: FileData | null = null;
+   let workbook: WorkBook | null = null;
+   let sheetName: string | null = null;
+   let worksheet: WorkSheet | null = null;
+   let fileType = file.type || '';
 
-   var fileType = file.type || '';
    if (!fileType && file.name.endsWith('.tsv')) {
       fileType = 'text/tab-separated-values';
    }
@@ -56,7 +56,7 @@ export const processFile = async (file: File): Promise<FileData> => {
       case 'text/tab-separated-values':
       case 'text/plain':
          // handle text files (CSV, TSV, TXT)
-         var result = Papa.parse(await file.text(), { preview: 5 });
+         const result = Papa.parse(await file.text(), { preview: 5 });
          const delimiter = result.meta.delimiter ?? ',';
          workbook = read(await file.text(), { type: 'string', FS: delimiter });
          sheetName = workbook.SheetNames[0];

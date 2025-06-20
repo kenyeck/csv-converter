@@ -1,3 +1,5 @@
+'use client';
+
 import { Stack, Box, Button } from '@chakra-ui/react';
 import { LuFileSpreadsheet, LuSettings, LuX } from 'react-icons/lu';
 import { MetaData } from './MetaData';

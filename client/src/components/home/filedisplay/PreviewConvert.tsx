@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Tabs, Separator } from '@chakra-ui/react';
 import { LuFileJson, LuTable } from 'react-icons/lu';
 import { FileData } from 'types/file';
@@ -17,6 +19,7 @@ export const PreviewConvert = ({ fileData }: ViewConvertProps) => {
             mt={4}
             width={'full'}
             background={'bg.muted'}
+            lazyMount={true}
          >
             <Tabs.List>
                <Tabs.Trigger value="preview" style={{ height: '2.25em' }}>

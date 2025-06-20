@@ -1,3 +1,5 @@
+'use client';
+
 import { Stack } from "@chakra-ui/react";
 import { PreviewHeader } from "./PreviewHeader";
 import { PreviewTable } from "./PreviewTable";

@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { login as loginUser, logout as logoutUser } from 'api/api';
 import { ApiResult } from 'types/api';

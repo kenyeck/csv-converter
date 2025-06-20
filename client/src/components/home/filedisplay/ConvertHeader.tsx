@@ -1,3 +1,5 @@
+'use client';
+
 import { Stack, Box, Button } from "@chakra-ui/react";
 
 export const ConvertHeader = () => {
