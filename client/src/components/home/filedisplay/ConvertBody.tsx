@@ -1,14 +1,24 @@
+'use client';
+
+import { useTheme } from 'next-themes';
 import { Box, Tabs } from '@chakra-ui/react';
 import { LuFileJson, LuCodeXml, LuDatabase } from 'react-icons/lu';
-import { JsonView, allExpanded, defaultStyles } from 'react-json-view-lite';
-import 'react-json-view-lite/dist/index.css';
 import { FileData } from 'types/file';
+import JsonView from 'react18-json-view';
+import 'react18-json-view/src/style.css';
+
+// Which json viewer to use?
+// tried: react18-json-view, json-edit-react, react-json-view-lite, @textea/json-viewer
+// json-edit-react, react-json-view-lite become, and @textea/json-viewer are too sluggish with large objects. using @textea/json-viewer for now
+// 1st: react18-json-view
+// 2nd: @textea/json-viewer
 
 interface ConvertBodyProps {
    fileData: FileData;
 }
 
 export const ConvertBody = ({ fileData }: ConvertBodyProps) => {
+   const { theme } = useTheme();
 
    // const handleDownload = async (format: 'json' | 'xml' | 'csv') => {
    //   if (!processedData) return;
@@ -52,24 +62,22 @@ export const ConvertBody = ({ fileData }: ConvertBodyProps) => {
          </Tabs.List>
          <Tabs.Content value="json" background={'bg'}>
             <Box
-               background={'bg.muted'}
+               background={'transparent'}
+               border={`2px solid bg.muted`}
+               borderRadius={'5px'}
                paddingX={3}
                paddingY={1}
                overflowY={'scroll'}
-               maxH={'300px'}
+               height={'300px'}
             >
-               <JsonView
-                  data={fileData.json}
-                  shouldExpandNode={allExpanded}
-                  style={defaultStyles}
-               />
+               <JsonView src={fileData.json} dark={theme === 'dark'} />
             </Box>
          </Tabs.Content>
          <Tabs.Content value="xml" background={'bg'}>
             <Box>XML</Box>
          </Tabs.Content>
          <Tabs.Content value="sql" background={'bg'}>
-            <Box>SQL</Box>)
+            <Box>SQL</Box>
          </Tabs.Content>
       </Tabs.Root>
    );
