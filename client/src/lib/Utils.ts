@@ -2,6 +2,7 @@ import { filesize } from 'filesize';
 import Papa from 'papaparse';
 import type { FileData } from 'types/file';
 import { read, utils, WorkBook, WorkSheet } from 'xlsx';
+import SqlString from 'sqlstring';
 
 export const messageTimeout = 5000;
 
@@ -106,4 +107,57 @@ export const jsonToXML = (
    });
    xml += `</${rootName}>`;
    return xml;
+};
+
+// Helper function to infer SQL data type from JavaScript value
+const inferSQLType = (value: string | number | boolean | Date) => {
+   if (typeof value === 'string') {
+      const length = value.length > 255 ? 255 : value.length || 50;
+      return `VARCHAR(${length})`;
+   } else if (Number.isInteger(value)) {
+      return 'INT';
+   } else if (typeof value === 'number') {
+      return 'FLOAT';
+   } else if (typeof value === 'boolean') {
+      return 'BIT';
+   } else if (value instanceof Date) {
+      return 'DATETIME';
+   } else {
+      return 'TEXT'; // Fallback for complex or null values
+   }
+};
+
+export const jsonToSQL = (filename: string, json: string[][]) => {
+   try {
+      // Parse JSON input
+      if (!Array.isArray(json) || json.length === 0) {
+         throw new Error('Input must be a non-empty array of objects');
+      }
+
+      // Get column names and types from the first object
+      const columns = Object.keys(json[0]).map((key) => {
+         // @ts-ignore
+         const value = json[0][key]; // as keyof (typeof json)[0]];
+         const sqlType = inferSQLType(value);
+         return `${key} ${sqlType}`;
+      });
+
+      // Generate CREATE TABLE statement
+      const tableName = filename.split('.', filename.lastIndexOf('.'))[0].replace(/\W+/g, '_').toUpperCase(); // Sanitize table name
+      const createTableSQL = `CREATE TABLE ${tableName} (\n${columns.join(',\n')}\n);`;
+
+      // Generate INSERT INTO statements
+      const insertSQL = json
+         .map((row) => {
+            const keys = Object.keys(row).map((key) => key);
+            const values = Object.values(row).map((value) => SqlString.escape(value));
+            return `INSERT INTO ${tableName} (${keys.join(', ')}) VALUES (${values.join(', ')});`;
+         })
+         .join('\n');
+
+      // Combine SQL statements
+      return `-- SQL Insert statements generated from ${filename}\n\n${createTableSQL}\n\n${insertSQL}`;
+   } catch (error: unknown) {
+      return `Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+   }
 };

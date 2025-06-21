@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useTheme } from 'next-themes';
 import { Box, Button, Stack, Tabs } from '@chakra-ui/react';
 import { LuFileJson, LuCodeXml, LuDatabase, LuClipboard, LuDownload } from 'react-icons/lu';
@@ -7,8 +8,7 @@ import { FileData } from 'types/file';
 import JsonView from 'react18-json-view';
 import './json-view-style.css';
 import XMLViewer from 'react-xml-viewer';
-import { jsonToXML } from '@lib/Utils';
-import { useState } from 'react';
+import { jsonToSQL, jsonToXML } from '@lib/Utils';
 
 // Which json viewer to use?
 // tried: react18-json-view, json-edit-react, react-json-view-lite, @textea/json-viewer
@@ -51,7 +51,14 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
 
    return (
       <Stack direction={'column'} width={'100%'}>
-         <Tabs.Root defaultValue="json" variant={'enclosed'} lazyMount={true} onValueChange={(details) => { setActiveTab(details.value); }}>
+         <Tabs.Root
+            defaultValue="json"
+            variant={'enclosed'}
+            lazyMount={true}
+            onValueChange={(details) => {
+               setActiveTab(details.value);
+            }}
+         >
             <Tabs.List>
                <Tabs.Trigger value="json" style={{ height: '2.25em', width: '125px' }}>
                   <LuFileJson />
@@ -97,15 +104,21 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
                </Box>
             </Tabs.Content>
             <Tabs.Content value="sql" background={'bg'}>
-               <Box>SQL</Box>
+               {jsonToSQL(fileData.name, fileData.json)
+                  ?.split('\n')
+                  .map((line, i) => <div key={i}>{line.length > 0 ? line : <>&nbsp;</>}</div>)}
             </Tabs.Content>
          </Tabs.Root>
          <Stack direction={'row'} justifyContent={'flex-end'} paddingTop={2} gap={4}>
-            <Button size={'sm'} variant={'outline'} color={'fg.muted'}>
+            <Button
+               size={'sm'}
+               variant={'outline'}
+               color={'fg.muted'}
+            >
                <LuClipboard />
                Copy to Clipboard
             </Button>
-            <Button size={'sm'} variant={'solid'} color={'bg.muted'}>
+            <Button size={'sm'} variant={'solid'} color={'bg.muted'} >
                <LuDownload />
                {`Download ${activeTab.toUpperCase()}`}
             </Button>
