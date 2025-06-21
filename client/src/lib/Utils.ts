@@ -93,7 +93,7 @@ export const processFile = async (file: File): Promise<FileData> => {
 };
 
 export const jsonToXML = (
-   json: string[][],
+   json: Array<Record<string, string>>,
    rootName: string = 'root',
    itemName: string = 'item'
 ) => {
@@ -127,7 +127,7 @@ const inferSQLType = (value: string | number | boolean | Date) => {
    }
 };
 
-export const jsonToSQL = (filename: string, json: string[][]) => {
+export const jsonToSQL = (filename: string, json: Array<Record<string, string>>) => {
    try {
       // Parse JSON input
       if (!Array.isArray(json) || json.length === 0) {
@@ -136,7 +136,7 @@ export const jsonToSQL = (filename: string, json: string[][]) => {
 
       // Get column names and types from the first object
       const columns = Object.keys(json[0]).map((key) => {
-         const value = json[0][key]; // as keyof (typeof json)[0]];
+         const value = json[0][key];
          const sqlType = inferSQLType(value);
          return `${key} ${sqlType}`;
       });

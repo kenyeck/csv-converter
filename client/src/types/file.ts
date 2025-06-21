@@ -11,7 +11,7 @@ export interface FileData {
    type: string;
    size: number;
    delimiter?: string; // Delimiter used
-   json: string[][];
+   json: Array<Record<string, string>>;
 }
 
 
