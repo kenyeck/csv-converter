@@ -136,7 +136,6 @@ export const jsonToSQL = (filename: string, json: string[][]) => {
 
       // Get column names and types from the first object
       const columns = Object.keys(json[0]).map((key) => {
-         // @ts-ignore
          const value = json[0][key]; // as keyof (typeof json)[0]];
          const sqlType = inferSQLType(value);
          return `${key} ${sqlType}`;

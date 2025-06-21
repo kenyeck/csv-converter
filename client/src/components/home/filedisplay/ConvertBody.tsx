@@ -34,7 +34,6 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
       } else if (activeTab === 'sql') {
          navigator.clipboard.writeText(jsonToSQL(fileData.name, fileData.json));
       }
-      console.log('Copied to clipboard!');
       toaster.create({
          description: `${activeTab.toUpperCase()} contents copied to the clipboard.`,
          type: 'success',
@@ -42,6 +41,55 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
       });
    };
 
+   const handleDownload = async () => {
+      const filename = fileData.name.substring(0, fileData.name.lastIndexOf('.'));
+      let data = '';
+      let type = '';
+      let extension = '';
+      if (activeTab === 'json') {
+         data = JSON.stringify(fileData.json, null, 2);
+         type = 'application/json';
+         extension = 'json';
+      } else if (activeTab === 'xml') {
+         data = jsonToXML(fileData.json, 'root', 'row');
+         type = 'application/xml';
+         extension = 'xml';
+      } else if (activeTab === 'sql') {
+         data = jsonToSQL(fileData.name, fileData.json) || '';
+         type = 'application/sql';
+         extension = 'sql';
+      }
+
+      if ('showSaveFilePicker' in window) {
+         try {
+            const handle = await window.showSaveFilePicker({
+               suggestedName: `${filename}.${extension}`,
+               types: [
+                  {
+                     description: `${extension.toUpperCase()} file`,
+                     accept: { [type]: [`.${extension}`] }
+                  }
+               ]
+            });
+            const writable = await handle.createWritable();
+            await writable.write(data);
+            await writable.close();
+         } catch (err) {
+            // User cancelled or error occurred
+            console.error('Save cancelled or failed', err);
+         }
+      } else {
+         // fallback: download as before
+         const blob = new Blob([data], { type });
+         const url = URL.createObjectURL(blob);
+         const link = document.createElement('a');
+         link.href = url;
+         link.setAttribute('download', `processed.${extension}`);
+         document.body.appendChild(link);
+         link.click();
+         document.body.removeChild(link);
+      }
+   };
 
    // const handleDownload = async (format: 'json' | 'xml' | 'csv') => {
    //   if (!processedData) return;
@@ -137,7 +185,7 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
                <LuClipboard />
                Copy to Clipboard
             </Button>
-            <Button size={'sm'} variant={'solid'} color={'bg.muted'} >
+            <Button size={'sm'} variant={'solid'} color={'bg.muted'} onClick={handleDownload}>
                <LuDownload />
                {`Download ${activeTab.toUpperCase()}`}
             </Button>
