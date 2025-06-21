@@ -90,3 +90,16 @@ export const processFile = async (file: File): Promise<FileData> => {
 
    return fileData;
 };
+
+export const jsonToXML = (json: string[][], rootName: string = 'root', itemName: string = 'item') => {
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<${rootName}>\n`;
+  json.forEach(item => {
+    xml += `  <${itemName}>\n`;
+    Object.entries(item).forEach(([key, value]) => {
+      xml += `    <${key}>${value}</${key}>\n`;
+    });
+    xml += `  </${itemName}>\n`;
+  });
+  xml += `</${rootName}>`;
+  return xml;
+}

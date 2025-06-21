@@ -5,7 +5,9 @@ import { Box, Tabs } from '@chakra-ui/react';
 import { LuFileJson, LuCodeXml, LuDatabase } from 'react-icons/lu';
 import { FileData } from 'types/file';
 import JsonView from 'react18-json-view';
-import 'react18-json-view/src/style.css';
+import './json-view-style.css';
+import XMLViewer from 'react-xml-viewer';
+import { jsonToXML } from '@lib/Utils';
 
 // Which json viewer to use?
 // tried: react18-json-view, json-edit-react, react-json-view-lite, @textea/json-viewer
@@ -45,7 +47,7 @@ export const ConvertBody = ({ fileData }: ConvertBodyProps) => {
    // };
 
    return (
-      <Tabs.Root defaultValue="json" variant={'enclosed'}>
+      <Tabs.Root defaultValue="json" variant={'enclosed'} lazyMount={true}>
          <Tabs.List>
             <Tabs.Trigger value="json" style={{ height: '2.25em', width: '125px' }}>
                <LuFileJson />
@@ -62,8 +64,8 @@ export const ConvertBody = ({ fileData }: ConvertBodyProps) => {
          </Tabs.List>
          <Tabs.Content value="json" background={'bg'}>
             <Box
-               background={'transparent'}
-               border={`2px solid bg.muted`}
+               background={'bg.muted'}
+               border={`2px solid bg`}
                borderRadius={'5px'}
                paddingX={3}
                paddingY={1}
@@ -74,7 +76,21 @@ export const ConvertBody = ({ fileData }: ConvertBodyProps) => {
             </Box>
          </Tabs.Content>
          <Tabs.Content value="xml" background={'bg'}>
-            <Box>XML</Box>
+            <Box
+               background={'bg.muted'}
+               border={`2px solid bg`}
+               borderRadius={'5px'}
+               paddingX={3}
+               paddingY={1}
+               overflowY={'scroll'}
+               height={'300px'}
+            >
+               <XMLViewer
+                  xml={jsonToXML(fileData.json, 'root', 'row')}
+                  indentSize={3}
+                  invalidXml={<div>Invalid XML!</div>}
+               />
+            </Box>
          </Tabs.Content>
          <Tabs.Content value="sql" background={'bg'}>
             <Box>SQL</Box>
