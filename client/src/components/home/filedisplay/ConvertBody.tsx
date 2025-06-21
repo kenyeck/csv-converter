@@ -8,6 +8,7 @@ import { FileData } from 'types/file';
 import JsonView from 'react18-json-view';
 import './json-view-style.css';
 import XMLViewer from 'react-xml-viewer';
+import { Toaster, toaster } from '@components/ui/toaster';
 import { jsonToSQL, jsonToXML } from '@lib/Utils';
 
 // Which json viewer to use?
@@ -24,6 +25,23 @@ interface ConvertBodyProps {
 export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
    const { theme } = useTheme();
    const [activeTab, setActiveTab] = useState('json');
+
+   const handleCopyToClipboard = () => {
+      if (activeTab === 'json') {
+         navigator.clipboard.writeText(JSON.stringify(fileData.json, null, 2));
+      } else if (activeTab === 'xml') {
+         navigator.clipboard.writeText(jsonToXML(fileData.json, 'root', 'row'));
+      } else if (activeTab === 'sql') {
+         navigator.clipboard.writeText(jsonToSQL(fileData.name, fileData.json));
+      }
+      console.log('Copied to clipboard!');
+      toaster.create({
+         description: `${activeTab.toUpperCase()} contents copied to the clipboard.`,
+         type: 'success',
+         duration: 3000
+      });
+   };
+
 
    // const handleDownload = async (format: 'json' | 'xml' | 'csv') => {
    //   if (!processedData) return;
@@ -114,6 +132,7 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
                size={'sm'}
                variant={'outline'}
                color={'fg.muted'}
+               onClick={handleCopyToClipboard}
             >
                <LuClipboard />
                Copy to Clipboard
@@ -123,6 +142,7 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
                {`Download ${activeTab.toUpperCase()}`}
             </Button>
          </Stack>
+         <Toaster />
       </Stack>
    );
 };
