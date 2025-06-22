@@ -1,6 +1,6 @@
 'use client';
 
-import { Stack, Box, Separator } from '@chakra-ui/react';
+import { Separator } from '@chakra-ui/react';
 import { Main } from './Main';
 import { Features } from './Features';
 import { Pricing } from './Pricing';

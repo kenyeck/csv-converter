@@ -1,6 +1,19 @@
 import { Box, Stack } from '@chakra-ui/react';
 import { Section } from './Section';
-import { LuArrowUpDown, LuCombine, LuDownload, LuFileDown, LuFileJson, LuFlipVertical, LuFullscreen, LuGitCompare, LuReplace, LuSearch, LuTableColumnsSplit, LuType, LuUpload, LuWand } from 'react-icons/lu';
+import {
+   LuArrowUpDown,
+   LuCombine,
+   LuFileDown,
+   LuFileJson,
+   LuFlipVertical,
+   LuFullscreen,
+   LuGitCompare,
+   LuReplace,
+   LuSearch,
+   LuType,
+   LuUpload,
+   LuWand
+} from 'react-icons/lu';
 import { IconType } from 'react-icons/lib';
 
 const features: FeatureProps[] = [
@@ -80,6 +93,7 @@ const features: FeatureProps[] = [
 export const Features = () => {
    return (
       <Section
+         id="features"
          py={'6em'}
          title="Complete CSV Conversion Suite"
          subTitle="Transform, visualize, and export your data with our powerful converter that processes everything locally in your browser."

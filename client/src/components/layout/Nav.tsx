@@ -29,7 +29,21 @@ export const Nav = () => {
          >
             CSVConvert
          </Link>
-         <Stack direction={'row'} justifyContent={'flex-end'} alignItems={'center'}>
+         <Stack direction={'row'} justifyContent={'flex-end'} alignItems={'center'} gap={8}>
+            <Link href="/#pricing" style={{ fontSize: '1.1em' }}>
+               Pricing
+            </Link>
+            <Link href="/#features" style={{ fontSize: '1.1em', marginRight: '8px' }}>
+               Features
+            </Link>
+            <Stack direction={'row'} alignItems={'center'} gap={4}>
+               <ColorModeButton />
+               <Button mr={'8px'}>
+                  <Link href="/signin" style={{ textDecoration: 'none', color: 'inherit' }}>
+                     Get Started
+                  </Link>
+               </Button>
+            </Stack>
             {user ? (
                <Stack direction="row" alignItems="center" gap={5}>
                   <Box fontWeight={'bold'}>Hi {user.firstName}!</Box>
@@ -44,7 +58,6 @@ export const Nav = () => {
                   </Link>
                </Button>
             )}
-            <ColorModeButton />
          </Stack>
       </nav>
    );

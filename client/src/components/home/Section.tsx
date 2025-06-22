@@ -1,15 +1,16 @@
 import { Box, Stack } from '@chakra-ui/react';
 
 interface SectionProps {
+   id: string;
    title: string;
    subTitle: string;
    children: React.ReactNode;
    py?: string | number;
 }
 
-export const Section = ({ title, subTitle, children, py }: SectionProps) => {
+export const Section = ({ id, title, subTitle, children, py }: SectionProps) => {
    return (
-      <Box w={'100%'}>
+      <Box id={id} w={'100%'}>
          <Stack py={py} direction={'column'} alignItems={'center'}>
             <Stack
                mb={20}
