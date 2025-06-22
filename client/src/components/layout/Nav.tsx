@@ -1,12 +1,12 @@
 'use client';
 
-import { Box, Button, Stack } from '@chakra-ui/react';
+import { Button, Stack } from '@chakra-ui/react';
 import { ColorModeButton } from '../ui/color-mode';
-import { useAuth } from '../AuthContext';
+//import { useAuth } from '../AuthContext';
 import Link from 'next/link';
 
 export const Nav = () => {
-   const { user, logout } = useAuth();
+   //const { user, logout } = useAuth();
 
    return (
       <nav
@@ -44,7 +44,7 @@ export const Nav = () => {
                   </Link>
                </Button>
             </Stack>
-            {user ? (
+            {/* {user ? (
                <Stack direction="row" alignItems="center" gap={5}>
                   <Box fontWeight={'bold'}>Hi {user.firstName}!</Box>
                   <Button onClick={logout} mr={'8px'}>
@@ -57,7 +57,7 @@ export const Nav = () => {
                      Signin
                   </Link>
                </Button>
-            )}
+            )} */}
          </Stack>
       </nav>
    );
