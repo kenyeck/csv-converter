@@ -16,7 +16,7 @@ export const FileDisplay: React.FC<FileDisplayProps> = (props) => {
    return (
       <>
          {fileData && (
-            <Box height={'100vh'} w={'100%'} {...rest}>
+            <Box w={'100%'} {...rest}>
                <Card.Root variant={'elevated'} w={'100%'}>
                   <Card.Body>
                      <Header fileData={fileData} onClose={onClose} />

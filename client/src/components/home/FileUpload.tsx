@@ -42,7 +42,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onUpload }: FileUploadPr
    // };
 
    return (
-      <Box height={'100vh'} w={'100%'}>
+      <Box w={'100%'}>
          <Card.Root maxW="xxl" variant={'elevated'}>
             <Card.Body>
                <Box fontSize={'1.25em'} fontWeight={'semibold'}>
