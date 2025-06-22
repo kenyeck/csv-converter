@@ -1,6 +1,10 @@
 {
    "name": "cvs-convert-backend",
    "version": "1.0.0",
+   "private": true,
+   "license": "MIT",
+   "description": "A backend service for converting CSV files to various formats.",
+   "author": "Ken Yeck <ken.yeck@gmail.com>",
    "scripts": {
       "start": "node dist/index.js",
       "build": "tsc",
