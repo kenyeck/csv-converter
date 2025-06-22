@@ -5,6 +5,14 @@ import { ColorModeProvider, ColorModeProviderProps } from '@components/ui/color-
 import { AuthProvider } from '@components/AuthContext';
 
 const config = defineConfig({
+   globalCss: {
+      'html, body': {
+         margin: 0,
+         padding: 0,
+         fontSize: '16px',
+         scrollBehavior: 'smooth'
+      }
+   },
    theme: {
       tokens: {
          colors: {}
