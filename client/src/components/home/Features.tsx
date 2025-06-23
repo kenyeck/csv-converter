@@ -122,9 +122,9 @@ const Feature = ({ icon: Icon, title, description }: FeatureProps) => {
    return (
       <Box w={'22%'} mb={5}>
          <Stack direction="row" alignItems="top" gap={4}>
-            <Icon size={32} style={{ paddingTop: '5px' }} />
+            <Icon size={32} style={{ paddingTop: '5px' }} color={'blue'} />
             <Stack direction="column" w={'180px'} lineHeight={'1.5em'}>
-               <Box fontSize={'1.125em'} mb={2} color={'fg.muted'}>
+               <Box fontSize={'1.125em'} fontWeight={'bold'} mb={2} color={'fg.muted'}>
                   {title}
                </Box>
                <Box fontSize={'0.875em'} color={'fg.muted'}>

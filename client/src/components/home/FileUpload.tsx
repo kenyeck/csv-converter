@@ -15,7 +15,6 @@ interface FileUploadProps extends BoxProps {
 }
 
 export const FileUpload: React.FC<FileUploadProps> = ({ onUpload }: FileUploadProps) => {
-
    const onFileAccept = async (details: FileAcceptDetails) => {
       onUpload(details.files[0]);
    };
@@ -67,7 +66,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onUpload }: FileUploadPr
                         background={'bg.muted'}
                         borderRadius={'50%'}
                      >
-                        <Icon fontSize={'2.5em'}>
+                        <Icon fontSize={'2.5em'} color={'blue'} as={LuFileSpreadsheet}>
                            <LuFileSpreadsheet />
                         </Icon>
                      </Box>
@@ -81,7 +80,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onUpload }: FileUploadPr
                            maxW={'350px'}
                            mt={3}
                         >{`Supports CSV, Excel (XLSX/XLS), TSV and text files with international characters`}</Box>
-                        <Button variant="outline" size="md" my={10}>
+                        <Button variant="outline" size="md" my={10} colorPalette={'blue'}>
                            <LuUpload /> Upload file
                         </Button>
                      </ChFileUpload.DropzoneContent>
