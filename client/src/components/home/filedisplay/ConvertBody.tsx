@@ -62,7 +62,18 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
 
       if ('showSaveFilePicker' in window) {
          try {
-            const handle = await window.showSaveFilePicker({
+            // Define SaveFilePickerOptions type inline to avoid TS error
+            type SaveFilePickerOptions = {
+               suggestedName?: string;
+               types?: Array<{
+                  description?: string;
+                  accept: Record<string, string[]>;
+               }>;
+               excludeAcceptAllOption?: boolean;
+            };
+            const handle = await (window as typeof window & {
+               showSaveFilePicker?: (options?: SaveFilePickerOptions) => Promise<any>;
+            }).showSaveFilePicker!({
                suggestedName: `${filename}.${extension}`,
                types: [
                   {
@@ -78,16 +89,6 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
             // User cancelled or error occurred
             console.error('Save cancelled or failed', err);
          }
-      } else {
-         // fallback: download as before
-         const blob = new Blob([data], { type });
-         const url = URL.createObjectURL(blob);
-         const link = document.createElement('a');
-         link.href = url;
-         link.setAttribute('download', `processed.${extension}`);
-         document.body.appendChild(link);
-         link.click();
-         document.body.removeChild(link);
       }
    };
 
