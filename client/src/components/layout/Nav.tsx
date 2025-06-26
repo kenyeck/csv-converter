@@ -1,8 +1,7 @@
 'use client';
 
-import { Button, Stack, Menu, Portal, Separator, Box, Avatar } from '@chakra-ui/react';
+import { Button, Stack, Menu, Portal, Separator, Box, Avatar, Link } from '@chakra-ui/react';
 import { ColorModeButton } from '../chakra/ColorModeButton';
-import Link from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
 import { LuAppWindow, LuLogOut } from 'react-icons/lu';
 
@@ -16,7 +15,10 @@ function AuthButton() {
                <Menu.Trigger rounded="full">
                   <Avatar.Root size="md" cursor={'pointer'}>
                      <Avatar.Fallback name={session?.user?.name ?? ''} />
-                     <Avatar.Image src={session?.user?.image ?? ''} alt={session?.user?.name ?? ''} />
+                     <Avatar.Image
+                        src={session?.user?.image ?? ''}
+                        alt={session?.user?.name ?? ''}
+                     />
                   </Avatar.Root>
                </Menu.Trigger>
                <Portal>
@@ -31,12 +33,24 @@ function AuthButton() {
                         <Separator />
                         <Menu.Item value="billing" gap={2} py={2}>
                            <LuAppWindow />
-                           <Link href="/billing">Billing</Link>
+                           <Link
+                              href="/billing"
+                              _focusVisible={{ outline: 'none' }}
+                              _hover={{ textDecoration: 'none' }}
+                           >
+                              Billing
+                           </Link>
                         </Menu.Item>
                         <Separator />
                         <Menu.Item value="logout" gap={2} py={2}>
                            <LuLogOut />
-                           <Link href="/api/auth/signout">Log out</Link>
+                           <Link
+                              href="/api/auth/signout"
+                              _focusVisible={{ outline: 'none' }}
+                              _hover={{ textDecoration: 'none' }}
+                           >
+                              Log out
+                           </Link>
                         </Menu.Item>
                      </Menu.Content>
                   </Menu.Positioner>
