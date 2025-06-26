@@ -15,7 +15,9 @@ export const Main = () => {
    };
 
    return (
-      <Section py={'3em'}
+      <Section
+         id="file-conversion"
+         py={'3em'}
          title={'Convert CSV & Excel to Clean, Structured Data — Instantly'}
          subTitle={
             'Drop your files in. Get perfect JSON, XML, or CSV in seconds. No code, no setup — just fast, browser-based data conversion.'

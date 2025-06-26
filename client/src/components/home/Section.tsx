@@ -1,19 +1,28 @@
-import { Box, Stack } from '@chakra-ui/react';
+import { Box, BoxProps, Stack } from '@chakra-ui/react';
 
-interface SectionProps {
+interface SectionProps extends BoxProps {
    id: string;
    title: string;
-   subTitle: string;
+   subTitle?: string;
    children: React.ReactNode;
    py?: string | number;
+   mb?: string | number;
 }
 
-export const Section = ({ id, title, subTitle, children, py }: SectionProps) => {
+export const Section: React.FC<SectionProps> = ({
+   id,
+   title,
+   subTitle,
+   children,
+   py,
+   mb = 20,
+   ...rest
+}: SectionProps) => {
    return (
-      <Box id={id} w={'100%'}>
+      <Box id={id} w={'100%'} {...rest}>
          <Stack py={py} direction={'column'} alignItems={'center'}>
             <Stack
-               mb={20}
+               mb={mb}
                direction={'column'}
                alignItems={'center'}
                maxW={'65%'}
@@ -27,7 +36,6 @@ export const Section = ({ id, title, subTitle, children, py }: SectionProps) => 
                   {subTitle}
                </Box>
             </Stack>
-
             {children}
          </Stack>
       </Box>

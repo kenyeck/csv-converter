@@ -1,0 +1,27 @@
+import { Box, Button, Card } from '@chakra-ui/react';
+import { Section } from '@components/home/Section';
+
+export default function BillingPage() {
+   const planName = 'Free Plan';
+   return (
+      <Section id="file-conversion" pt={'3em'} mb={5} title={'Billing & Subscription'} fontSize={'0.75em'}>
+         <Box paddingBottom={150}>
+            <Card.Root variant={'elevated'} px={'0.5em'}>
+               <Card.Header>
+                  <Box fontSize={'2em'} fontWeight={'bold'}>
+                     Current Plan
+                  </Box>
+                  <Box fontSize={'1.2em'} color={'fg.muted'}>Manage your subscription and billing information</Box>
+               </Card.Header>
+               <Card.Body>
+                  <Box fontSize={'1.5em'} fontWeight={'lightbold'} mb={4}>
+                     You are currently on the <span style={{ fontWeight: 'bold' }}>{planName}</span>
+                  </Box>
+                  <Box fontSize={'1.2em'} color={'fg.muted'}>Upgrade to Pro to unlock all features and benefits</Box>
+                  <Button variant={'solid'} colorScheme={'blue'} w={130} mt={6}>Upgrade to Pro</Button>
+               </Card.Body>
+            </Card.Root>
+         </Box>
+      </Section>
+   );
+}
