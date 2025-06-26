@@ -8,12 +8,10 @@ export const Footer = () => {
             <Separator />
             <Box padding={'20px'}>
                <Stack direction="row" justifyContent="center" gap={10} mb={5}>
-                  <Link href="/" style={{ fontWeight: '600', textDecoration: 'none' }}>
-                     Home
-                  </Link>
-                  <Link href="/disclosures/privacy" style={{ fontWeight: '600', textDecoration: 'none' }}>
-                     Privacy Policy
-                  </Link>
+                  <FooterLinks href="/" name="Home" />
+                  <FooterLinks href="/#features" name="Features" />
+                  <FooterLinks href="/#pricing" name="Pricing" />
+                  <FooterLinks href="/disclosures/privacy" name="Privacy Policy" />
                </Stack>
                <Box fontSize={'1.25em'} fontWeight={'bold'}>
                   CSVConvert
@@ -26,3 +24,16 @@ export const Footer = () => {
       </>
    );
 };
+
+interface FooterLinksProps {
+   href: string;
+   name: string;
+}
+
+function FooterLinks({ href, name }: FooterLinksProps) {
+   return (
+      <Link href={href} style={{ fontWeight: '600', textDecoration: 'none' }}>
+         {name}
+      </Link>
+   );
+}
