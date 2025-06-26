@@ -1,13 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { redirect } from 'next/navigation';
 import { Box, Button, Card } from '@chakra-ui/react';
 import { Section } from '@components/home/Section';
 import { Upgrade } from '@components/Upgrade';
+import { useSession } from 'next-auth/react';
 
 export default function BillingPage() {
    const planName = 'Free Plan';
    const [open, setOpen] = useState(false);
+   const { data: session } = useSession();
+
+   if (!session) {
+      redirect('/api/auth/signin');
+   }
 
    return (
       <>
