@@ -8,7 +8,7 @@ import { FileData } from 'types/file';
 import JsonView from 'react18-json-view';
 import './json-view-style.css';
 import XMLViewer from 'react-xml-viewer';
-import { Toaster, toaster } from '@components/ui/toaster';
+import { Toaster, toaster } from '@components/chakra/Toaster';
 import { jsonToSQL, jsonToXML } from '@lib/Utils';
 
 // Which json viewer to use?
@@ -72,7 +72,7 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
                excludeAcceptAllOption?: boolean;
             };
             const handle = await (window as typeof window & {
-               showSaveFilePicker?: (options?: SaveFilePickerOptions) => Promise<any>;
+               showSaveFilePicker?: (_options?: SaveFilePickerOptions) => Promise<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
             }).showSaveFilePicker!({
                suggestedName: `${filename}.${extension}`,
                types: [

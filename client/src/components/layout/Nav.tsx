@@ -1,13 +1,58 @@
 'use client';
 
-import { Button, Stack } from '@chakra-ui/react';
-import { ColorModeButton } from '../ui/color-mode';
-//import { useAuth } from '../AuthContext';
+import { Button, Stack, Menu, Portal, Separator, Box, Avatar } from '@chakra-ui/react';
+import { ColorModeButton } from '../chakra/ColorModeButton';
 import Link from 'next/link';
+import { signIn, useSession } from 'next-auth/react';
+import { LuAppWindow, LuLogOut } from 'react-icons/lu';
+
+function AuthButton() {
+   const { data: session } = useSession();
+
+   if (session) {
+      return (
+         <>
+            <Menu.Root>
+               <Menu.Trigger rounded="full">
+                  <Avatar.Root size="md" cursor={'pointer'}>
+                     <Avatar.Fallback name={session?.user?.name ?? ''} />
+                     <Avatar.Image src={session?.user?.image ?? ''} alt={session?.user?.name ?? ''} />
+                  </Avatar.Root>
+               </Menu.Trigger>
+               <Portal>
+                  <Menu.Positioner>
+                     <Menu.Content>
+                        <Stack p={'8px'} alignItems={'flex-start'} pr={10}>
+                           <Box fontWeight={'bold'}>{session?.user?.name ?? ''}</Box>
+                           <Box fontSize={'sm'} color={'fg.muted'}>
+                              {session?.user?.email ?? ''}
+                           </Box>
+                        </Stack>
+                        <Separator />
+                        <Menu.Item value="billing" gap={2} py={2}>
+                           <LuAppWindow />
+                           <Link href="/billing">Billing</Link>
+                        </Menu.Item>
+                        <Separator />
+                        <Menu.Item value="logout" gap={2} py={2}>
+                           <LuLogOut />
+                           <Link href="/api/auth/signout">Log out</Link>
+                        </Menu.Item>
+                     </Menu.Content>
+                  </Menu.Positioner>
+               </Portal>
+            </Menu.Root>
+         </>
+      );
+   }
+   return (
+      <Button onClick={() => signIn()} mr={'8px'}>
+         Get Started
+      </Button>
+   );
+}
 
 export const Nav = () => {
-   //const { user, logout } = useAuth();
-
    return (
       <nav
          style={{
@@ -36,28 +81,10 @@ export const Nav = () => {
             <Link href="/#features" style={{ fontSize: '1.1em', marginRight: '8px' }}>
                Features
             </Link>
-            <Stack direction={'row'} alignItems={'center'} gap={4}>
+            <Stack direction={'row'} alignItems={'center'} gap={5}>
                <ColorModeButton />
-               <Button mr={'8px'}>
-                  <Link href="/signin" style={{ textDecoration: 'none', color: 'inherit' }}>
-                     Get Started
-                  </Link>
-               </Button>
+               <AuthButton />
             </Stack>
-            {/* {user ? (
-               <Stack direction="row" alignItems="center" gap={5}>
-                  <Box fontWeight={'bold'}>Hi {user.firstName}!</Box>
-                  <Button onClick={logout} mr={'8px'}>
-                     Signout
-                  </Button>
-               </Stack>
-            ) : (
-               <Button mr={'8px'}>
-                  <Link href="/signin" style={{ textDecoration: 'none', color: 'inherit' }}>
-                     Signin
-                  </Link>
-               </Button>
-            )} */}
          </Stack>
       </nav>
    );

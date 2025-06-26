@@ -1,8 +1,9 @@
 'use client';
 
 import { ChakraProvider, createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
-import { ColorModeProvider, ColorModeProviderProps } from '@components/ui/color-mode';
-import { AuthProvider } from '@components/AuthContext';
+import SessionProvider from '@components/providers/SessionProvider';
+import { ColorModeProvider, ColorModeProviderProps } from '@components/chakra/ColorModeButton';
+import { Session } from 'next-auth';
 
 const config = defineConfig({
    globalCss: {
@@ -23,12 +24,17 @@ const config = defineConfig({
 
 const system = createSystem(defaultConfig, config);
 
-export function Provider(props: ColorModeProviderProps) {
+interface ProvidersProps extends ColorModeProviderProps {
+   session?: Session; 
+}
+
+export function Providers(props: ProvidersProps) {
+   const { session, ...rest } = props;
    return (
-      <AuthProvider>
+      <SessionProvider session={session}>
          <ChakraProvider value={system}>
-            <ColorModeProvider {...props} />
+            <ColorModeProvider {...rest} />
          </ChakraProvider>
-      </AuthProvider>
+      </SessionProvider>
    );
 }
