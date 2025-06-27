@@ -1,4 +1,4 @@
-import { Box, Button, Card, List, Stack } from '@chakra-ui/react/';
+import { Box, Button, Card, List, Stack } from '@chakra-ui/react';
 
 interface PricingCardProps {
    title: string;

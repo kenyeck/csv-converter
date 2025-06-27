@@ -14,7 +14,7 @@ launch.json
 /dist/
 
 # turborepo
-/.turbo
+.turbo
 
 # production
 /build
