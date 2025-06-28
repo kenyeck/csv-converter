@@ -9,7 +9,8 @@ export const API_ROUTES = {
    CHECKUSERNAME: `${API_BASE_URL}/auth/checkusername`,
    LOGOUT: `${API_BASE_URL}/auth/logout`,
    UPLOAD_FILE: `${API_BASE_URL}/file/upload`,
-   DOWNLOAD_FILE: `${API_BASE_URL}/file/download`
+   DOWNLOAD_FILE: `${API_BASE_URL}/file/download`,
+   PLANS: `${API_BASE_URL}/api/plans`
 };
 
 export const login = async (username: string, password: string): Promise<ApiResult> => {
@@ -96,3 +97,19 @@ export const apiRequest = async (url: string, options: RequestInit = {}) => {
    }
    return res;
 };
+
+export const getPlans = async (): Promise<ApiResult> => {
+   const response = await fetch(API_ROUTES.PLANS, {
+      method: 'GET',
+      headers: {
+         'Content-Type': 'application/json'
+      }
+   });
+
+   const result: ApiResult = {
+      status: response.status,
+      statusText: response.statusText,
+      data: await response.json()
+   };
+   return result;
+}

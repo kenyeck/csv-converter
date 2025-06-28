@@ -16,6 +16,52 @@ import {
 } from 'react-icons/lu';
 import { IconType } from 'react-icons/lib';
 
+export const Features = () => {
+   return (
+      <Section
+         id="features"
+         py={'6em'}
+         title="Complete CSV Conversion Suite"
+         subTitle="Transform, visualize, and export your data with our powerful converter that processes everything locally in your browser."
+      >
+         <Stack direction={'row'} flexWrap={'wrap'} gap={5} justifyContent={'center'}>
+            {features.map((feature, index) => (
+               <Feature
+                  key={index}
+                  icon={feature.icon}
+                  title={feature.title}
+                  description={feature.description}
+               />
+            ))}
+         </Stack>
+      </Section>
+   );
+};
+
+interface FeatureProps {
+   icon: IconType;
+   title: string;
+   description: string;
+}
+
+const Feature = ({ icon: Icon, title, description }: FeatureProps) => {
+   return (
+      <Box w={'22%'} mb={5}>
+         <Stack direction="row" alignItems="top" gap={4}>
+            <Icon size={32} style={{ paddingTop: '5px' }} color={'blue'} />
+            <Stack direction="column" w={'180px'} lineHeight={'1.5em'}>
+               <Box fontSize={'1.125em'} fontWeight={'bold'} mb={2} color={'fg.muted'}>
+                  {title}
+               </Box>
+               <Box fontSize={'0.875em'} color={'fg.muted'}>
+                  {description}
+               </Box>
+            </Stack>
+         </Stack>
+      </Box>
+   );
+};
+
 const features: FeatureProps[] = [
    {
       icon: LuUpload,
@@ -90,48 +136,3 @@ const features: FeatureProps[] = [
    }
 ];
 
-export const Features = () => {
-   return (
-      <Section
-         id="features"
-         py={'6em'}
-         title="Complete CSV Conversion Suite"
-         subTitle="Transform, visualize, and export your data with our powerful converter that processes everything locally in your browser."
-      >
-         <Stack direction={'row'} flexWrap={'wrap'} gap={5} justifyContent={'center'}>
-            {features.map((feature, index) => (
-               <Feature
-                  key={index}
-                  icon={feature.icon}
-                  title={feature.title}
-                  description={feature.description}
-               />
-            ))}
-         </Stack>
-      </Section>
-   );
-};
-
-interface FeatureProps {
-   icon: IconType;
-   title: string;
-   description: string;
-}
-
-const Feature = ({ icon: Icon, title, description }: FeatureProps) => {
-   return (
-      <Box w={'22%'} mb={5}>
-         <Stack direction="row" alignItems="top" gap={4}>
-            <Icon size={32} style={{ paddingTop: '5px' }} color={'blue'} />
-            <Stack direction="column" w={'180px'} lineHeight={'1.5em'}>
-               <Box fontSize={'1.125em'} fontWeight={'bold'} mb={2} color={'fg.muted'}>
-                  {title}
-               </Box>
-               <Box fontSize={'0.875em'} color={'fg.muted'}>
-                  {description}
-               </Box>
-            </Stack>
-         </Stack>
-      </Box>
-   );
-};

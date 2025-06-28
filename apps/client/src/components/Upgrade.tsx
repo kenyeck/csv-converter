@@ -1,29 +1,18 @@
 'use client';
 
 import { Dialog, Box, List, Button, Stack, CloseButton } from '@chakra-ui/react';
-import { LuCircleCheck, LuLightbulb } from 'react-icons/lu';
+import { LuCircleCheck, LuZap } from 'react-icons/lu';
+import { Plan } from 'types/plan';
 
 interface UpgradeProps {
    open?: boolean;
    onOpenChange?: (_e: { open: boolean }) => void;
+   plan?: Plan;
 }
 
-export function Upgrade({ open, onOpenChange }: UpgradeProps) {
-   const planName = 'Pro';
-   const planDescription = 'Unlock all Pro features for just $14.99/month';
-   const planBenefits = [
-      'Import Excel (XLS, XLSX) files',
-      'Unlimited row preview',
-      'Advanced filtering and sorting',
-      'Header renaming and configuring',
-      'Column splitting and combining',
-      'Find and replace with regex support',
-      'Full JSON and XML export with formatting',
-      'Efficient large file handling',
-      'Unlimited file conversions'
-   ];
+export function Upgrade({ open, onOpenChange, plan }: UpgradeProps) {
 
-   return (
+   return (plan ? (
       <Dialog.Root size={'xs'} lazyMount open={open} onOpenChange={onOpenChange}>
          <Dialog.Trigger />
          <Dialog.Backdrop bg={'blackAlpha.800'} />
@@ -44,30 +33,30 @@ export function Upgrade({ open, onOpenChange }: UpgradeProps) {
                            paddingBottom: '2px'
                         }}
                      >
-                        {planName}
+                        {plan.name}
                      </span>
                   </Dialog.Title>
                </Dialog.Header>
                <Dialog.Body>
                   <Stack alignItems={'center'} mb={6}>
                      <Box color={'fg.muted'} w={'fit-content'}>
-                        {planDescription}
+                        {plan.description}
                      </Box>
                   </Stack>
                   <List.Root gap="2" variant="plain" align="center">
-                     {planBenefits.map((benefit, index) => (
+                     {plan.features.map((feature, index) => (
                         <List.Item key={index}>
                            <List.Indicator asChild color="blue" fontSize={'1.5em'}>
                               <LuCircleCheck />
                            </List.Indicator>
-                           {benefit}
+                           {feature}
                         </List.Item>
                      ))}
                   </List.Root>
                </Dialog.Body>
                <Dialog.Footer>
                   <Button variant={'solid'} colorPalette={'blue'} w={'100%'}>
-                     <LuLightbulb /> Upgrade to Pro
+                     <LuZap /> Upgrade to Pro
                   </Button>
                </Dialog.Footer>
                <Dialog.CloseTrigger asChild>
@@ -75,20 +64,6 @@ export function Upgrade({ open, onOpenChange }: UpgradeProps) {
                </Dialog.CloseTrigger>{' '}
             </Dialog.Content>
          </Dialog.Positioner>
-      </Dialog.Root>
-      // <div>
-      //    <h2>Upgrade to Pro</h2>
-      //    <p>Unlock all features and benefits by upgrading to Pro.</p>
-      //    <button onClick={() => setOpen(true)}>Upgrade Now</button>
-
-      //    {open && (
-      //       <div className="upgrade-dialog">
-      //          <h3>Upgrade to Pro</h3>
-      //          <p>Choose your plan:</p>
-      //          <button onClick={() => alert('Upgraded to Pro!')}>Pro Plan</button>
-      //          <button onClick={() => setOpen(false)}>Cancel</button>
-      //       </div>
-      //    )}
-      // </div>
+      </Dialog.Root>) : null
    );
 }
