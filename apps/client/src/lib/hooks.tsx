@@ -1,8 +1,8 @@
 'use client';
 
-import { getPlans } from "app/api/api";
-import { useEffect, useState } from "react";
-import { Plan } from "types/plan";
+import { getPlans } from 'app/api/api';
+import { useEffect, useState } from 'react';
+import { Plan } from 'types/plan';
 
 export function usePlans() {
    const [plans, setPlans] = useState<Plan[]>([]);
