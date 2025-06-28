@@ -10,24 +10,25 @@ export default async function RootLayout({ children }: { children: React.ReactNo
    // Note hydration warning is suppressed due to ThemeToggle component
    return (
       <html lang="en" suppressHydrationWarning>
-         <Providers session={session!}>
-            <body
-               style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: '100vh',
-                  width: '100%',
-                  margin: 0,
-                  padding: 0
-               }}
-            >
+         <body>
+            <Providers session={session!}>
                <Nav />
-               <Box flex={'1'} background={'bg.subtle'} padding={'20px'}>
-                  {children}
+               <Box
+                  as="main"
+                  flex={'1'}
+                  marginTop={'60px'}
+                  marginBottom={'60px'}
+                  display={'flex'}
+                  justifyContent={'center'}
+                  alignItems={'flex-start'}
+               >
+                  <Box maxWidth={'1200px'} width={'100%'} padding={'0 20px'} boxSizing={'border-box'}>
+                     {children}
+                  </Box>
                </Box>
                <Footer />
-            </body>
-         </Providers>
+            </Providers>
+         </body>
       </html>
    );
 }

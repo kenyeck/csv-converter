@@ -11,7 +11,13 @@ const config = defineConfig({
          margin: 0,
          padding: 0,
          fontSize: '16px',
-         scrollBehavior: 'smooth'
+         scrollBehavior: 'smooth',
+         backgroundColor: 'bg.subtle',
+         color: 'fg.default',
+         display: 'flex',
+         flexDirection: 'column',
+         height: '100vh',
+         width: '100%',
       }
    },
    theme: {
@@ -25,7 +31,7 @@ const config = defineConfig({
 const system = createSystem(defaultConfig, config);
 
 interface ProvidersProps extends ColorModeProviderProps {
-   session?: Session; 
+   session?: Session;
 }
 
 export function Providers(props: ProvidersProps) {

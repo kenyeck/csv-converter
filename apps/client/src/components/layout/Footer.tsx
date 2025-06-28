@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const Footer = () => {
    return (
-      <footer style={{ textAlign: 'center' }}>
+      <Box as="footer" textAlign={'center'} paddingLeft={'50px'} paddingRight={'50px'} background={'bg'} >
          <Separator />
          <Box padding={'20px'}>
             <Stack direction="row" justifyContent="center" gap={10} mb={5}>
@@ -19,7 +19,7 @@ export const Footer = () => {
                © {new Date().getFullYear()} CSVConvert. All rights reserved.
             </Box>
          </Box>
-      </footer>
+      </Box>
    );
 };
 
