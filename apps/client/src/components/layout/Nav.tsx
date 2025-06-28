@@ -14,7 +14,7 @@ export const Nav = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             width: '100%',
-            padding: '10px'
+            padding: '10px',
          }}
       >
          <Link

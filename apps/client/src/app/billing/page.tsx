@@ -17,7 +17,7 @@ export default function BillingPage() {
    }
 
    return (
-      <>
+      <Box display={'flex'} justifyContent={'center'} alignItems={'center'} mt={20}>
          <Section
             id="file-conversion"
             pt={'3em'}
@@ -25,7 +25,7 @@ export default function BillingPage() {
             title={'Billing & Subscription'}
             fontSize={'0.75em'}
          >
-            <Box paddingBottom={150}>
+            <Box>
                <Card.Root variant={'elevated'} px={'0.5em'}>
                   <Card.Header>
                      <Box fontSize={'2em'} fontWeight={'bold'}>
@@ -57,6 +57,6 @@ export default function BillingPage() {
             </Box>
          </Section>
          <Upgrade open={open} onOpenChange={(e) => setOpen(e.open)} />
-      </>
+      </Box>
    );
 }
