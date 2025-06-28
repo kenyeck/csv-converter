@@ -1,4 +1,5 @@
 import { ApiResult } from 'types/api';
+import { Plan } from 'types/plan';
 import { User } from 'types/user';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
@@ -13,7 +14,7 @@ export const API_ROUTES = {
    PLANS: `${API_BASE_URL}/api/plans`
 };
 
-export const login = async (username: string, password: string): Promise<ApiResult> => {
+export const login = async (username: string, password: string): Promise<ApiResult<User>> => {
    const response = await fetch(API_ROUTES.LOGIN, {
       method: 'POST',
       headers: {
@@ -22,7 +23,7 @@ export const login = async (username: string, password: string): Promise<ApiResu
       body: JSON.stringify({ username, password })
    });
 
-   const result: ApiResult = {
+   const result: ApiResult<User> = {
       status: response.status,
       statusText: response.statusText,
       data: await response.json()
@@ -30,7 +31,7 @@ export const login = async (username: string, password: string): Promise<ApiResu
    return result;
 };
 
-export const checkUsername = async (username: string): Promise<ApiResult> => {
+export const checkUsername = async (username: string): Promise<ApiResult<User>> => {
    const response = await fetch(API_ROUTES.CHECKUSERNAME, {
       method: 'POST',
       headers: {
@@ -39,7 +40,7 @@ export const checkUsername = async (username: string): Promise<ApiResult> => {
       body: JSON.stringify({ username })
    });
 
-   const result: ApiResult = {
+   const result: ApiResult<User> = {
       status: response.status,
       statusText: response.statusText,
       data: await response.json()
@@ -47,7 +48,7 @@ export const checkUsername = async (username: string): Promise<ApiResult> => {
    return result;
 };
 
-export const register = async (user: User): Promise<ApiResult> => {
+export const register = async (user: User): Promise<ApiResult<User>> => {
    const response = await fetch(API_ROUTES.REGISTER, {
       method: 'POST',
       headers: {
@@ -56,7 +57,7 @@ export const register = async (user: User): Promise<ApiResult> => {
       body: JSON.stringify({ user })
    });
 
-   const result: ApiResult = {
+   const result: ApiResult<User> = {
       status: response.status,
       statusText: response.statusText,
       data: await response.json()
@@ -64,7 +65,7 @@ export const register = async (user: User): Promise<ApiResult> => {
    return result;
 };
 
-export const logout = async (username: string): Promise<ApiResult> => {
+export const logout = async (username: string): Promise<ApiResult<User>> => {
    const response = await fetch(API_ROUTES.LOGOUT, {
       method: 'POST',
       headers: {
@@ -73,7 +74,7 @@ export const logout = async (username: string): Promise<ApiResult> => {
       body: JSON.stringify({ username })
    });
 
-   const result: ApiResult = {
+   const result: ApiResult<User> = {
       status: response.status,
       statusText: response.statusText,
       data: await response.json()
@@ -98,7 +99,7 @@ export const apiRequest = async (url: string, options: RequestInit = {}) => {
    return res;
 };
 
-export const getPlans = async (): Promise<ApiResult> => {
+export const getPlans = async (): Promise<ApiResult<Plan[]>> => {
    const response = await fetch(API_ROUTES.PLANS, {
       method: 'GET',
       headers: {
@@ -106,7 +107,7 @@ export const getPlans = async (): Promise<ApiResult> => {
       }
    });
 
-   const result: ApiResult = {
+   const result: ApiResult<Plan[]> = {
       status: response.status,
       statusText: response.statusText,
       data: await response.json()

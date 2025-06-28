@@ -1,5 +1,5 @@
-export interface ApiResult {
+export interface ApiResult<T> {
    status: number;
    statusText: string;
-   data: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+   data: T;
 }

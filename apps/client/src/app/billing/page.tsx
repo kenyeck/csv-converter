@@ -1,34 +1,25 @@
 'use client';
 
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { redirect } from 'next/navigation';
 import { Box, Button, Card } from '@chakra-ui/react';
 import { Section } from '@components/home/Section';
 import { Upgrade } from '@components/Upgrade';
 import { useSession } from 'next-auth/react';
 import { Plan } from 'types/plan';
-import { getPlans } from 'app/api/api';
+import { usePlans } from '@lib/hooks';
 
 export default function BillingPage() {
    const { data: session } = useSession();
    const [open, setOpen] = useState(false);
-   const [plans, setPlans] = useState<Plan[]>([]);
    const [plan, setPlan] = useState<Plan>();
+   const plans = usePlans();
 
    const planName = 'Free Plan';
 
    if (!session) {
       redirect('/api/auth/signin');
    }
-
-   useEffect(() => {
-      const fetchPlans = async () => {
-         const { data } = await getPlans();
-         console.log('getPlans:', data);
-         setPlans(data.data);
-      };
-      fetchPlans();
-   }, []);
 
    return (
       <Box display={'flex'} justifyContent={'center'} alignItems={'center'} mt={20}>
@@ -55,25 +46,27 @@ export default function BillingPage() {
                         <span style={{ fontWeight: 'bold' }}>{planName}</span>
                      </Box>
                      {plans.length > 0 &&
-                        plans.map((plan, key) => (
-                           <Fragment key={key}>
-                              <Box fontSize={'1.2em'} color={'fg.muted'}>
-                                 {`Upgrade to ${plan.name} to unlock all features and benefits`}
-                              </Box>
-                              <Button
-                                 variant={'solid'}
-                                 colorPalette={'blue'}
-                                 w={130}
-                                 mt={6}
-                                 onClick={() => {
-                                    setPlan(plan);
-                                    setOpen(true);
-                                 }}
-                              >
-                                 {`Upgrade to ${plan.name}`}
-                              </Button>
-                           </Fragment>
-                        ))}
+                        plans
+                           .filter((x) => parseInt(x.billingOptions[0].price['$numberDecimal']) > 0)
+                           .map((plan, key) => (
+                              <Fragment key={key}>
+                                 <Box fontSize={'1.2em'} color={'fg.muted'}>
+                                    {`Upgrade to ${plan.name} to unlock all features and benefits`}
+                                 </Box>
+                                 <Button
+                                    variant={'solid'}
+                                    colorPalette={'blue'}
+                                    w={130}
+                                    mt={6}
+                                    onClick={() => {
+                                       setPlan(plan);
+                                       setOpen(true);
+                                    }}
+                                 >
+                                    {`Upgrade to ${plan.name}`}
+                                 </Button>
+                              </Fragment>
+                           ))}
                   </Card.Body>
                </Card.Root>
             </Box>
