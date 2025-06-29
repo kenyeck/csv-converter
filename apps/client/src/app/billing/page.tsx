@@ -55,7 +55,6 @@ export default function BillingPage() {
                                  </Box>
                                  <Button
                                     variant={'solid'}
-                                    colorPalette={'blue'}
                                     w={130}
                                     mt={6}
                                     onClick={() => {

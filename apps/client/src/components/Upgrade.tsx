@@ -55,7 +55,7 @@ export function Upgrade({ open, onOpenChange, plan }: UpgradeProps) {
                   </List.Root>
                </Dialog.Body>
                <Dialog.Footer>
-                  <Button variant={'solid'} colorPalette={'blue'} w={'100%'}>
+                  <Button variant={'solid'} w={'100%'}>
                      <LuZap /> Upgrade to Pro
                   </Button>
                </Dialog.Footer>

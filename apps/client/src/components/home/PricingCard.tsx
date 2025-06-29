@@ -42,7 +42,6 @@ export const PricingCard = ({
                   </Box>
                   <Button
                      variant={primary ? 'solid' : 'outline'}
-                     colorPalette={primary ? 'blue' : 'gray'}
                      size={'xs'}
                      fontSize={'0.65em'}
                      borderRadius={'lg'}
@@ -80,7 +79,6 @@ export const PricingCard = ({
          <Card.Footer>
             <Button
                variant={primary ? 'solid' : 'outline'}
-               colorPalette={primary ? 'blue' : 'gray'}
                onClick={onClick}
                width={'100%'}
             >

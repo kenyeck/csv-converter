@@ -80,7 +80,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onUpload }: FileUploadPr
                            maxW={'350px'}
                            mt={3}
                         >{`Supports CSV, Excel (XLSX/XLS), TSV and text files with international characters`}</Box>
-                        <Button variant="outline" size="md" my={10} colorPalette={'blue'}>
+                        <Button variant="outline" size="md" my={10} >
                            <LuUpload /> Upload file
                         </Button>
                      </ChFileUpload.DropzoneContent>
