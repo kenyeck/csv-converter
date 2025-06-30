@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { LuType, LuMoveDiagonal, LuSearch } from 'react-icons/lu';
 
 interface PreviewHeaderProps {
-   setPageSize: (pageSize: number) => void; // eslint-disable-line no-unused-vars
+   setPageSize: (pageSize: number) => void;
 }
 
 export const PreviewHeader = ({ setPageSize: setPageSizeExt }: PreviewHeaderProps) => {

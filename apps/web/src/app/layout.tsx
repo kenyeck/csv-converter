@@ -22,7 +22,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   justifyContent={'center'}
                   alignItems={'flex-start'}
                >
-                  <Box maxWidth={'1200px'} width={'100%'} padding={'0 20px'} boxSizing={'border-box'}>
+                  <Box
+                     maxWidth={'1200px'}
+                     width={'100%'}
+                     padding={'0 20px'}
+                     boxSizing={'border-box'}
+                  >
                      {children}
                   </Box>
                </Box>

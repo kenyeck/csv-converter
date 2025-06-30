@@ -11,7 +11,7 @@ interface FileAcceptDetails {
 }
 
 interface FileUploadProps extends BoxProps {
-   onUpload: (file: File) => void; // eslint-disable-line no-unused-vars
+   onUpload: (file: File) => void;
 }
 
 export const FileUpload: React.FC<FileUploadProps> = ({ onUpload }: FileUploadProps) => {
@@ -80,7 +80,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onUpload }: FileUploadPr
                            maxW={'350px'}
                            mt={3}
                         >{`Supports CSV, Excel (XLSX/XLS), TSV and text files with international characters`}</Box>
-                        <Button variant="outline" size="md" my={10} >
+                        <Button variant="outline" size="md" my={10}>
                            <LuUpload /> Upload file
                         </Button>
                      </ChFileUpload.DropzoneContent>

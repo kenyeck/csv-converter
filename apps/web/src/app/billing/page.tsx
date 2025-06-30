@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { Box, Button, Card } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { Section } from '../../components/home/Section';
+import { Upgrade } from '../../components/Upgrade';
 import { usePlans } from '../../lib/hooks';
 import { Plan } from '../../models/plan';
 
@@ -69,7 +70,7 @@ export default function BillingPage() {
                </Card.Root>
             </Box>
          </Section>
-         {/* <Upgrade open={open} onOpenChange={(e) => setOpen(e.open)} plan={plan} /> */}
+         <Upgrade open={open} onOpenChange={(e) => setOpen(e.open)} plan={plan} />
       </Box>
    );
 }

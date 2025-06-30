@@ -2,7 +2,11 @@
 
 import { Stack } from '@chakra-ui/react';
 import { MetaBox } from './MetaBox';
-import { getFileSizeAsString, getFileTypeAsString, getFileDelimiterAsString } from '../../../lib/Utils';
+import {
+   getFileSizeAsString,
+   getFileTypeAsString,
+   getFileDelimiterAsString
+} from '../../../lib/Utils';
 
 interface FileDetailsProps {
    size: number;

@@ -8,7 +8,7 @@ import JsonView from 'react18-json-view';
 import './json-view-style.css';
 import XMLViewer from 'react-xml-viewer';
 import { jsonToXML, jsonToSQL } from '../../../lib/Utils';
-import { FileData } from '../../../models/file';
+import * as file from '../../../models/file';
 import { toaster, Toaster } from '../../chakra/Toaster';
 
 // Which json viewer to use?
@@ -18,7 +18,7 @@ import { toaster, Toaster } from '../../chakra/Toaster';
 // 2nd: @textea/json-viewer
 
 interface ConvertBodyProps {
-   fileData: FileData;
+   fileData: file.FileData;
    hide: boolean;
 }
 
@@ -71,9 +71,11 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
                }>;
                excludeAcceptAllOption?: boolean;
             };
-            const handle = await (window as typeof window & {
-               showSaveFilePicker?: (_options?: SaveFilePickerOptions) => Promise<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
-            }).showSaveFilePicker!({
+            const handle = await (
+               window as typeof window & {
+                  showSaveFilePicker?: (_options?: SaveFilePickerOptions) => Promise<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+               }
+            ).showSaveFilePicker!({
                suggestedName: `${filename}.${extension}`,
                types: [
                   {
@@ -173,7 +175,9 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
             <Tabs.Content value="sql" background={'bg'}>
                {jsonToSQL(fileData.name, fileData.json)
                   ?.split('\n')
-                  .map((line, i) => <div key={i}>{line.length > 0 ? line : <>&nbsp;</>}</div>)}
+                  .map((line, i) => (
+                     <div key={i}>{line.length > 0 ? line : <>&nbsp;</>}</div>
+                  ))}
             </Tabs.Content>
          </Tabs.Root>
          <Stack direction={'row'} justifyContent={'flex-end'} paddingTop={2} gap={4}>

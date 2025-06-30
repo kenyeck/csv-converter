@@ -1,7 +1,7 @@
 import { filesize } from 'filesize';
 import Papa from 'papaparse';
-import type { FileData } from 'types/file';
 import { read, utils, WorkBook, WorkSheet } from 'xlsx';
+import { FileData } from '../models/file';
 import SqlString from 'sqlstring';
 
 export const messageTimeout = 5000;
@@ -55,8 +55,8 @@ export const processFile = async (file: File): Promise<FileData> => {
    switch (fileType) {
       case 'text/csv':
       case 'text/tab-separated-values':
-      case 'text/plain':
-         // handle text files (CSV, TSV, TXT)
+      case 'text/plain': // handle text files (CSV, TSV, TXT)
+      {
          const result = Papa.parse(await file.text(), { preview: 5 });
          const delimiter = result.meta.delimiter ?? ',';
          workbook = read(await file.text(), { type: 'string', FS: delimiter });
@@ -70,6 +70,7 @@ export const processFile = async (file: File): Promise<FileData> => {
             json: utils.sheet_to_json(worksheet)
          };
          break;
+      }
 
       case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
       case 'application/vnd.ms-excel':
@@ -142,7 +143,10 @@ export const jsonToSQL = (filename: string, json: Array<Record<string, string>>)
       });
 
       // Generate CREATE TABLE statement
-      const tableName = filename.split('.', filename.lastIndexOf('.'))[0].replace(/\W+/g, '_').toUpperCase(); // Sanitize table name
+      const tableName = filename
+         .split('.', filename.lastIndexOf('.'))[0]
+         .replace(/\W+/g, '_')
+         .toUpperCase(); // Sanitize table name
       const createTableSQL = `CREATE TABLE ${tableName} (\n${columns.join(',\n')}\n);`;
 
       // Generate INSERT INTO statements

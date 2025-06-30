@@ -3,14 +3,14 @@
 import { Box, BoxProps, Card } from '@chakra-ui/react';
 import { PreviewConvert } from './PreviewConvert';
 import { Header } from './Header';
-import { FileData } from 'types/file';
+import { FileData } from '../../../models/file';
 
 interface FileDisplayProps extends BoxProps {
    fileData: FileData;
    onClose: () => void;
 }
 
-export const FileDisplay: React.FC<FileDisplayProps> = (props) => {
+export const FileDisplay: React.FC<FileDisplayProps> = (props: FileDisplayProps) => {
    const { fileData, onClose, ...rest } = props;
 
    return (
