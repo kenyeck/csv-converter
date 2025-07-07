@@ -2,15 +2,21 @@
 
 import { Box, Tabs, Separator } from '@chakra-ui/react';
 import { LuFileJson, LuTable } from 'react-icons/lu';
-import { FileData } from 'types/file';
 import { Preview } from './Preview';
 import { Convert } from './Convert';
+import { useState } from 'react';
+import { FileData } from '@models/file';
+
+export const defaultPageSize = 10;
 
 interface ViewConvertProps {
    fileData: FileData;
 }
 
-export const PreviewConvert = ({ fileData }: ViewConvertProps) => {
+export const PreviewConvert = ({ fileData: fd }: ViewConvertProps) => {
+   const [fileData, _setFileData] = useState<FileData>(fd);
+   const [pageSize, setPageSize] = useState(defaultPageSize);
+
    return (
       <Box w={'100%'}>
          <Tabs.Root
@@ -33,10 +39,10 @@ export const PreviewConvert = ({ fileData }: ViewConvertProps) => {
             </Tabs.List>
             <Separator />
             <Tabs.Content value="preview" background={'bg'}>
-               <Preview fileData={fileData} />
+               <Preview fileData={fileData} pageSize={pageSize} setPageSize={setPageSize} />
             </Tabs.Content>
             <Tabs.Content value="convert" background={'bg'}>
-               <Convert fileData={fileData} />
+               <Convert fileData={fileData} pageSize={pageSize} />
             </Tabs.Content>
          </Tabs.Root>
       </Box>

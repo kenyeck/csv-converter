@@ -4,7 +4,7 @@ import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react';
 import { Box, Button, Card, Stack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useColorMode } from '../../components/chakra/ColorModeButton';
+import { useColorMode } from '@components/chakra/ColorModeButton';
 
 const googleImg = '/images/google.svg';
 const githubImg = '/images/github.svg';

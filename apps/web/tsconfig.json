@@ -7,7 +7,12 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "@models/*": ["./src/models/*"],
+      "@lib/*": ["./src/lib/*"],
+    },
   },
   "include": ["src", "next.config.ts", "next-env.d.ts", ".next/types/**/*.ts"]
 }

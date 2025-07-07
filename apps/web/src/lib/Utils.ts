@@ -1,8 +1,8 @@
 import { filesize } from 'filesize';
 import Papa from 'papaparse';
 import { read, utils, WorkBook, WorkSheet } from 'xlsx';
-import { FileData } from '../models/file';
 import SqlString from 'sqlstring';
+import { FileData } from '@models/file';
 
 export const messageTimeout = 5000;
 
@@ -82,7 +82,7 @@ export const processFile = async (file: File): Promise<FileData> => {
             name: file.name,
             type: fileType,
             size: file.size,
-            json: utils.sheet_to_json(worksheet)
+            json: utils.sheet_to_json(worksheet)          
          };
          break;
 

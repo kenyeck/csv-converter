@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
-import { Providers } from '../components/providers/Providers';
-import { Footer } from '../components/layout/Footer';
-import { Nav } from '../components/layout/Nav';
+import { Providers } from '@components/providers/Providers';
+import { Footer } from '@components/layout/Footer';
+import { Nav } from '@components/layout/Nav';
 import { getServerSession } from 'next-auth';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

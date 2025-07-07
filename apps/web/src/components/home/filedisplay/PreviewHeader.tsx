@@ -10,15 +10,14 @@ import {
    Portal,
    createListCollection
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import { LuType, LuMoveDiagonal, LuSearch } from 'react-icons/lu';
+import { defaultPageSize } from './PreviewConvert';
 
 interface PreviewHeaderProps {
    setPageSize: (pageSize: number) => void;
 }
 
-export const PreviewHeader = ({ setPageSize: setPageSizeExt }: PreviewHeaderProps) => {
-   const [pageSize, setPageSize] = useState(10);
+export const PreviewHeader = ({ setPageSize }: PreviewHeaderProps) => {
    return (
       <Stack direction={'row'} justifyContent={'space-between'}>
          <Box fontSize={'1.25em'} fontWeight={'semibold'} mb={5}>
@@ -41,10 +40,9 @@ export const PreviewHeader = ({ setPageSize: setPageSizeExt }: PreviewHeaderProp
                   collection={rows}
                   size="sm"
                   width="100px"
-                  value={[`${pageSize}`]}
+                  defaultValue={[`${defaultPageSize}`]}
                   onValueChange={(e) => {
                      setPageSize(parseInt(e.value[0]));
-                     setPageSizeExt(parseInt(e.value[0]));
                   }}
                >
                   <Select.HiddenSelect />

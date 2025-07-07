@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Section } from './Section';
 import { FileDisplay } from './filedisplay/FileDisplay';
 import { FileUpload } from './FileUpload';
-import { processFile } from '../../lib/Utils';
-import { FileData } from '../../models/file';
+import { processFile } from '@lib/Utils';
+import { FileData } from '@models/file';
 
 export const Main = () => {
    const [fileData, setFileData] = useState<FileData | null>(null);

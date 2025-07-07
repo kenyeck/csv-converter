@@ -3,17 +3,15 @@
 import { Stack } from "@chakra-ui/react";
 import { PreviewHeader } from "./PreviewHeader";
 import { PreviewTable } from "./PreviewTable";
-import { FileData } from "types/file";
-import { useState } from "react";
+import { FileData } from "@models/file";
 
 interface PreviewProps {
    fileData: FileData;
+   pageSize: number;
+   setPageSize: (pageSize: number) => void;
 }
 
-const defaultPageSize = 10;
-
-export const Preview = ({ fileData }: PreviewProps) => {
-   const [pageSize, setPageSize] = useState(defaultPageSize);
+export const Preview = ({ fileData, pageSize, setPageSize }: PreviewProps) => {
    return (
       <Stack direction={'column'}>
          <PreviewHeader setPageSize={setPageSize}/>

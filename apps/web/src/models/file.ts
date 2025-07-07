@@ -12,6 +12,7 @@ export interface FileData {
    size: number;
    delimiter?: string; // Delimiter used
    json: Array<Record<string, string>>;
+   pageSize?: number; // Number of rows per page
 }
 
 

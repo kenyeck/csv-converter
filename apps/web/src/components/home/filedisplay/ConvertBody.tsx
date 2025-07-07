@@ -7,9 +7,10 @@ import { LuFileJson, LuCodeXml, LuDatabase, LuClipboard, LuDownload } from 'reac
 import JsonView from 'react18-json-view';
 import './json-view-style.css';
 import XMLViewer from 'react-xml-viewer';
-import { jsonToXML, jsonToSQL } from '../../../lib/Utils';
-import * as file from '../../../models/file';
+import { jsonToXML, jsonToSQL } from '@lib/Utils';
+import { FileData } from '@models/file';
 import { toaster, Toaster } from '../../chakra/Toaster';
+import { SqlView } from './SqlView';
 
 // Which json viewer to use?
 // tried: react18-json-view, json-edit-react, react-json-view-lite, @textea/json-viewer
@@ -18,21 +19,22 @@ import { toaster, Toaster } from '../../chakra/Toaster';
 // 2nd: @textea/json-viewer
 
 interface ConvertBodyProps {
-   fileData: file.FileData;
+   fileData: FileData;
+   pageSize: number;
    hide: boolean;
 }
 
-export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
+export const ConvertBody = ({ fileData, pageSize, hide }: ConvertBodyProps) => {
    const { theme } = useTheme();
    const [activeTab, setActiveTab] = useState('json');
 
    const handleCopyToClipboard = () => {
       if (activeTab === 'json') {
-         navigator.clipboard.writeText(JSON.stringify(fileData.json, null, 2));
+         navigator.clipboard.writeText(JSON.stringify(fileData.json.slice(0, pageSize), null, 2));
       } else if (activeTab === 'xml') {
-         navigator.clipboard.writeText(jsonToXML(fileData.json, 'root', 'row'));
+         navigator.clipboard.writeText(jsonToXML(fileData.json.slice(0, pageSize), 'root', 'row'));
       } else if (activeTab === 'sql') {
-         navigator.clipboard.writeText(jsonToSQL(fileData.name, fileData.json));
+         navigator.clipboard.writeText(jsonToSQL(fileData.name, fileData.json.slice(0, pageSize)));
       }
       toaster.create({
          description: `${activeTab.toUpperCase()} contents copied to the clipboard.`,
@@ -151,8 +153,9 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
                   paddingY={1}
                   overflowY={'scroll'}
                   height={'300px'}
+                  fontSize={'14px'}
                >
-                  <JsonView src={fileData.json} dark={theme === 'dark'} />
+                  <JsonView src={fileData.json.slice(0, pageSize)} dark={theme === 'dark'} />
                </Box>
             </Tabs.Content>
             <Tabs.Content value="xml" background={'bg'} display={`${hide ? 'none' : 'block'}`}>
@@ -164,20 +167,30 @@ export const ConvertBody = ({ fileData, hide }: ConvertBodyProps) => {
                   paddingY={1}
                   overflowY={'scroll'}
                   height={'300px'}
+                  fontSize={'14px'}
                >
                   <XMLViewer
-                     xml={jsonToXML(fileData.json, 'root', 'row')}
+                     xml={jsonToXML(fileData.json.slice(0, pageSize), 'root', 'row')}
                      indentSize={3}
                      invalidXml={<div>Invalid XML!</div>}
                   />
                </Box>
             </Tabs.Content>
             <Tabs.Content value="sql" background={'bg'}>
-               {jsonToSQL(fileData.name, fileData.json)
-                  ?.split('\n')
-                  .map((line, i) => (
-                     <div key={i}>{line.length > 0 ? line : <>&nbsp;</>}</div>
-                  ))}
+               <Box
+                  background={'bg.muted'}
+                  border={`2px solid bg`}
+                  borderRadius={'5px'}
+                  paddingX={3}
+                  paddingY={1}
+                  overflowY={'scroll'}
+                  height={'300px'}
+                  fontSize={'14px'}
+               >
+                  <SqlView
+                     sqlString={jsonToSQL(fileData.name, fileData.json.slice(0, pageSize))}
+                  />
+               </Box>
             </Tabs.Content>
          </Tabs.Root>
          <Stack direction={'row'} justifyContent={'flex-end'} paddingTop={2} gap={4}>

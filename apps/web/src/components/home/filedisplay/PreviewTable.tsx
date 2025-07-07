@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Box, ButtonGroup, IconButton, Pagination, Stack, Table } from '@chakra-ui/react';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
-import { FileData } from 'types/file';
+import { FileData } from '@models/file';
 
 interface PreviewTableProps {
    fileData: FileData;

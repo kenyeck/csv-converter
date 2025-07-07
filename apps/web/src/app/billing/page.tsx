@@ -4,10 +4,10 @@ import { Fragment, useState } from 'react';
 import { redirect } from 'next/navigation';
 import { Box, Button, Card } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
-import { Section } from '../../components/home/Section';
-import { Upgrade } from '../../components/Upgrade';
-import { usePlans } from '../../lib/hooks';
-import { Plan } from '../../models/plan';
+import { Section } from '@components/home/Section';
+import { Upgrade } from '@components/Upgrade';
+import { usePlans } from '@lib/hooks';
+import { Plan } from '@models/plan';
 
 export default function BillingPage() {
    const { data: session } = useSession();

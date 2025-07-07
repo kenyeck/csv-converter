@@ -6,7 +6,7 @@ import {
    getFileSizeAsString,
    getFileTypeAsString,
    getFileDelimiterAsString
-} from '../../../lib/Utils';
+} from '@lib/Utils';
 
 interface FileDetailsProps {
    size: number;
