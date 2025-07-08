@@ -49,9 +49,9 @@ export const PreviewTable = ({ fileData, pageSize }: PreviewTableProps) => {
       const startRow = (page - 1) * pageSize + (firstRowIsHeader ? 1 : 0);
       const endRow = page * pageSize + (firstRowIsHeader ? 1 : 0);
       const newRows = fileContent.slice(startRow, endRow);
-      console.log(
-         `updating page rows: ${startRow}-${endRow}, cols:${cols} ${JSON.stringify(newRows)}`
-      );
+      // console.log(
+      //    `updating page rows: ${startRow}-${endRow}, cols:${cols} ${JSON.stringify(newRows)}`
+      // );
       setTotalRows(fileContent.length);
       setPageRows(newRows);
    }, [pageSize, page, firstRowIsHeader, fileContent, cols]);
@@ -84,8 +84,6 @@ export const PreviewTable = ({ fileData, pageSize }: PreviewTableProps) => {
       });
       setCols(newCols);
       setFileContent(sortedRows);
-      //console.log('Updated columns:', newCols);
-      console.log('Sorted rows:', sortedRows);
    };
 
    return (
