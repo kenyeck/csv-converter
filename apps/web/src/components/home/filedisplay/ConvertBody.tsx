@@ -176,7 +176,7 @@ export const ConvertBody = ({ fileData, pageSize, hide }: ConvertBodyProps) => {
                   />
                </Box>
             </Tabs.Content>
-            <Tabs.Content value="sql" background={'bg'}>
+            <Tabs.Content value="sql" background={'bg'} display={`${hide ? 'none' : 'block'}`}>
                <Box
                   background={'bg.muted'}
                   border={`2px solid bg`}
