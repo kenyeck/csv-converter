@@ -10,35 +10,27 @@ import {
    LuChevronRight
 } from 'react-icons/lu';
 import { FileData } from '@models/file';
-
-enum SortDirection {
-   none = 'none',
-   asc = 'asc',
-   desc = 'desc'
-}
-
-interface ColumnState {
-   name: string;
-   sortDirection: SortDirection;
-}
+import { ColumnState, SortDirection } from './EditHeader';
 
 interface PreviewTableProps {
+   cols: ColumnState[];
    fileData: FileData;
    pageSize: number;
 }
 
-export const PreviewTable = ({ fileData, pageSize }: PreviewTableProps) => {
-   const [fileContent, setFileContent] = useState<Array<Record<string, string>>>([...fileData.json]);
+export const PreviewTable = ({ fileData, pageSize, cols }: PreviewTableProps) => {
+   const [fileContent, setFileContent] = useState<Array<Record<string, string>>>([
+      ...fileData.json
+   ]);
    const [totalRows, setTotalRows] = useState(0);
    const [page, setPage] = useState(1);
    const [pageRows, setPageRows] = useState<Array<Record<string, string>>>([]);
    const firstRowIsHeader = false;
-   const [cols, setCols] = useState<ColumnState[]>(
-      Object.keys(fileContent[0] || {}).map((key) => ({
-         name: key,
-         sortDirection: SortDirection.none
-      }))
-   );
+   const [headerCols, setHeaderCols] = useState<ColumnState[]>([]);
+
+   useEffect(() => {
+      setHeaderCols(cols);
+   }, [cols]);
 
    // column sort only affects the current page, not the entire dataset. does not chage conversion
    // search affects the entire dataset, but does not change conversion
@@ -54,11 +46,11 @@ export const PreviewTable = ({ fileData, pageSize }: PreviewTableProps) => {
       // );
       setTotalRows(fileContent.length);
       setPageRows(newRows);
-   }, [pageSize, page, firstRowIsHeader, fileContent, cols]);
+   }, [pageSize, page, firstRowIsHeader, fileContent, headerCols]);
 
    const handleSort = (col: ColumnState) => {
       const newCols =
-         cols?.map((c) => {
+         headerCols.map((c) => {
             return {
                ...c,
                sortDirection:
@@ -82,7 +74,7 @@ export const PreviewTable = ({ fileData, pageSize }: PreviewTableProps) => {
          }
          return 0;
       });
-      setCols(newCols);
+      setHeaderCols(newCols);
       setFileContent(sortedRows);
    };
 
@@ -93,7 +85,7 @@ export const PreviewTable = ({ fileData, pageSize }: PreviewTableProps) => {
                <Table.Root size="sm" variant={'outline'} px={5}>
                   <Table.Header>
                      <Table.Row>
-                        {cols?.map((col) => {
+                        {headerCols.map((col) => {
                            return (
                               <Table.ColumnHeader key={col.name}>
                                  <Stack

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
    Stack,
    Box,
@@ -12,64 +13,71 @@ import {
 } from '@chakra-ui/react';
 import { LuType, LuMoveDiagonal, LuSearch } from 'react-icons/lu';
 import { defaultPageSize } from './PreviewConvert';
+import { ColumnState, EditHeader } from './EditHeader';
 
 interface PreviewHeaderProps {
+   cols: ColumnState[];
    setPageSize: (pageSize: number) => void;
 }
 
-export const PreviewHeader = ({ setPageSize }: PreviewHeaderProps) => {
+export const PreviewHeader = ({ cols, setPageSize }: PreviewHeaderProps) => {
+   const [open, setOpen] = useState(false);
+
    return (
-      <Stack direction={'row'} justifyContent={'space-between'}>
-         <Box fontSize={'1.25em'} fontWeight={'semibold'} mb={5}>
-            Data Preview
-         </Box>
-         <Stack direction={'row'} gap={3}>
-            <Button size={'sm'} variant={'outline'}>
-               <LuType />
-               Edit Headers
-            </Button>
-            <Button size={'sm'} variant={'outline'}>
-               <LuMoveDiagonal />
-               Fullscreen View
-            </Button>
-            <InputGroup startElement={<LuSearch />} h={'2.25em'}>
-               <Input size={'sm'} placeholder="Search data..." w={'175px'} />
-            </InputGroup>
-            <Box>
-               <Select.Root
-                  collection={rows}
-                  size="sm"
-                  width="100px"
-                  defaultValue={[`${defaultPageSize}`]}
-                  onValueChange={(e) => {
-                     setPageSize(parseInt(e.value[0]));
-                  }}
-               >
-                  <Select.HiddenSelect />
-                  <Select.Control>
-                     <Select.Trigger>
-                        <Select.ValueText />
-                     </Select.Trigger>
-                     <Select.IndicatorGroup>
-                        <Select.Indicator />
-                     </Select.IndicatorGroup>
-                  </Select.Control>
-                  <Portal>
-                     <Select.Positioner>
-                        <Select.Content>
-                           {rows.items.map((row) => (
-                              <Select.Item item={row} key={row.value}>
-                                 {row.label}
-                                 <Select.ItemIndicator />
-                              </Select.Item>
-                           ))}
-                        </Select.Content>
-                     </Select.Positioner>
-                  </Portal>
-               </Select.Root>
+      <>
+         <Stack direction={'row'} justifyContent={'space-between'}>
+            <Box fontSize={'1.25em'} fontWeight={'semibold'} mb={5}>
+               Data Preview
             </Box>
+            <Stack direction={'row'} gap={3}>
+               <Button size={'sm'} variant={'outline'} onClick={() => setOpen(true)}>
+                  <LuType />
+                  Edit Headers
+               </Button>
+               <Button size={'sm'} variant={'outline'}>
+                  <LuMoveDiagonal />
+                  Fullscreen View
+               </Button>
+               <InputGroup startElement={<LuSearch />} h={'2.25em'}>
+                  <Input size={'sm'} placeholder="Search data..." w={'175px'} />
+               </InputGroup>
+               <Box>
+                  <Select.Root
+                     collection={rows}
+                     size="sm"
+                     width="100px"
+                     defaultValue={[`${defaultPageSize}`]}
+                     onValueChange={(e) => {
+                        setPageSize(parseInt(e.value[0]));
+                     }}
+                  >
+                     <Select.HiddenSelect />
+                     <Select.Control>
+                        <Select.Trigger>
+                           <Select.ValueText />
+                        </Select.Trigger>
+                        <Select.IndicatorGroup>
+                           <Select.Indicator />
+                        </Select.IndicatorGroup>
+                     </Select.Control>
+                     <Portal>
+                        <Select.Positioner>
+                           <Select.Content>
+                              {rows.items.map((row) => (
+                                 <Select.Item item={row} key={row.value}>
+                                    {row.label}
+                                    <Select.ItemIndicator />
+                                 </Select.Item>
+                              ))}
+                           </Select.Content>
+                        </Select.Positioner>
+                     </Portal>
+                  </Select.Root>
+               </Box>
+            </Stack>
          </Stack>
-      </Stack>
+         <EditHeader cols={cols} open={open} onOpenChange={(e) => setOpen(e.open)} />
+      </>
    );
 };
 
