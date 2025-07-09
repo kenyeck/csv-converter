@@ -39,7 +39,7 @@ export function FileImportSettings({
          <Dialog.Backdrop bg={'blackAlpha.800'} />
          <Dialog.Positioner>
             <Dialog.Content>
-               <Dialog.CloseTrigger />
+               <Dialog.CloseTrigger tabIndex={-1} />
                <Dialog.Header justifyContent={'flex-start'}>
                   <Stack alignItems={'flex-start'} mb={6}>
                      <Dialog.Title>File Import Settings</Dialog.Title>

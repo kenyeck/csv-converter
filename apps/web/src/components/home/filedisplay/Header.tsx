@@ -42,15 +42,26 @@ export const Header = ({ fileData, onClose }: HeaderProps) => {
                </Stack>
             </Stack>
             <Stack direction={'row'} gap={4} justifyContent={'space-between'}>
-               <Button size={'sm'} variant={'outline'} color={'fg.muted'} onClick={() => setOpen(true)}>
+               <Button
+                  size={'sm'}
+                  variant={'outline'}
+                  color={'fg.muted'}
+                  onClick={() => setOpen(true)}
+               >
                   <LuSettings />
                </Button>
-               <Button size={'sm'} variant={'outline'}>
-                  <LuX onClick={() => onClose()} />
+               <Button size={'sm'} variant={'outline'} onClick={() => onClose()}>
+                  <LuX />
                </Button>
             </Stack>
          </Stack>
-         <FileImportSettings type={type} delimiter={delimiter} encoding={encoding} open={open} onOpenChange={e => setOpen(e.open)} />
+         <FileImportSettings
+            type={type}
+            delimiter={delimiter}
+            encoding={encoding}
+            open={open}
+            onOpenChange={(e) => setOpen(e.open)}
+         />
       </>
    );
 };
