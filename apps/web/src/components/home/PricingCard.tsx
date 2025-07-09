@@ -49,6 +49,7 @@ export const PricingCard = ({
                      height={'2em'}
                      px={2}
                      cursor={'default'}
+                     tabIndex={-1}
                   >
                      {tag}
                   </Button>

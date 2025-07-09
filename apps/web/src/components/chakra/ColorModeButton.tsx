@@ -62,10 +62,9 @@ export const ColorModeButton = React.forwardRef<HTMLButtonElement, ColorModeButt
          <ClientOnly fallback={<Skeleton boxSize="8" />}>
             <Menu.Root onSelect={onMenu} aria-label="Select color mode">
                <Menu.Trigger
-                  focusVisibleRing="none"
                   style={{
                      fontSize: '1.25em',
-                     border: '1px solid lightGray',
+                     border: '1px solid lightgray',
                      padding: '8px',
                      borderRadius: '5px',
                      cursor: 'pointer'
