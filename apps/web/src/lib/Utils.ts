@@ -80,7 +80,7 @@ export const processFile = async (file: File): Promise<FileData> => {
          worksheet = workbook.Sheets[sheetName];
          fileData = {
             name: file.name,
-            type: fileType,
+            type: fileType as FileType,
             size: file.size,
             json: utils.sheet_to_json(worksheet)          
          };
