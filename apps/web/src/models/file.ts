@@ -20,8 +20,8 @@ export enum FileDelimiter {
 
 export enum FileEncoding {
    AUTO = 'auto',
-   UTF8 = 'UTF8',
-   LATIN1 = 'LATIN1',
+   UTF8 = 'UTF-8',
+   LATIN1 = 'LATIN-1',
    ASCII = 'ASCII'
 }
 
@@ -36,7 +36,8 @@ export interface FileData {
    name: string;
    type: FileType;
    size: number;
-   delimiter?: FileDelimiter; // Delimiter used
+   delimiter?: FileDelimiter;
+   encoding?: FileEncoding;
    json: Array<Record<string, string>>;
    pageSize?: number; // Number of rows per page
 }

@@ -13,7 +13,7 @@ interface HeaderProps {
 }
 
 export const Header = ({ fileData, onClose }: HeaderProps) => {
-   const { name, size, type, delimiter, json } = fileData;
+   const { name, size, type, delimiter, encoding, json } = fileData;
    const [open, setOpen] = useState(false);
 
    return (
@@ -50,7 +50,7 @@ export const Header = ({ fileData, onClose }: HeaderProps) => {
                </Button>
             </Stack>
          </Stack>
-         <FileImportSettings type={type} delimiter={delimiter} open={open} onOpenChange={e => setOpen(e.open)} />
+         <FileImportSettings type={type} delimiter={delimiter} encoding={encoding} open={open} onOpenChange={e => setOpen(e.open)} />
       </>
    );
 };

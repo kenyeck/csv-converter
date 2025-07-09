@@ -2,7 +2,8 @@ import { filesize } from 'filesize';
 import Papa from 'papaparse';
 import { read, utils, WorkBook, WorkSheet } from 'xlsx';
 import SqlString from 'sqlstring';
-import { FileData, FileDelimiter, FileType } from '@models/file';
+import * as jschardet from 'jschardet';
+import { FileData, FileDelimiter, FileEncoding, FileType } from '@models/file';
 
 export const messageTimeout = 5000;
 
@@ -47,6 +48,14 @@ export const processFile = async (file: File): Promise<FileData> => {
    let sheetName: string | null = null;
    let worksheet: WorkSheet | null = null;
    let fileType = file.type || '';
+   let fileEncoding: FileEncoding = FileEncoding.ASCII;
+
+   try {
+      fileEncoding = await detectFileEncoding(file);
+      console.log(`Detected encoding: ${fileEncoding}`);
+   } catch (error) {
+      console.error('Error - Unsupported encoding:', error);
+   }
 
    if (!fileType && file.name.endsWith('.tsv')) {
       fileType = 'text/tab-separated-values';
@@ -55,8 +64,7 @@ export const processFile = async (file: File): Promise<FileData> => {
    switch (fileType) {
       case 'text/csv':
       case 'text/tab-separated-values':
-      case 'text/plain': // handle text files (CSV, TSV, TXT)
-      {
+      case 'text/plain': { // handle text files (CSV, TSV, TXT)
          const result = Papa.parse(await file.text(), { preview: 5 });
          const delimiter = result.meta.delimiter ?? FileDelimiter.Comma;
          workbook = read(await file.text(), { type: 'string', FS: delimiter });
@@ -67,6 +75,7 @@ export const processFile = async (file: File): Promise<FileData> => {
             type: fileType as FileType,
             size: file.size,
             delimiter: delimiter as FileDelimiter,
+            encoding: fileEncoding,
             json: utils.sheet_to_json(worksheet)
          };
          break;
@@ -82,7 +91,7 @@ export const processFile = async (file: File): Promise<FileData> => {
             name: file.name,
             type: fileType as FileType,
             size: file.size,
-            json: utils.sheet_to_json(worksheet)          
+            json: utils.sheet_to_json(worksheet)
          };
          break;
 
@@ -164,3 +173,61 @@ export const jsonToSQL = (filename: string, json: Array<Record<string, string>>)
       return `Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
    }
 };
+
+// Detects the encoding of a File object
+async function detectFileEncoding(file: File): Promise<FileEncoding> {
+   // Read file as ArrayBuffer
+   const arrayBuffer = await file.arrayBuffer();
+   const uint8Array = new Uint8Array(arrayBuffer);
+
+   // Check for BOM first
+   const bomEncoding = checkBom(uint8Array);
+   if (bomEncoding) {
+      return bomEncoding;
+   }
+
+   // Use jschardet for heuristic detection
+   const result = jschardet.detect(uint8Array.toString());
+   const encoding = result.encoding as FileEncoding;;
+   if (!Object.values(FileEncoding).includes(encoding))
+      throw new Error(`Unsupported encoding: ${result.encoding}`);
+
+   return encoding;
+}
+
+// Helper function to check for Byte Order Mark (BOM)
+function checkBom(uint8Array: Uint8Array): FileEncoding | null {
+   if (
+      uint8Array.length >= 3 &&
+      uint8Array[0] === 0xef &&
+      uint8Array[1] === 0xbb &&
+      uint8Array[2] === 0xbf
+   ) {
+      return FileEncoding.UTF8; // 'UTF-8';
+   }
+   if (uint8Array.length >= 2 && uint8Array[0] === 0xfe && uint8Array[1] === 0xff) {
+      throw new Error('UTF-16BE');
+   }
+   if (uint8Array.length >= 2 && uint8Array[0] === 0xff && uint8Array[1] === 0xfe) {
+      throw new Error('UTF-16LE');
+   }
+   if (
+      uint8Array.length >= 4 &&
+      uint8Array[0] === 0x00 &&
+      uint8Array[1] === 0x00 &&
+      uint8Array[2] === 0xfe &&
+      uint8Array[3] === 0xff
+   ) {
+      throw new Error('UTF-32BE');
+   }
+   if (
+      uint8Array.length >= 4 &&
+      uint8Array[0] === 0xff &&
+      uint8Array[1] === 0xfe &&
+      uint8Array[2] === 0x00 &&
+      uint8Array[3] === 0x00
+   ) {
+      throw new Error('UTF-32LE');
+   }
+   return null;
+}

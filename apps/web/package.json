@@ -18,6 +18,7 @@
       "@repo/logger": "workspace:*",
       "@repo/ui": "workspace:*",
       "filesize": "^10.1.6",
+      "jschardet": "^3.1.4",
       "next": "^15.3.0",
       "next-auth": "^4.24.11",
       "next-themes": "^0.4.6",

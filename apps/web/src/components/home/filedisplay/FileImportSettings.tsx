@@ -17,6 +17,7 @@ import { FileType, FileDelimiter, FileEncoding } from '@models/file';
 interface EditHeaderProps {
    type: FileType;
    delimiter?: FileDelimiter;
+   encoding?: FileEncoding;
    open: boolean;
    onOpenChange?: (_e: { open: boolean }) => void;
 }
@@ -25,7 +26,8 @@ export function FileImportSettings({
    open,
    onOpenChange,
    type,
-   delimiter: detectedDelimiter
+   delimiter: detectedDelimiter,
+   encoding: detectedEncoding
 }: EditHeaderProps) {
    const [fileType, setFileType] = useState<FileType>(type);
    const [delimiter, setDelimiter] = useState<FileDelimiter>(FileDelimiter.Auto);
@@ -41,7 +43,7 @@ export function FileImportSettings({
                <Dialog.Header justifyContent={'flex-start'}>
                   <Stack alignItems={'flex-start'} mb={6}>
                      <Dialog.Title>File Import Settings</Dialog.Title>
-                     <Box color={'fg.muted'} w={'fit-content'}>
+                     <Box color={'fg.muted'} w={'fit-content'} tabIndex={-1}>
                         Configure how your file is processed.
                      </Box>
                   </Stack>
@@ -54,20 +56,24 @@ export function FileImportSettings({
                         value={fileType}
                         onValueChange={(val) => setFileType(val as FileType)}
                      />
-                     <FileImportSelect
-                        label="Delimiter"
-                        collection={delimiters}
-                        value={delimiter}
-                        onValueChange={(val) => setDelimiter(val as FileDelimiter)}
-                        detected={detectedDelimiter}
-                     />
-                     <FileImportSelect
-                        label="Character Encoding"
-                        collection={encodings}
-                        value={encoding}
-                        onValueChange={(val) => setEncoding(val as FileEncoding)}
-                        detected={'UTF8'}
-                     />
+                     {![FileType.XLSX, FileType.XLS].includes(fileType) && (
+                        <>
+                           <FileImportSelect
+                              label="Delimiter"
+                              collection={delimiters}
+                              value={delimiter}
+                              onValueChange={(val) => setDelimiter(val as FileDelimiter)}
+                              detected={detectedDelimiter}
+                           />
+                           <FileImportSelect
+                              label="Character Encoding"
+                              collection={encodings}
+                              value={encoding}
+                              onValueChange={(val) => setEncoding(val as FileEncoding)}
+                              detected={detectedEncoding}
+                           />
+                        </>
+                     )}
                   </Stack>
                   <Box color={'fg.muted'} mt={2}>
                      Click &quot;Apply & Reprocess&quot; to parse the file with these settings.
@@ -91,7 +97,7 @@ export function FileImportSettings({
                   </Stack>
                </Dialog.Footer>
                <Dialog.CloseTrigger asChild>
-                  <CloseButton size="sm" />
+                  <CloseButton size="sm" autoFocus={false} />
                </Dialog.CloseTrigger>
             </Dialog.Content>
          </Dialog.Positioner>
@@ -214,8 +220,8 @@ const delimiters = createListCollection({
 
 const encodings = createListCollection({
    items: [
-      { label: 'Auto-detect', value: FileEncoding.AUTO as string},
-      { label: 'UTF-8 (Unicode)', value: FileEncoding.UTF8 as string},
+      { label: 'Auto-detect', value: FileEncoding.AUTO as string },
+      { label: 'UTF-8 (Unicode)', value: FileEncoding.UTF8 as string },
       {
          label: 'Latin-1 (Western European)',
          value: FileEncoding.LATIN1 as string
