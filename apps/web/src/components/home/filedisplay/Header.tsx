@@ -50,7 +50,7 @@ export const Header = ({ fileData, onClose }: HeaderProps) => {
                </Button>
             </Stack>
          </Stack>
-         <FileImportSettings open={open} onOpenChange={e => setOpen(e.open)} />
+         <FileImportSettings type={type} delimiter={delimiter} open={open} onOpenChange={e => setOpen(e.open)} />
       </>
    );
 };

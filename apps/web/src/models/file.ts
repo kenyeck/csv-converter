@@ -1,4 +1,30 @@
 
+export enum FileType {
+   CSV = 'text/csv',
+   XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+   XLS = 'application/vnd.ms-excel',
+   TSV = 'text/tab-separated-values',
+   Text = 'text/plain'
+}
+
+export enum FileDelimiter {
+   Auto = 'auto',
+   Comma = ',',
+   Semicolon = ';',
+   Tab = '\t',
+   Pipe = '|',
+   Hash = '#',
+   Space = ' ',
+   Custom = 'custom'
+}
+
+export enum FileEncoding {
+   AUTO = 'auto',
+   UTF8 = 'UTF8',
+   LATIN1 = 'LATIN1',
+   ASCII = 'ASCII'
+}
+
 export interface Error {
    type: string;
    code: string;
@@ -8,9 +34,9 @@ export interface Error {
 
 export interface FileData {
    name: string;
-   type: string;
+   type: FileType;
    size: number;
-   delimiter?: string; // Delimiter used
+   delimiter?: FileDelimiter; // Delimiter used
    json: Array<Record<string, string>>;
    pageSize?: number; // Number of rows per page
 }

@@ -2,7 +2,7 @@ import { filesize } from 'filesize';
 import Papa from 'papaparse';
 import { read, utils, WorkBook, WorkSheet } from 'xlsx';
 import SqlString from 'sqlstring';
-import { FileData } from '@models/file';
+import { FileData, FileDelimiter, FileType } from '@models/file';
 
 export const messageTimeout = 5000;
 
@@ -58,15 +58,15 @@ export const processFile = async (file: File): Promise<FileData> => {
       case 'text/plain': // handle text files (CSV, TSV, TXT)
       {
          const result = Papa.parse(await file.text(), { preview: 5 });
-         const delimiter = result.meta.delimiter ?? ',';
+         const delimiter = result.meta.delimiter ?? FileDelimiter.Comma;
          workbook = read(await file.text(), { type: 'string', FS: delimiter });
          sheetName = workbook.SheetNames[0];
          worksheet = workbook.Sheets[sheetName];
          fileData = {
             name: file.name,
-            type: fileType,
+            type: fileType as FileType,
             size: file.size,
-            delimiter: delimiter,
+            delimiter: delimiter as FileDelimiter,
             json: utils.sheet_to_json(worksheet)
          };
          break;

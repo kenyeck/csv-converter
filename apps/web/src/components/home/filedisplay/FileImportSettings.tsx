@@ -1,5 +1,7 @@
 'use client';
 
+import { JSX, useState } from 'react';
+import { LuFileSpreadsheet, LuFileText, LuPanelsTopLeft, LuRefreshCw } from 'react-icons/lu';
 import {
    Dialog,
    Box,
@@ -10,18 +12,24 @@ import {
    createListCollection,
    ListCollection
 } from '@chakra-ui/react';
-import { JSX, useState } from 'react';
-import { LuFileSpreadsheet, LuFileText, LuPanelsTopLeft, LuRefreshCw } from 'react-icons/lu';
+import { FileType, FileDelimiter, FileEncoding } from '@models/file';
 
 interface EditHeaderProps {
+   type: FileType;
+   delimiter?: FileDelimiter;
    open: boolean;
    onOpenChange?: (_e: { open: boolean }) => void;
 }
 
-export function FileImportSettings({ open, onOpenChange }: EditHeaderProps) {
-   const [fileType, setFileType] = useState('csv');
-   const [delimiter, setDelimiter] = useState('auto');
-   const [encoding, setEncoding] = useState('auto');
+export function FileImportSettings({
+   open,
+   onOpenChange,
+   type,
+   delimiter: detectedDelimiter
+}: EditHeaderProps) {
+   const [fileType, setFileType] = useState<FileType>(type);
+   const [delimiter, setDelimiter] = useState<FileDelimiter>(FileDelimiter.Auto);
+   const [encoding, setEncoding] = useState<FileEncoding>(FileEncoding.AUTO);
 
    return (
       <Dialog.Root size={'sm'} lazyMount open={open} onOpenChange={onOpenChange}>
@@ -44,20 +52,20 @@ export function FileImportSettings({ open, onOpenChange }: EditHeaderProps) {
                         label="File Type"
                         collection={fileTypes}
                         value={fileType}
-                        onValueChange={setFileType}
+                        onValueChange={(val) => setFileType(val as FileType)}
                      />
                      <FileImportSelect
                         label="Delimiter"
                         collection={delimiters}
                         value={delimiter}
-                        onValueChange={setDelimiter}
-                        detected={','}
+                        onValueChange={(val) => setDelimiter(val as FileDelimiter)}
+                        detected={detectedDelimiter}
                      />
                      <FileImportSelect
                         label="Character Encoding"
                         collection={encodings}
                         value={encoding}
-                        onValueChange={setEncoding}
+                        onValueChange={(val) => setEncoding(val as FileEncoding)}
                         detected={'UTF8'}
                      />
                   </Stack>
@@ -116,10 +124,7 @@ function FileImportSelect({
             collection={collection}
             size="sm"
             defaultValue={[value]}
-            onSelect={(e) => {
-               console.log('Selected file type:', e.value);
-               onValueChange(e.value);
-            }}
+            onSelect={(e) => onValueChange(e.value)}
             width={'330px'}
          >
             <Select.HiddenSelect />
@@ -180,37 +185,41 @@ const fileTypes = createListCollection<ListCollectionItem>({
    items: [
       {
          label: 'CSV (Comma separated values)',
-         value: 'csv',
+         value: FileType.CSV,
          icon: <LuPanelsTopLeft color="blue" />
       },
-      { label: 'Excel (XLSX)', value: 'xlsx', icon: <LuFileSpreadsheet color="green" /> },
-      { label: 'Excel (XLS)', value: 'xls', icon: <LuFileSpreadsheet color="green" /> },
-      { label: 'TSV (Tab separated values)', value: 'tsv', icon: <LuPanelsTopLeft color="blue" /> },
-      { label: 'Text File', value: 'txt', icon: <LuFileText color="blue" /> }
+      { label: 'Excel (XLSX)', value: FileType.XLSX, icon: <LuFileSpreadsheet color="green" /> },
+      { label: 'Excel (XLS)', value: FileType.XLS, icon: <LuFileSpreadsheet color="green" /> },
+      {
+         label: 'TSV (Tab separated values)',
+         value: FileType.TSV,
+         icon: <LuPanelsTopLeft color="blue" />
+      },
+      { label: 'Text File', value: FileType.Text, icon: <LuFileText color="blue" /> }
    ]
 });
 
 const delimiters = createListCollection({
    items: [
       { label: 'Auto-detect', value: 'auto' },
-      { label: 'Comma (,)', value: ',' },
-      { label: 'Semicolon (;)', value: ';' },
-      { label: 'Tab (\\t)', value: '\t' },
-      { label: 'Pipe (|)', value: '|' },
-      { label: 'Hash (#)', value: '#' },
-      { label: 'Space', value: ' ' },
+      { label: 'Comma (,)', value: FileDelimiter.Comma },
+      { label: 'Semicolon (;)', value: FileDelimiter.Semicolon },
+      { label: 'Tab (\\t)', value: FileDelimiter.Tab },
+      { label: 'Pipe (|)', value: FileDelimiter.Pipe },
+      { label: 'Hash (#)', value: FileDelimiter.Hash },
+      { label: 'Space', value: FileDelimiter.Space },
       { label: 'Custom', value: 'custom' }
    ]
 });
 
 const encodings = createListCollection({
    items: [
-      { label: 'Auto-detect', value: 'auto' },
-      { label: 'UTF-8 (Unicode)', value: 'UTF8' },
+      { label: 'Auto-detect', value: FileEncoding.AUTO as string},
+      { label: 'UTF-8 (Unicode)', value: FileEncoding.UTF8 as string},
       {
          label: 'Latin-1 (Western European)',
-         value: 'LATIN1'
+         value: FileEncoding.LATIN1 as string
       },
-      { label: 'ASCII (English)', value: 'ASCII' }
+      { label: 'ASCII (English)', value: FileEncoding.ASCII as string }
    ]
 });
