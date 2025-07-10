@@ -33,6 +33,15 @@ export const PricingCard = ({
                ? '0 4px 24px 0 rgba(56, 132, 255, 0.55)' // blue shadow
                : '0 4px 24px 0 rgba(0, 0, 0, 0.10)' // gray shadow
          }
+         transition={
+            'box-shadow 0.3s cubic-bezier(.25,.8,.25,1), transform 0.3s cubic-bezier(.25,.8,.25,1)'
+         }
+         _hover={{
+            boxShadow: primary
+               ? '0 4px 24px 0 rgba(56, 132, 255, 0.75)'
+               : '0 4px 24px 0 rgba(0, 0, 0, 0.25)',
+            transform: 'perspective(800px) scale(1.05)'
+         }}
       >
          <Card.Header h={'130px'}>
             <Card.Title>
@@ -78,11 +87,7 @@ export const PricingCard = ({
             </Stack>
          </Card.Body>
          <Card.Footer>
-            <Button
-               variant={primary ? 'solid' : 'outline'}
-               onClick={onClick}
-               width={'100%'}
-            >
+            <Button variant={primary ? 'solid' : 'outline'} onClick={onClick} width={'100%'}>
                {buttonText}
             </Button>
          </Card.Footer>
