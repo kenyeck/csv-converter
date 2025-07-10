@@ -56,9 +56,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onUpload }: FileUploadPr
                   maxFiles={1}
                   accept={'.csv,.tsv,.txt,.xls,.xlsx'}
                   onFileAccept={onFileAccept}
+                  cursor={'pointer'}
                >
                   <ChFileUpload.HiddenInput />
-                  <ChFileUpload.Dropzone {...({ borderRadius: '15px' } as any)}>
+                  <ChFileUpload.Dropzone borderRadius={'15px'} _hover={{ background: 'blue.500/10', borderColor: 'blue.800/60' }} >
                      <Box
                         padding={5}
                         margin={3}
@@ -66,11 +67,11 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onUpload }: FileUploadPr
                         background={'bg.muted'}
                         borderRadius={'50%'}
                      >
-                        <Icon fontSize={'2.5em'} color={'blue'} as={LuFileSpreadsheet}>
+                        <Icon fontSize={'2.5em'} color={'blue.800'} as={LuFileSpreadsheet}>
                            <LuFileSpreadsheet />
                         </Icon>
                      </Box>
-                     <ChFileUpload.DropzoneContent cursor={'pointer'} borderRadius={'lg'}>
+                     <ChFileUpload.DropzoneContent borderRadius={'lg'}>
                         <Box fontSize={'1.5em'} fontWeight={'semibold'}>
                            Drag & drop your file here
                         </Box>
