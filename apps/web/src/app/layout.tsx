@@ -1,9 +1,23 @@
+import { Metadata } from 'next';
 import { Box } from '@chakra-ui/react';
 import { Providers } from '@components/providers/Providers';
 import { Footer } from '@components/layout/Footer';
 import { Nav } from '@components/layout/Nav';
 import { getServerSession } from 'next-auth';
 import { CookieBanner } from '@components/CookieBanner';
+
+export const metadata: Metadata = {
+   title: 'CSVConvert',
+   description:
+      'Convert CSV, Excel, TSV, and TXT files into JSON, XML with CSVConvert. Fast, browser-based, no-code data conversion — perfect for developers and analysts handling large datasets.',
+   keywords: ['CSV', 'Excel', 'Converter', 'CSVConvert', 'Data Conversion'],
+   openGraph: {
+      title: 'CSVConvert',
+      description:
+         'Convert CSV, Excel, TSV, and TXT files into JSON, XML with CSVConvert. Fast, browser-based, no-code data conversion — perfect for developers and analysts handling large datasets.',
+      url: process.env.NEXT_PUBLIC_SITE_URL
+   }
+};
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
    const session = await getServerSession();
