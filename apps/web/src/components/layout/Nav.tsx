@@ -1,6 +1,7 @@
 'use client';
 
 import { Button, Stack, Menu, Portal, Separator, Box, Avatar, Link } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
 import { ColorModeButton } from '../chakra/ColorModeButton';
 import { signIn, useSession } from 'next-auth/react';
 import { LuAppWindow, LuLogOut } from 'react-icons/lu';
@@ -42,14 +43,14 @@ export const Nav = () => {
             </Link>
             <Stack direction={'row'} alignItems={'center'} gap={5}>
                <ColorModeButton />
-               <AuthButton />
+               <AvatarButton />
             </Stack>
          </Stack>
       </Box>
    );
 };
 
-function AuthButton() {
+function AvatarButton() {
    const { data: session } = useSession();
 
    if (session) {
@@ -74,18 +75,14 @@ function AuthButton() {
                               {session?.user?.email ?? ''}
                            </Box>
                         </Stack>
+                        <Separator/>
+                        <MenuItemContent href="/billing" icon={<LuAppWindow />} name="Billing" />
                         <Separator />
-                        <Menu.Item value="billing" py={2}>
-                           <MenuItemContent href="/billing" icon={<LuAppWindow />} name="Billing" />
-                        </Menu.Item>
-                        <Separator />
-                        <Menu.Item value="logout" py={2}>
-                           <MenuItemContent
-                              href="/api/auth/signout"
-                              icon={<LuLogOut />}
-                              name="Log out"
-                           />
-                        </Menu.Item>
+                        <MenuItemContent
+                           href="/api/auth/signout"
+                           icon={<LuLogOut />}
+                           name="Log out"
+                        />
                      </Menu.Content>
                   </Menu.Positioner>
                </Portal>
@@ -107,12 +104,13 @@ interface MenuItemContentProps {
 }
 
 function MenuItemContent({ href, icon, name }: MenuItemContentProps) {
+   const router = useRouter();
    return (
-      <Link href={href} _focusVisible={{ outline: 'none' }} _hover={{ textDecoration: 'none' }}>
+      <Menu.Item value={name} w={'100%'} cursor={'pointer'} onClick={() => router.push(href)} _notLast={{ my: 1 }} _last={{ mt: 1 }}>
          <Stack direction={'row'} alignItems={'center'} gap={2}>
             {icon}
             <Box>{name}</Box>
          </Stack>
-      </Link>
+      </Menu.Item>
    );
 }
