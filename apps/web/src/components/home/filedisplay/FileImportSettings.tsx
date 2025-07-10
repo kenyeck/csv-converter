@@ -35,7 +35,7 @@ export function FileImportSettings({
 
    return (
       <Dialog.Root size={'sm'} lazyMount open={open} onOpenChange={onOpenChange}>
-         <Dialog.Trigger />
+         <Dialog.Trigger tabIndex={-1} />
          <Dialog.Backdrop bg={'blackAlpha.800'} />
          <Dialog.Positioner>
             <Dialog.Content>

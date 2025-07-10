@@ -88,11 +88,11 @@ export function EditHeader({ cols, open, onOpenChange }: EditHeaderProps) {
 
    return (
       <Dialog.Root size={'lg'} lazyMount open={open} onOpenChange={onOpenChange}>
-         <Dialog.Trigger />
+         <Dialog.Trigger tabIndex={-1} />
          <Dialog.Backdrop bg={'blackAlpha.800'} />
          <Dialog.Positioner>
             <Dialog.Content>
-               <Dialog.CloseTrigger />
+               <Dialog.CloseTrigger tabIndex={-1} />
                <Dialog.Header justifyContent={'flex-start'}>
                   <Dialog.Title>Edit Headers & Configure Fields</Dialog.Title>
                </Dialog.Header>
