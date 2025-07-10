@@ -3,6 +3,7 @@ import { Providers } from '@components/providers/Providers';
 import { Footer } from '@components/layout/Footer';
 import { Nav } from '@components/layout/Nav';
 import { getServerSession } from 'next-auth';
+import { CookieBanner } from '@components/CookieBanner';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
    const session = await getServerSession();
@@ -29,6 +30,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                      boxSizing={'border-box'}
                   >
                      {children}
+                     <CookieBanner />
                   </Box>
                </Box>
                <Footer />
