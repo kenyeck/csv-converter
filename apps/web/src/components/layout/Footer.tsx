@@ -10,7 +10,7 @@ export const Footer = () => {
                <FooterLinks href="/" name="Home" />
                <FooterLinks href="/#features" name="Features" />
                <FooterLinks href="/#pricing" name="Pricing" />
-               <FooterLinks href="/disclosures/privacy" name="Privacy Policy" />
+               <FooterLinks href="/privacy" name="Privacy Policy" />
             </Stack>
             <Box fontSize={'1.25em'} fontWeight={'bold'}>
                CSVConvert
