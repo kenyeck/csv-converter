@@ -2,8 +2,9 @@ import { Stack } from '@chakra-ui/react';
 import { PricingCard } from './PricingCard';
 import { Section } from './Section';
 import { useEffect, useState } from 'react';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { Plan } from '@models/plan';
+import { redirect } from 'next/navigation';
 
 const pricingPlans: Plan[] = [
    {
@@ -58,19 +59,21 @@ export const Pricing = () => {
 
    const handleSubscribe = async (priceId: string) => {
       if (!session) {
-         console.error('User is not authenticated');
-         await signIn(undefined, { redirect: false });
+         redirect('/register');
       }
       console.log('Subscribing to plan with priceId:', priceId);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stripe/create-checkout-session`, {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({
-            //userId: session?.user?.id,
-            email: session?.user?.email,
-            priceId: priceId
-         })
-      });
+      const res = await fetch(
+         `${process.env.NEXT_PUBLIC_API_URL}/api/stripe/create-checkout-session`,
+         {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               //userId: session?.user?.id,
+               email: session?.user?.email,
+               priceId: priceId
+            })
+         }
+      );
 
       const data = await res.json();
 

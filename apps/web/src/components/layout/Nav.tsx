@@ -1,11 +1,11 @@
 'use client';
 
-import { Button, Stack, Menu, Portal, Separator, Box, Avatar, Link } from '@chakra-ui/react';
-import { useRouter } from 'next/navigation';
-import { ColorModeButton } from '../chakra/ColorModeButton';
-import { signIn, useSession } from 'next-auth/react';
-import { LuAppWindow, LuLogOut } from 'react-icons/lu';
 import React from 'react';
+import { Button, Stack, Menu, Portal, Separator, Box, Avatar, Link } from '@chakra-ui/react';
+import { redirect, useRouter } from 'next/navigation';
+import { ColorModeButton } from '../chakra/ColorModeButton';
+import { useSession } from 'next-auth/react';
+import { LuAppWindow, LuLogOut } from 'react-icons/lu';
 
 export const Nav = () => {
    return (
@@ -75,7 +75,7 @@ function AvatarButton() {
                               {session?.user?.email ?? ''}
                            </Box>
                         </Stack>
-                        <Separator/>
+                        <Separator />
                         <MenuItemContent href="/billing" icon={<LuAppWindow />} name="Billing" />
                         <Separator />
                         <MenuItemContent
@@ -91,7 +91,7 @@ function AvatarButton() {
       );
    }
    return (
-      <Button onClick={() => signIn()} mr={'8px'}>
+      <Button onClick={() => redirect('/register')} mr={'8px'}>
          Get Started
       </Button>
    );
@@ -106,7 +106,14 @@ interface MenuItemContentProps {
 function MenuItemContent({ href, icon, name }: MenuItemContentProps) {
    const router = useRouter();
    return (
-      <Menu.Item value={name} w={'100%'} cursor={'pointer'} onClick={() => router.push(href)} _notLast={{ my: 1 }} _last={{ mt: 1 }}>
+      <Menu.Item
+         value={name}
+         w={'100%'}
+         cursor={'pointer'}
+         onClick={() => router.push(href)}
+         _notLast={{ my: 1 }}
+         _last={{ mt: 1 }}
+      >
          <Stack direction={'row'} alignItems={'center'} gap={2}>
             {icon}
             <Box>{name}</Box>
