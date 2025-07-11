@@ -2,7 +2,7 @@ import { Stack } from '@chakra-ui/react';
 import { PricingCard } from './PricingCard';
 import { Section } from './Section';
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { Plan } from '@models/plan';
 
 const pricingPlans: Plan[] = [
@@ -57,6 +57,10 @@ export const Pricing = () => {
    }, []);
 
    const handleSubscribe = async (priceId: string) => {
+      if (!session) {
+         console.error('User is not authenticated');
+         await signIn(undefined, { redirect: false });
+      }
       console.log('Subscribing to plan with priceId:', priceId);
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stripe/create-checkout-session`, {
          method: 'POST',

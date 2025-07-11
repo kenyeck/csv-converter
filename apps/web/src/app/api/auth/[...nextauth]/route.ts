@@ -16,7 +16,7 @@ const authConfig: AuthOptions = {
    ],
    pages: {
       signIn: '/register',
-      signOut: '/login',
+      signOut: '/login'
    },
    callbacks: {
       async jwt({ token, account, user }) {
