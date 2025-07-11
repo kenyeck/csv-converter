@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import planRoutes from './routes/planRoutes';
 import stripeRoutes from './routes/stripeRoutes';
+import userRoutes from './routes/userRoutes';
 
 export const createServer = (): Express => {
    const app = express();
@@ -13,6 +14,7 @@ export const createServer = (): Express => {
       .use(cors())
       .use('/api/stripe', stripeRoutes) // process before json parser, webhook needs raw body
       .use(json())
-      .use('/api/plans', planRoutes);
+      .use('/api/plans', planRoutes)
+      .use('/api/users', userRoutes);
    return app;
 };
