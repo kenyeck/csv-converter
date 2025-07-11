@@ -51,7 +51,6 @@ export const Pricing = () => {
             ...plan,
             priceId: data[i]?.id || ''
          }));
-         console.log('Fetched Plans:', pricingPlansWithIds);
          setPlans(pricingPlansWithIds);
       };
       fetchPlans();

@@ -1,3 +1,4 @@
+import { User } from "next-auth";
 import { ApiResult } from "../models/api";
 import { Plan } from "../models/plan";
 
@@ -21,4 +22,24 @@ export const getPlans = async (): Promise<ApiResult<Plan[]>> => {
       data: await response.json()
    };
    return result;
+}
+
+
+export const addUpdateUser = async (user: User) => {
+   const response = await fetch(`${API_BASE_URL}/api/users`, {
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+         name: user.name,
+         email: user.email
+      })
+   });
+
+   if (!response.ok) {
+      throw new Error(`Failed to add/update user: ${response.statusText}`);
+   }
+
+   return await response.json();
 }

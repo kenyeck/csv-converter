@@ -17,11 +17,9 @@ export const CookieBanner = () => {
    useEffect(() => {
       if (cookieConsent === true) {
          // Enable services like Google Analytics or Stripe tracking here
-         console.log('Cookies accepted, enabling tracking...');
          // Example: window.gtag('consent', 'update', { analytics_storage: 'granted' });
       } else if (cookieConsent === false) {
          // Disable non-essential cookies and tracking
-         console.log('Cookies declined, disabling tracking...');
          // Example: window.gtag('consent', 'update', { analytics_storage: 'denied' });
       }
    }, [cookieConsent]);
@@ -36,11 +34,9 @@ export const CookieBanner = () => {
          overlay
          onAccept={() => {
             setCookieConsent(true);
-            alert('Cookies accepted!');
          }}
          onDecline={() => {
             setCookieConsent(false);
-            alert('Cookies declined.');
          }}
          style={{
             background: 'lightgray',

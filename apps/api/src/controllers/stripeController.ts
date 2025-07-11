@@ -10,7 +10,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export const getPlans = async (req: Request, res: Response) => {
    const prices = await stripe.prices.list({ active: true }); // expand: ['data.product'] });
-   console.log('Fetched Plans:', prices.data);
    res.json(prices.data.filter((price) => price.recurring));
 };
 
