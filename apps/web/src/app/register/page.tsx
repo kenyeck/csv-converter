@@ -10,7 +10,7 @@ const googleImg = '/images/google.svg';
 const githubImg = '/images/github.svg';
 const githubImgDark = '/images/github-dark.svg';
 
-export default function SignInPage() {
+export default function RegisterPage() {
    const [providers, setProviders] = useState<ClientSafeProvider[]>([]);
    const { colorMode } = useColorMode();
    const images = [
