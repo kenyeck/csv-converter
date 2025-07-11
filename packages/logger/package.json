@@ -22,7 +22,7 @@
     }
   },
   "scripts": {
-    "build": "bunchee",
+    "build": "bunchee --format esm,cjs",
     "dev": "bunchee --watch",
     "lint": "eslint src/",
     "check-types": "tsc --noEmit",

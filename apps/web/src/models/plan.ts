@@ -6,15 +6,12 @@ export interface BillingOption {
 }
 
 export interface Plan {
-   _id: { $oid: string };
    name: string;
    description: string;
    features: string[];
-   billingOptions: BillingOption[];
-   active: boolean;
-   createdAt: string; // ISO date string
-   updatedAt: string; // ISO date string
+   price: string;
    tag: string;
    buttonText: string;
-   primary: boolean;
+   primary?: boolean;
+   priceId: string; // Stripe Price ID
 }

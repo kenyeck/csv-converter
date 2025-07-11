@@ -21,3 +21,9 @@ if (process.env.NODE_ENV === 'development') {
 export async function getDb() {
    return (await clientPromise).db(dbName);
 }
+
+export async function getUserCollection() {
+   const db = await getDb();
+   const users = await db.collection('users');
+   return users;
+}

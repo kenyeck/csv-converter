@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// todo: disble for now - need to figure out how to get types for Chakra components, eg. FileUpload.Dropzone
 'use client';
 
 import React from 'react';

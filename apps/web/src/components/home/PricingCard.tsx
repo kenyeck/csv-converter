@@ -5,7 +5,7 @@ interface PricingCardProps {
    description: string;
    tag?: string;
    price: string;
-   includes: string[];
+   features: string[];
    onClick: () => void;
    buttonText: string;
    primary?: boolean;
@@ -16,7 +16,7 @@ export const PricingCard = ({
    description,
    tag,
    price,
-   includes,
+   features,
    buttonText,
    primary = false,
    onClick
@@ -77,9 +77,9 @@ export const PricingCard = ({
                >
                   {price}
                </Box>
-               {includes && (
+               {features && (
                   <List.Root pl={4} fontSize={'0.9em'} color={'fg.muted'} lineBreak={'4em'}>
-                     {includes.map((item, index) => (
+                     {features.map((item, index) => (
                         <List.Item key={index}>{item}</List.Item>
                      ))}
                   </List.Root>

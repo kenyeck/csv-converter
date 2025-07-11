@@ -1,22 +1,17 @@
 import { Stack } from '@chakra-ui/react';
 import { PricingCard } from './PricingCard';
 import { Section } from './Section';
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { Plan } from '@models/plan';
 
-const pricingPlans = [
+const pricingPlans: Plan[] = [
    {
-      title: 'Starter',
-      description: 'Try the converter with 5 files. No sign-up required.',
-      tag: 'Free For Life',
-      price: '$0/mo',
-      includes: ['Process up to 5 files'],
-      buttonText: 'Try Free'
-   },
-   {
-      title: 'Pro',
+      name: 'Pro',
       description: 'Remove all limits and unlock every tool for power users.',
       tag: 'All Features',
       price: '$14.99/mo',
-      includes: [
+      features: [
          'Unlimited file uploads',
          'Import Excel (XLS, XLSX), CSV, TXT, JSON, XML',
          'Unlimited row previews',
@@ -30,11 +25,57 @@ const pricingPlans = [
          'Access to all future updates'
       ],
       buttonText: 'Upgrade to Pro',
+      priceId: '',
       primary: true
+   },
+   {
+      name: 'Starter',
+      description: 'Try the converter with 5 files. No sign-up required.',
+      tag: 'Free For Life',
+      price: '$0/mo',
+      features: ['Process up to 5 files'],
+      buttonText: 'Try Free',
+      priceId: ''
    }
 ];
 
 export const Pricing = () => {
+   const { data: session } = useSession();
+   const [plans, setPlans] = useState<Plan[]>([]);
+
+   useEffect(() => {
+      const fetchPlans = async () => {
+         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stripe/plans`);
+         const data = await response.json();
+         const pricingPlansWithIds = pricingPlans.map((plan, i) => ({
+            ...plan,
+            priceId: data[i]?.id || ''
+         }));
+         console.log('Fetched Plans:', pricingPlansWithIds);
+         setPlans(pricingPlansWithIds);
+      };
+      fetchPlans();
+   }, []);
+
+   const handleSubscribe = async (priceId: string) => {
+      console.log('Subscribing to plan with priceId:', priceId);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stripe/create-checkout-session`, {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+            //userId: session?.user?.id,
+            email: session?.user?.email,
+            priceId: priceId
+         })
+      });
+
+      const data = await res.json();
+
+      if (data.url) {
+         window.location.href = data.url;
+      }
+   };
+
    return (
       <Section
          id="pricing"
@@ -50,15 +91,15 @@ export const Pricing = () => {
             w={'100%'}
             h={'100%'}
          >
-            {pricingPlans.map((plan, index) => (
+            {plans.map((plan, index) => (
                <PricingCard
                   key={index}
-                  title={plan.title}
+                  title={plan.name}
                   tag={plan.tag}
                   description={plan.description}
                   price={plan.price}
-                  includes={plan.includes}
-                  onClick={() => alert(`Selected ${plan.title}`)}
+                  features={plan.features}
+                  onClick={() => handleSubscribe(plan.priceId)}
                   buttonText={plan.buttonText}
                   primary={plan.primary}
                />
