@@ -27,22 +27,21 @@ export default function SignInPage() {
    }, []);
 
    return providers.length > 0 ? (
-      <Box display={'flex'} justifyContent={'center'} alignItems={'center'} mt={20}>
+      <Box display={'flex'} justifyContent={'center'} alignItems={'center'} mt={150}>
          <Card.Root
             size={'sm'}
             variant={'elevated'}
             alignItems={'center'}
-            w={'300px'}
-            border={'1px solid bg.muted'}
+            w={'400px'}
+            border={'1px solid lightgray'}
          >
             <Card.Header>
-               <Box as="h1" fontWeight={'bold'} fontSize={'lg'}>
-                  Sign In
+               <Box fontSize={'2em'} fontWeight={'bold'}>
+                  Sign Up
                </Box>
             </Card.Header>
-            <Card.Body>Please sign in to continue.</Card.Body>
-            <Card.Footer w={'100%'} pt={4} pb={8} py={4}>
-               <Stack gap={3} direction="column" align="center" w={'100%'}>
+            <Card.Body w={'100%'} my={8}>
+               <Stack gap={4} direction="column" align="center" w={'100%'}>
                   {providers.map((provider) => (
                      <Button
                         variant={'outline'}
@@ -61,7 +60,7 @@ export default function SignInPage() {
                      </Button>
                   ))}
                </Stack>
-            </Card.Footer>
+            </Card.Body>
          </Card.Root>
       </Box>
    ) : null;

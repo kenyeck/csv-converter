@@ -81,7 +81,7 @@ export const handleStripeWebhook = async (req: Request, res: Response) => {
 
    if (event.type === 'checkout.session.completed') {
       const subscription = event.data.object as unknown as Stripe.Subscription;
-      const email = subscription.metadata?.email ?? 'ken.yeck@gmail.com';
+      const email = subscription.metadata?.email;
 
       if (email) {
          await users.findOneAndUpdate(
