@@ -1,9 +1,9 @@
 import express, { Router } from "express";
-import { addUpdateUser, getUsers } from "../controllers/userController";
+import { addUpdateUser } from "../controllers/userController";
+import { authMiddleware } from "../middleware/auth";
 
 const router: Router = express.Router();
 
-router.get('/', getUsers);
-router.post('/', addUpdateUser);
+router.post('/', authMiddleware, addUpdateUser);
 
 export default router;

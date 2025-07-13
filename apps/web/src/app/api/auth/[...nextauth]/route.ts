@@ -14,16 +14,20 @@ const authConfig: AuthOptions = {
          clientSecret: process.env.GITHUB_CLIENT_SECRET ?? ''
       })
    ],
+   secret: process.env.NEXTAUTH_SECRET,
+   session: {
+      strategy: 'jwt',
+      maxAge: 30 * 24 * 60 * 60 // 30 days
+   },
    pages: {
       signIn: '/register',
       signOut: '/login'
    },
    callbacks: {
-      async jwt({ token, account, user }) {
+      async jwt({ token, user }) {
          if (user) {
             const result = await addUpdateUser(user);
             token.userId = result._id.toString();
-            token.accessToken = account?.access_token;
          }
          return token;
       }
