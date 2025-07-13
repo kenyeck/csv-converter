@@ -16,7 +16,7 @@ export default function SignOutPage() {
          router.replace('/');
       };
       logout();
-   }, []);
+   }, [router, session]);
 
    return null;
 }
