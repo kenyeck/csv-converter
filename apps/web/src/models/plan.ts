@@ -13,5 +13,5 @@ export interface Plan {
    tag: string;
    buttonText: string;
    primary?: boolean;
-   priceId: string; // Stripe Price ID
+   stripePriceId?: string; // Stripe Price ID
 }

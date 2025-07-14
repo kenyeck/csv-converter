@@ -19,9 +19,13 @@ export const Pricing = () => {
       fetchPlans();
    }, []);
 
-   const handleSubscribe = async (priceId: string) => {
+   const handleSubscribe = async (priceId?: string) => {
       if (!session) {
          redirect('/register');
+      }
+      if (!priceId) {
+         window.scrollTo(0, 0);
+         return;
       }
       const data = await startCheckout(priceId, session);
       if (data.url) {
@@ -52,7 +56,7 @@ export const Pricing = () => {
                   description={plan.description}
                   price={plan.price}
                   features={plan.features}
-                  onClick={() => handleSubscribe(plan.priceId)}
+                  onClick={() => handleSubscribe(plan.stripePriceId)}
                   buttonText={plan.buttonText}
                   primary={plan.primary}
                />

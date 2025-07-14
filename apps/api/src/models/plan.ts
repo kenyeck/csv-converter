@@ -13,7 +13,7 @@ export interface Plan {
    tag: string;
    buttonText: string;
    primary: boolean;
-   stripePriceId: string;
+   stripePriceId?: string;
    price: string;
    order: number;
 }
