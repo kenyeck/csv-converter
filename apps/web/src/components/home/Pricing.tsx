@@ -5,41 +5,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { Plan } from '@models/plan';
 import { redirect } from 'next/navigation';
-import { startCheckout } from '@lib/api';
-
-const pricingPlans: Plan[] = [
-   {
-      name: 'Pro',
-      description: 'Remove all limits and unlock every tool for power users.',
-      tag: 'All Features',
-      price: '$14.99/mo',
-      features: [
-         'Unlimited file uploads',
-         'Import Excel (XLS, XLSX), CSV, TXT, JSON, XML',
-         'Unlimited row previews',
-         'Advanced filtering & sorting',
-         'Rename headers with drag & drop',
-         'Split & combine columns',
-         'Find & replace (supports regex)',
-         'Automatic data type detection',
-         'Export full JSON & XML with formatting',
-         'Handle large files with intelligent chunking',
-         'Access to all future updates'
-      ],
-      buttonText: 'Upgrade to Pro',
-      priceId: '',
-      primary: true
-   },
-   {
-      name: 'Starter',
-      description: 'Try the converter with 5 files. No sign-up required.',
-      tag: 'Free For Life',
-      price: '$0/mo',
-      features: ['Process up to 5 files'],
-      buttonText: 'Try Free',
-      priceId: ''
-   }
-];
+import { getPlans, startCheckout } from '@lib/api';
 
 export const Pricing = () => {
    const { data: session } = useSession();
@@ -47,13 +13,8 @@ export const Pricing = () => {
 
    useEffect(() => {
       const fetchPlans = async () => {
-         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stripe/plans`);
-         const data = await response.json();
-         const pricingPlansWithIds = pricingPlans.map((plan, i) => ({
-            ...plan,
-            priceId: data[i]?.id || ''
-         }));
-         setPlans(pricingPlansWithIds);
+         const result = await getPlans();
+         setPlans(result.data || []);
       };
       fetchPlans();
    }, []);

@@ -1,3 +1,4 @@
+/* eslint-disable turbo/no-undeclared-env-vars */
 import { json, urlencoded } from 'body-parser';
 import express, { type Express } from 'express';
 import morgan from 'morgan';
@@ -11,7 +12,7 @@ export const createServer = (): Express => {
    app.disable('x-powered-by')
       .use(morgan('dev'))
       .use(urlencoded({ extended: true }))
-      .use(cors())
+      .use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:3000' }))
       .use('/api/stripe', stripeRoutes) // process before json parser, webhook needs raw body
       .use(json())
       .use('/api/plans', planRoutes)

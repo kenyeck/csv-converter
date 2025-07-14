@@ -10,11 +10,10 @@ export interface Plan {
    name: string;
    description: string;
    features: string[];
-   billingOptions: BillingOption[];
-   active: boolean;
-   createdAt: string; // ISO date string
-   updatedAt: string; // ISO date string
    tag: string;
    buttonText: string;
    primary: boolean;
+   stripePriceId: string;
+   price: string;
+   order: number;
 }

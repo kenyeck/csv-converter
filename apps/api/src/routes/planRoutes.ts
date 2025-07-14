@@ -1,17 +1,8 @@
 import express, { Router } from "express";
-import { getDb } from '../lib/mongodb';
-import { Plan } from '../models/plan';
+import { getPlans } from "../controllers/planController";
 
 const router: Router = express.Router();
 
-router.get('/', async (req, res) => {
-   try {
-      const db = await getDb();
-      const plans = await db.collection<Plan[]>('plans').find().toArray();
-      return res.json(plans);
-   } catch (err) {
-      return res.status(500).json({ error: `Database error: ${err}` });
-   }
-});
+router.get('/', getPlans);
 
 export default router;
