@@ -20,12 +20,12 @@ export const Pricing = () => {
    }, []);
 
    const handleSubscribe = async (priceId?: string) => {
-      if (!session) {
-         redirect('/register');
-      }
       if (!priceId) {
          window.scrollTo(0, 0);
          return;
+      }
+      if (!session) {
+         redirect('/register');
       }
       const data = await startCheckout(priceId, session);
       if (data.url) {
