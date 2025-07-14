@@ -3,9 +3,11 @@
 import { useState, useEffect } from 'react';
 import CookieConsent, { getCookieConsentValue } from 'react-cookie-consent';
 import Link from 'next/link';
+import { useColorMode } from './chakra/ColorModeButton';
 
 export const CookieBanner = () => {
    const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
+   const colorMode = useColorMode();
 
    useEffect(() => {
       // Check if consent has been given on initial load
@@ -39,15 +41,15 @@ export const CookieBanner = () => {
             setCookieConsent(false);
          }}
          style={{
-            background: 'lightgray',
-            color: 'fg.muted',
+            background: colorMode.colorMode === 'dark' ? 'gray' : 'bg.muted',
+            color: colorMode.colorMode === 'dark' ? 'fg.default' : 'fg.muted',
             fontSize: '14px',
             alignItems: 'center'
          }}
-         buttonStyle={{ background: 'blue', color: 'white', fontSize: '14px', borderRadius: '4px' }}
+         buttonStyle={{ background: 'blue', color: colorMode.colorMode === 'dark' ? 'fg.muted' : 'white', fontSize: '14px', borderRadius: '4px' }}
          declineButtonStyle={{
             background: 'white',
-            color: 'fg',
+            color: colorMode.colorMode === 'dark' ? 'black' : 'fg.muted',
             fontSize: '14px',
             borderRadius: '4px'
          }}
