@@ -30,8 +30,8 @@ export const CookieBanner = () => {
       <CookieConsent
          location="bottom"
          cookieName="userConsent"
-         buttonText="Accept Cookies"
-         declineButtonText="Decline"
+         buttonText="Accept all"
+         declineButtonText="Required only"
          enableDeclineButton
          overlay
          onAccept={() => {
