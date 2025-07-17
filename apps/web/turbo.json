@@ -1,14 +1,9 @@
 {
-  "extends": [
-    "//"
-  ],
-  "tasks": {
-    "build": {
-      "env": ["GOOGLE_CLIENT*", "GITHUB_CLIENT*", "NEXT*", "MONGODB_URI"],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**"
-      ]
-    }
-  }
+   "extends": ["//"],
+   "tasks": {
+      "build": {
+         "env": ["AUTH_*", "NEXT*", "MONGODB_URI"],
+         "outputs": [".next/**", "!.next/cache/**"]
+      }
+   }
 }

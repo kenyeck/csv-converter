@@ -3,19 +3,13 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import SessionProvider from './SessionProvider';
 import { ColorModeProvider, ColorModeProviderProps } from '../chakra/ColorModeButton';
-import { Session } from 'next-auth';
 import { system } from '../../common/styles/theme';
 
-interface ProvidersProps extends ColorModeProviderProps {
-   session?: Session;
-}
-
-export function Providers(props: ProvidersProps) {
-   const { session, ...rest } = props;
+export function Providers(props: ColorModeProviderProps) {
    return (
-      <SessionProvider session={session}>
+      <SessionProvider>
          <ChakraProvider value={system}>
-            <ColorModeProvider {...rest} />
+            <ColorModeProvider {...props} />
          </ChakraProvider>
       </SessionProvider>
    );

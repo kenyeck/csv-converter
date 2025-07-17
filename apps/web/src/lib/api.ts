@@ -1,15 +1,12 @@
 import { Session, User } from 'next-auth';
 import { ApiResult } from '../models/api';
 import { Plan } from '../models/plan';
-import { getAuthToken } from './auth';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
 
 export async function callApi(url: string, options: RequestInit = {}): Promise<Response> {
-   const token = await getAuthToken();
    const headers = {
       ...options.headers,
-      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
    };
    return fetch(url, {

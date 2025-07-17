@@ -1,17 +1,18 @@
 'use client';
 
-import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react';
+import { getProviders, signIn } from 'next-auth/react';
 import { Box, Button, Card, Stack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useColorMode } from '@components/chakra/ColorModeButton';
+import { Provider } from 'next-auth/providers';
 
 const googleImg = '/images/google.svg';
 const githubImg = '/images/github.svg';
 const githubImgDark = '/images/github-dark.svg';
 
 export default function RegisterPage() {
-   const [providers, setProviders] = useState<ClientSafeProvider[]>([]);
+   const [providers, setProviders] = useState<Provider[]>([]);
    const { colorMode } = useColorMode();
    const images = [
       { id: 'google', img: `${colorMode === 'dark' ? googleImg : googleImg}` },
@@ -21,7 +22,7 @@ export default function RegisterPage() {
    useEffect(() => {
       const fetchProviders = async () => {
          const res = await getProviders();
-         setProviders(res ? Object.values(res) : []);
+         setProviders(res ? (Object.values(res) as Provider[]) : []);
       };
       fetchProviders();
    }, []);

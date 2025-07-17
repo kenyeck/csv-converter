@@ -3,7 +3,6 @@ import { Box } from '@chakra-ui/react';
 import { Providers } from '@components/providers/Providers';
 import { Footer } from '@components/layout/Footer';
 import { Nav } from '@components/layout/Nav';
-import { getServerSession } from 'next-auth';
 import { CookieBanner } from '@components/CookieBanner';
 
 export const metadata: Metadata = {
@@ -20,13 +19,11 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-   const session = await getServerSession();
-
    // Note hydration warning is suppressed due to ThemeToggle component
    return (
       <html lang="en" suppressHydrationWarning>
          <body>
-            <Providers session={session!}>
+            <Providers>
                <Nav />
                <Box
                   as="main"
