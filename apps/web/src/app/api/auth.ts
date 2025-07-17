@@ -8,6 +8,20 @@ const authConfig: NextAuthConfig = {
    session: {
       strategy: 'jwt'
    },
+   callbacks: {
+      async jwt({ token, account, profile }) {
+         if (account) {
+            token.accessToken = account.access_token;
+            token.userId = profile?.id ?? token.userId;
+         }
+         return token;
+      },
+      async session({ session, token }) {
+         session.userId = token.userId;
+         session.accessToken = token.accessToken;
+         return session;
+      }
+   },
    pages: {
       signIn: '/register',
       signOut: '/login'
