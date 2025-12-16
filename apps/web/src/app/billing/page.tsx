@@ -47,7 +47,7 @@ export default function BillingPage() {
                      </Box>
                      {plans.length > 0 &&
                         plans
-                           .filter((x) => parseInt(x.billingOptions[0].price['$numberDecimal']) > 0)
+                           .filter((x) => parseInt(x.order) > 0)
                            .map((plan, key) => (
                               <Fragment key={key}>
                                  <Box fontSize={'1.2em'} color={'fg.muted'}>

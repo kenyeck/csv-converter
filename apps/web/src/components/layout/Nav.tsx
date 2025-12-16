@@ -24,7 +24,7 @@ export const Nav = () => {
          paddingRight={'50px'}
       >
          <Link
-            href="https://csvconvert.com"
+            href={process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}
             style={{
                textDecoration: 'none',
                color: 'inherit',
@@ -35,11 +35,11 @@ export const Nav = () => {
             CSVConvert
          </Link>
          <Stack direction={'row'} justifyContent={'flex-end'} alignItems={'center'} gap={8}>
-            <Link href="/#pricing" style={{ fontSize: '1.1em' }}>
-               Pricing
-            </Link>
             <Link href="/#features" style={{ fontSize: '1.1em', marginRight: '8px' }}>
                Features
+            </Link>
+            <Link href="/#pricing" style={{ fontSize: '1.1em' }}>
+               Pricing
             </Link>
             <Stack direction={'row'} alignItems={'center'} gap={5}>
                <ColorModeButton />
