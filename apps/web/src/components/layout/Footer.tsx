@@ -1,7 +1,16 @@
+'use client';
+
 import { Box, Stack, Separator } from '@chakra-ui/react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export const Footer = () => {
+   const [year, setYear] = useState(0);
+
+   useEffect(() => {
+      setYear(new Date().getFullYear());
+   }, []);
+   
    return (
       <Box as="footer" textAlign={'center'} paddingLeft={'50px'} paddingRight={'50px'} background={'bg'} >
          <Separator />
@@ -16,7 +25,7 @@ export const Footer = () => {
                CSVConvert
             </Box>
             <Box fontSize={'.85em'} color={'fg.muted'} mt={5}>
-               © {new Date().getFullYear()} CSVConvert. All rights reserved.
+               © {year} CSVConvert. All rights reserved.
             </Box>
          </Box>
       </Box>
