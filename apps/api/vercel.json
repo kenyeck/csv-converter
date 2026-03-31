@@ -1,11 +1,10 @@
 {
   "version": 2,
-  "buildCommand": "cd ../.. && pnpm turbo run build --filter=api",
   "installCommand": "cd ../.. && pnpm install",
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/index.js"
+      "dest": "/api/index.ts"
     }
   ]
 }
