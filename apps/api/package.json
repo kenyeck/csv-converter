@@ -4,9 +4,10 @@
    "type": "module",
    "private": true,
    "scripts": {
-      "start": "node dist/index.js",
+      "start": "node dist/index.cjs",
       "dev": "tsup --watch --onSuccess \"node --env-file=.env.development dist/index.cjs\"",
       "build": "tsup",
+      "smoke:deploy": "node scripts/smoke-check.mjs",
       "check-types": "tsc --noEmit",
       "lint": "eslint src/ --max-warnings 0",
       "test": "jest --detectOpenHandles"

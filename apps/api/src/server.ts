@@ -10,6 +10,9 @@ import userRoutes from './routes/userRoutes';
 export const createServer = (): Express => {
    const app = express();
    app.disable('x-powered-by')
+      .get('/health', (_req, res) => {
+         res.status(200).json({ ok: true });
+      })
       .use(morgan('dev'))
       .use(urlencoded({ extended: true }))
       .use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:3000' }))
