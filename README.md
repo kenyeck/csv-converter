@@ -77,8 +77,8 @@ The API is best deployed as a long-running Node service from `apps/api`.
 ### Railway
 
 1. Create a service from this repository.
-2. Set the service root directory to `apps/api`.
-3. Railway will pick up `apps/api/railway.toml`.
+2. Leave service root directory blank (repository root).
+3. Railway will pick up `railway.toml`.
 4. Add the required environment variables.
 5. Deploy.
 
