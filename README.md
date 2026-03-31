@@ -141,16 +141,16 @@ The smoke test checks:
 
 Use the same variables on both platforms. Replace placeholder values with your real credentials and domains.
 
-| Variable | Example value | Notes |
-|-------|-------------|-------|
-| `NODE_ENV` | `production` | Enables production behavior in libraries and middleware |
-| `PORT` | `3001` | Optional on Railway/Render; platform usually injects this |
-| `MONGODB_URI` | `mongodb+srv://<user>:<password>@<cluster>.mongodb.net/?retryWrites=true&w=majority` | Use your Atlas connection string |
-| `NEXTAUTH_SECRET` | `<long-random-secret>` | Use a long random string (at least 32 chars) |
-| `STRIPE_SECRET_KEY` | `sk_live_...` | Stripe secret key for the same account as your frontend |
-| `STRIPE_WEBHOOK_SECRET` | `whsec_...` | Stripe webhook signing secret for this deployed endpoint |
-| `STRIPE_CLIENT_URL` | `https://<your-web-domain>` | Public URL of your web app |
-| `CORS_ORIGIN` | `https://<your-web-domain>` | Must match your web app origin exactly |
+| Variable                | Example value                                                                        | Notes                                                     |
+| ----------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------- |
+| `NODE_ENV`              | `production`                                                                         | Enables production behavior in libraries and middleware   |
+| `PORT`                  | `3001`                                                                               | Optional on Railway/Render; platform usually injects this |
+| `MONGODB_URI`           | `mongodb+srv://<user>:<password>@<cluster>.mongodb.net/?retryWrites=true&w=majority` | Use your Atlas connection string                          |
+| `NEXTAUTH_SECRET`       | `<long-random-secret>`                                                               | Use a long random string (at least 32 chars)              |
+| `STRIPE_SECRET_KEY`     | `sk_live_...`                                                                        | Stripe secret key for the same account as your frontend   |
+| `STRIPE_WEBHOOK_SECRET` | `whsec_...`                                                                          | Stripe webhook signing secret for this deployed endpoint  |
+| `STRIPE_CLIENT_URL`     | `https://<your-web-domain>`                                                          | Public URL of your web app                                |
+| `CORS_ORIGIN`           | `https://<your-web-domain>`                                                          | Must match your web app origin exactly                    |
 
 Railway quick paste template:
 

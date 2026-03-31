@@ -1,5 +1,5 @@
 [build]
-buildCommand = "cd ../.. && pnpm install --frozen-lockfile && pnpm turbo run build --filter=api"
+buildCommand = "pnpm install --frozen-lockfile && pnpm turbo run build --filter=api"
 builder = "NIXPACKS"
 
 [deploy]
@@ -7,4 +7,4 @@ healthcheckPath = "/health"
 healthcheckTimeout = 120
 restartPolicyMaxRetries = 10
 restartPolicyType = "ON_FAILURE"
-startCommand = "node dist/index.cjs"
+startCommand = "node apps/api/dist/index.cjs"
