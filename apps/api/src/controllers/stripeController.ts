@@ -32,7 +32,7 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
             }
          ],
          success_url: `${process.env.STRIPE_CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-         cancel_url: `${process.env.STRIPE_CLIENT_URL}`,
+         return_url: `${process.env.STRIPE_CLIENT_URL}`,
          metadata: { email }
          // subscription_data: {
          //    billing_cycle_anchor: Date.now()
