@@ -79,7 +79,10 @@ function AvatarButton() {
                         <MenuItemContent href="/billing" icon={<LuAppWindow />} name="Billing" />
                         <Separator />
                         <MenuItemContent
-                           href="/api/auth/signout"
+                           href={`${
+                              process.env.NEXT_PUBLIC_API_BASE_URL ||
+                              'http://localhost:3001'
+                           }/api/auth/signout`}
                            icon={<LuLogOut />}
                            name="Log out"
                         />

@@ -18,7 +18,9 @@ export default function BillingPage() {
    const planName = 'Free Plan';
 
    if (!session) {
-      redirect('/api/auth/signin');
+      const authBase =
+         `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/auth`;
+      redirect(`${authBase}/signin`);
    }
 
    return (

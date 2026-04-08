@@ -1,26 +1,13 @@
 /* eslint-disable turbo/no-undeclared-env-vars */
-import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+import { auth, authConfig } from '../auth';
 
-export function authMiddleware(req: Request, res: Response, next: NextFunction) {
-   const authHeader = req.headers.authorization;
-   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'No or invalid authorization header' });
+export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
+   const session = await auth(req, res, authConfig);
+   if (!session) {
+      return res.status(401).json({ error: 'Unauthorized' });
    }
-
-   const token = authHeader.split(' ')[1];
-   const _decoded = jwt.verify(
-      token,
-      process.env.NEXTAUTH_SECRET ?? '',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (err: any | null, decoded: any | undefined) => {
-         if (err) {
-            console.error('JWT verification failed:', err);
-            return res.status(403).json({ error: 'Token invalid' });
-         }
-
-         console.log('JWT decoded:', decoded);
-         next();
-      }
-   );
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   (req as any).session = session;
+   next();
 }
